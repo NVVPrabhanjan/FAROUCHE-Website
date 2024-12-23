@@ -3,8 +3,8 @@ import Event from "../models/event.model.js";
 
 export const createRegistration = async (req, res) => {
     try {
-        const { name, phoneNumber, email, hostelName, eventTitle } = req.body;
-        if (!name || !phoneNumber || !email || !hostelName || !eventTitle) {
+        const { name, phoneNumber, email, hostelName, eventTitle,group } = req.body;
+        if (!name || !phoneNumber || !email || !hostelName || !eventTitle || !group) {
             return res.status(400).json({ message: "All fields are required." });
         }
 
@@ -27,6 +27,7 @@ export const createRegistration = async (req, res) => {
             email,
             hostelName,
             eventId: event._id,
+            group: group
         });
 
         const savedRegistration = await newRegistration.save();
