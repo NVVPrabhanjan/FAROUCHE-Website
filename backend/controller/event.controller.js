@@ -3,7 +3,7 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 export const addEvent = async (req, res) => {
   try {
-    const { title, description, date, venue } = req.body;
+    const { title, description, date, venue ,group} = req.body;
     if (!req.file) {
         return res.status(400).json({ message: "Image file is required." });
     }
@@ -20,6 +20,7 @@ export const addEvent = async (req, res) => {
       date,
       venue,
       image: imageUrl.url,
+      group:group
     });
 
     const savedEvent = await newEvent.save();
@@ -33,3 +34,36 @@ export const addEvent = async (req, res) => {
     res.status(500).json({ message: "Failed to add event.", error: error.message });
   }
 };
+
+
+
+export const getEvents = async (req, res) => {
+  try {
+    const events = await Event.find();
+    res.status(200).json({ data: events });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch events.", error: error.message });
+  }
+};
+
+export const updateEventDate= async(req,res)=>{
+
+  try{
+    
+    const updatedEvent = await Event.findOneAndUpdate(
+      { eventid: req.body.eventId }, // Filter by `eventid`
+      { date: req.body.newDate }, // Update the `date` field
+      { new: true, runValidators: true } // Return updated document and run validators
+    );
+
+    console.log(updatedEvent);
+
+    res.status(200).json({ message: "Event date updated successfully.", data: updatedEvent });
+
+  }
+  catch(error){
+    res.status(500).json({ message: "Failed to update event date.", error: error.message });
+
+
+  }
+}
