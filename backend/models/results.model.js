@@ -4,6 +4,7 @@ const ResultSchema = new Schema(
   {
     name: { type: String, required: true },
     teams: { type: String, required: true },
+    win: {type: String, required: true},
     manoftheman: { type: String, required: true },
     image: { type: String, required: true }
   },
