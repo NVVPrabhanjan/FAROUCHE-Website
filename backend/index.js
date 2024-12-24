@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import connectDB from "./utils/db.js";
 import eventCreateRoute from "./routes/event.route.js";
 import registrationRouter from "./routes/registration.route.js";
+import resultsRouter from "./routes/results.route.js"
 import bodyParser from "body-parser";
 import multer from "multer";
 import helmet from "helmet";
@@ -58,6 +59,7 @@ const PORT = process.env.PORT || 3000;
 // API Routes
 app.use("/api/v1/event", eventCreateRoute);
 app.use("/api/v1/registration", registrationRouter);
+app.use("/api/v1/results",resultsRouter)
 app.get("/", (req, res) => {
   return res.json({ "All Routes are running": "Welcome to farushe" });
 });
