@@ -4,7 +4,7 @@ import Event from "../models/event.model.js";
 export const createRegistration = async (req, res) => {
     try {
         const { name, phoneNumber, email, hostelName, eventTitle } = req.body;
-        if (!name || !phoneNumber || !email || !hostelName || !eventTitle) {
+        if (!name || !phoneNumber || !email || !hostelName || !eventTitle ) {
             return res.status(400).json({ message: "All fields are required." });
         }
 
