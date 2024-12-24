@@ -54,20 +54,26 @@ const poppins = Poppins({
 // Data
 const hostelLeadership: HostelGroup[] = [
   {
-    title: "Hostel Secretaries",
+    title: "Council of  Wardens",
     description: "Student leaders managing hostel affairs",
     members: [
       {
-        name: "Rahul Kumar",
-        role: "Boys Hostel Secretary",
-        image: "/rahul.jpg",
-        description: "Managing boys hostel operations",
+        name: "Dr. Bheemsha Arya",
+        role: "Hostel Working Chairman",
+        image: "/pr-1.png",
+        description: "",
       },
       {
-        name: "Priya Singh",
-        role: "Girls Hostel Secretary",
+        name: "Dr. Krishnappa Olekar",
+        role: "Secretary, BMSET, Hostels",
+        image: "/sr-1.png",
+        description: "",
+      },
+      {
+        name: "Dr.Boddapati Venkatesh",
+        role: "Secretary, IH, Hostels",
         image: "/priya.jpg",
-        description: "Managing girls hostel operations",
+        description: "",
       },
     ],
   },
@@ -76,46 +82,46 @@ const hostelLeadership: HostelGroup[] = [
     description: "Faculty members overseeing hostel management",
     members: [
       {
-        name: "Dr. Rajesh Sharma",
-        role: "Chief Warden",
-        image: "/sharma.jpg",
-        description: "Overall hostel administration",
+        name: "Sri. Rahul R",
+        role: " Warden for Mess",
+        image: "/w-1.png",
+        description: "",
       },
       {
-        name: "Dr. Meera Patel",
-        role: "Girls Hostel Warden",
-        image: "/patel.jpg",
-        description: "Girls hostel supervision",
+        name: "Dr. Srinidhi M",
+        role: "Hostel Warden",
+        image: "/w-2.png",
+        description: "",
       },
       {
-        name: "Dr. Suresh Kumar",
-        role: "Boys Hostel Warden",
-        image: "/kumar.jpg",
-        description: "Boys hostel supervision",
-      },
-    ],
-  },
-  {
-    title: "Hostel Members",
-    description: "Key personnel supporting hostel operations",
-    members: [
-      {
-        name: "Amit Verma",
-        role: "Maintenance Supervisor",
-        image: "/amit.jpg",
-        description: "Facility maintenance",
+        name: "Sri. Reddy Naik",
+        role: "Hostel Warden",
+        image: "/w-3.png",
+        description: "",
       },
       {
-        name: "Sunita Devi",
-        role: "Mess Manager",
-        image: "/sunita.jpg",
-        description: "Food services management",
+        name: "Smt. Chandrakala G Raju",
+        role: "Hostel Warden",
+        image: "/w-4.png",
+        description: "",
       },
       {
-        name: "Ravi Singh",
-        role: "Security Head",
-        image: "/ravi.jpg",
-        description: "Security operations",
+        name: "Smt. Archana K.",
+        role: "Hostel Warden",
+        image: "/w-5.png",
+        description: "",
+      },
+      {
+        name: "Smt. Lalitha S",
+        role: "Hostel Warden",
+        image: "/w-6.png",
+        description: "",
+      },
+      {
+        name: "SRI. JOHN",
+        role: "AO",
+        image: "/w-7.png",
+        description: "",
       },
     ],
   },
@@ -128,17 +134,17 @@ const committees: Committee[] = [
     featured: true,
     description: "Leading the vision and execution of HostelFest 2023",
     images: [
-      { src: "/Akshant.jpg", caption: "Akshanth" },
-      { src: "/Anshu.jpg", caption: "Anshu" },
-      { src: "/Ayush.jpg", caption: "Ayush" },
-      { src: "/Benner.jpg", caption: "Sachidananda" },
-      { src: "/Chirag.jpg", caption: "Chirag" },
-      { src: "/Soumya.jpg", caption: "Soumya" },
-      { src: "/Anuskha.jpg", caption: "Anushka" },
-      { src: "/Mama.jpg", caption: "Sujan" },
-      { src: "/Aalok.jpg", caption: "Alok" },
-      { src: "/hostel-core-10.jpg", caption: "Aakash" },
-      { src: "/hostel-core-11.jpg", caption: "Avani" },
+      { src: "/co-1.jpg", caption: "Akshanth" },
+      { src: "/co-2.jpg", caption: "Anshu" },
+      { src: "/co-3.jpg", caption: "Ayush" },
+      { src: "/co-4.jpg", caption: "Sachidananda" },
+      { src: "/co-5.jpg", caption: "Chirag" },
+      { src: "/co-6.jpg", caption: "Soumya" },
+      { src: "/co-7.jpg", caption: "Anushka" },
+      { src: "/co-8.jpg", caption: "Sujan" },
+      { src: "/co-9.jpg", caption: "Alok" },
+      { src: "/co-10.jpg", caption: "Aakash" },
+      { src: "/co-11.jpg", caption: "Avani" },
     ],
   },
   {
@@ -146,8 +152,8 @@ const committees: Committee[] = [
     students: 2,
     description: "Leading the technical aspects of HostelFest 2023",
     images: [
-      { src: "/Koushik2.jpg", caption: "Nithish" },
-      { src: "/Koushik.png", caption: "Koushik" },
+      { src: "/t-1.jpg", caption: "Nithish" },
+      { src: "/t-2.png", caption: "Koushik" },
     ],
   },
   {
@@ -155,15 +161,15 @@ const committees: Committee[] = [
     students: 9,
     description: "Organizing all sports events for HostelFest 2023",
     images: [
-      { src: "/s1.jpg", caption: "Borish" },
-      { src: "/s2.jpg", caption: "Lohit" },
-      { src: "/s3.jpg", caption: "Samith" },
-      { src: "/s4.jpg", caption: "Shahid" },
-      { src: "/s5.jpg", caption: "Tanisha" },
-      { src: "/s6.jpg", caption: "Deeksha" },
-      { src: "/s7.jpg", caption: "Dikshyant" },
-      { src: "/s8.HEIC", caption: "Faraz" },
-      { src: "/s9.HEIC", caption: "Amisha" },
+      { src: "/s-1.jpg", caption: "Borish" },
+      { src: "/s-2.jpg", caption: "Lohit" },
+      { src: "/s-3.jpg", caption: "Samith" },
+      { src: "/s-4.jpg", caption: "Shahid" },
+      { src: "/s-5.jpg", caption: "Tanisha" },
+      { src: "/s-6.jpg", caption: "Deeksha" },
+      { src: "/s-7.jpg", caption: "Dikshyant" },
+      { src: "/s-8.HEIC", caption: "Faraz" },
+      { src: "/s-9.HEIC", caption: "Amisha" },
     ],
   },
   {
@@ -171,12 +177,12 @@ const committees: Committee[] = [
     students: 6,
     description: "Managing the overall organization of HostelFest 2023",
     images: [
-      { src: "/o1.jpg", caption: "Venkatesh" },
+      { src: "/o-1.jpg", caption: "Venkatesh" },
       { src: "/Sathvik.jpg", caption: "Saathvik" },
-      { src: "/o3.jpg", caption: "Surakshith" },
-      { src: "/o4.jpg", caption: "Chethan" },
-      { src: "/o5.jpg", caption: "Kshitij" },
-      { src: "/o6.png", caption: "Shashank" },
+      { src: "/o-3.jpg", caption: "Surakshith" },
+      { src: "/o-4.jpg", caption: "Chethan" },
+      { src: "/o-5.jpg", caption: "Kshitij" },
+      { src: "/o-6.png", caption: "Shashank" },
     ],
   },
   {
@@ -184,12 +190,12 @@ const committees: Committee[] = [
     students: 6,
     description: "Coordinating cultural activities for HostelFest 2023",
     images: [
-      { src: "/c1.jpg", caption: "Sai Raj" },
-      { src: "/c2.jpg", caption: "Aadishwar" },
-      { src: "/c3.jpg", caption: "Chanchal" },
-      { src: "/c4.jpg", caption: "Varsha" },
-      { src: "/c5.jpg", caption: "Sahil" },
-      { src: "/c6.jpg", caption: "Kareena" },
+      { src: "/c-1.jpg", caption: "Sai Raj" },
+      { src: "/c-2.jpg", caption: "Aadishwar" },
+      { src: "/c-3.jpg", caption: "Chanchal" },
+      { src: "/c-4.jpg", caption: "Varsha" },
+      { src: "/c-5.jpg", caption: "Sahil" },
+      { src: "/c-6.jpg", caption: "Kareena" },
     ],
   },
   {
@@ -197,11 +203,11 @@ const committees: Committee[] = [
     students: 5,
     description: "Creating the visual experience of HostelFest 2023",
     images: [
-      { src: "/b1.jpg", caption: "Ankith" },
-      { src: "/b2.jpg", caption: "Ananya" },
-      { src: "/b3.jpg", caption: "Gautam" },
-      { src: "/b4.jpg", caption: "Aarin" },
-      { src: "/b5.webp", caption: "Parth" },
+      { src: "/b-1.jpg", caption: "Ankith" },
+      { src: "/b-2.jpg", caption: "Ananya" },
+      { src: "/b-3.jpg", caption: "Gautam" },
+      { src: "/b-4.jpg", caption: "Aarin" },
+      { src: "/b-5.webp", caption: "Parth" },
     ],
   },
   {
@@ -209,11 +215,11 @@ const committees: Committee[] = [
     students: 5,
     description: "Managing food and refreshments for HostelFest 2023",
     images: [
-      { src: "/f1.jpg", caption: "Krishn Maloo" },
-      { src: "/f2.jpg", caption: "Sujay" },
-      { src: "/f3.jpg", caption: "Aadhya" },
-      { src: "/f4.png", caption: "Hasnain" },
-      { src: "/f5.jpg", caption: "Harsh" },
+      { src: "/f-1.jpg", caption: "Krishn Maloo" },
+      { src: "/f-2.jpg", caption: "Sujay" },
+      { src: "/f-3.jpg", caption: "Aadhya" },
+      { src: "/f-4.png", caption: "Hasnain" },
+      { src: "/f-5.jpg", caption: "Harsh" },
     ],
   },
   {
@@ -221,9 +227,9 @@ const committees: Committee[] = [
     students: 3,
     description: "Student representatives coordinating HostelFest 2023",
     images: [
-      { src: "/so1.jpg", caption: "Shreyansh" },
-      { src: "/so2.jpg", caption: "Pramananda" },
-      { src: "/so3.jpg", caption: "Robin" },
+      { src: "/so-1.jpg", caption: "Shreyansh" },
+      { src: "/so-2.jpg", caption: "Pramananda" },
+      { src: "/so-3.jpg", caption: "Robin" },
     ],
   },
 ];
@@ -365,75 +371,11 @@ export default function Home() {
         style={{ width: `${scrollProgress}%` }}
       />
 
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-40 bg-black/80 backdrop-blur-lg border-b border-purple-900/50">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-16">
-            <Link href="/" className="flex-shrink-0">
-              <motion.span
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent"
-              >
-                HostelFest
-              </motion.span>
-            </Link>
-
-            <div className="hidden md:flex items-center space-x-8">
-              {navItems.map((item, index) => (
-                <Link key={item.name} href={item.href}>
-                  <motion.span
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    className="text-gray-300 hover:text-white transition-colors"
-                  >
-                    {item.name}
-                  </motion.span>
-                </Link>
-              ))}
-            </div>
-
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden text-gray-400 hover:text-white transition-colors"
-            >
-              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-          </div>
-        </div>
-
-        <AnimatePresence>
-          {mobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              className="md:hidden border-t border-purple-900/50"
-            >
-              <div className="px-4 py-4 space-y-4">
-                {navItems.map((item) => (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    <span className="block text-gray-300 hover:text-white transition-colors">
-                      {item.name}
-                    </span>
-                  </Link>
-                ))}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </nav>
-
       {/* Hero Section */}
       <div className="relative min-h-screen flex items-center justify-center">
         <div className="absolute inset-0">
           <Image
-            src="/img1.jpg"
+            src="/img.png"
             alt="HostelFest Background"
             fill
             className="object-cover"
