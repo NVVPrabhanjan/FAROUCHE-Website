@@ -67,3 +67,21 @@ export const updateEventDate= async(req,res)=>{
 
   }
 }
+
+export const deleteEvent = async (req, res) => {
+
+
+  try{
+    const deletedEvent = await Event.findOneAndDelete(
+      {
+        eventid: req.body.eventId,
+      }
+    )
+
+    res.status(200).json({ message: "Event deleted successfully.", data: deletedEvent });
+  }
+  catch (error){
+    res.status(500).json({ message: "Failed to delete event.", error: error.message });
+
+  }
+};
