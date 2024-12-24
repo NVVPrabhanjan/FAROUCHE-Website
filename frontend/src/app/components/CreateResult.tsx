@@ -45,7 +45,7 @@ export function ResultForm() {
     }
 
     try {
-      const response = await fetch('http://127.0.0.1:4000/api/v1/event/addEvent', {
+      const response = await fetch('http://127.0.0.1:4000/api/v1/results/addResults', {
         method: 'POST',
         body: formData, // Send FormData as the body
       });
