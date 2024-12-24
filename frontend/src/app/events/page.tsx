@@ -1,11 +1,11 @@
 'use client'
-
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Calendar, Clock, MapPin } from 'lucide-react'
 import Navbar from '../components/NavBar'
 import ScrollProgressBar from '../components/ScrollProgressBar'
+import { useEffect,useState } from 'react'
 
 const events = [
   {
@@ -47,6 +47,22 @@ const events = [
 ]
 
 export default function Events() {
+
+  const [data,setData]=useState([])
+  useEffect(() => {
+    document.title = 'FAROUCHE - Events'
+
+    async function data(){
+      const res = await fetch('http://127.0.0.1:4000/api/v1/event/getEvents')
+      const data = await res.json()
+      setData(data.data)
+      console.log(data)
+    }
+    data()
+  }, [])
+
+  
+  
   return (
     <div className="min-h-screen bg-black text-white">
       <ScrollProgressBar />
@@ -68,9 +84,9 @@ export default function Events() {
         </motion.section>
 
         <div className="grid md:grid-cols-2 gap-8">
-          {events.map((event, index) => (
+          {data.map((event, index) => (
             <motion.div
-              key={event.id}
+              key={event.eventid}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
@@ -83,7 +99,7 @@ export default function Events() {
                 <div className="space-y-2 mb-6">
                   <div className="flex items-center gap-2 text-gray-300">
                     <Calendar className="w-4 h-4 text-purple-400" />
-                    <span>{event.date}</span>
+                    <span>{new Date(event.date).toLocaleDateString()}</span>
                   </div>
                   <div className="flex items-center gap-2 text-gray-300">
                     <Clock className="w-4 h-4 text-purple-400" />
@@ -106,7 +122,7 @@ export default function Events() {
               <div className="absolute inset-0 -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent" />
                 <Image
-                  src={event.image}
+                  src={""}
                   alt={event.title}
                   fill
                   className="object-cover opacity-50"
