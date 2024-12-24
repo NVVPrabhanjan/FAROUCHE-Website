@@ -112,7 +112,7 @@ export default function Events() {
                 </div>
 
                 <Link 
-                  href={`/events/${event.id}`}
+                  href={`/events/${event.eventid}`}
                   className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-medium hover:from-purple-700 hover:to-pink-700 transition-colors"
                 >
                   View Details

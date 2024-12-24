@@ -54,7 +54,7 @@ async function getSheetData() {
   // You can now proceed to interact with the Sheets API
 }
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 
 // API Routes
 app.use("/api/v1/event", eventCreateRoute);
