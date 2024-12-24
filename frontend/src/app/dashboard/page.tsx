@@ -73,8 +73,9 @@ export default function Dashboard() {
           {/* Admin Actions */}
           <div className="rounded-lg bg-gradient-to-b from-purple-800 to-black p-6 border border-purple-700">
             <h2 className="text-2xl font-bold text-purple-400 mb-3">Admin Actions</h2>
-            <div className="space-y-4">
-            <Dialog>
+            <div className=" flex gap-3">
+            <div className="space-y-4 ">
+<Dialog>
   <DialogTrigger                 className="block px-4 py-2 text-center rounded-lg bg-purple-600 hover:bg-purple-700 transition-colors"
   >                Add Event
 </DialogTrigger>
@@ -92,6 +93,26 @@ export default function Dashboard() {
 </DialogContent>
 </Dialog>
               
+            </div>
+            <div className="space-y-4">
+            <Dialog>
+  <DialogTrigger                 className="block px-4 py-2 text-center rounded-lg bg-purple-600 hover:bg-purple-700 transition-colors"
+  >                Add Results
+</DialogTrigger>
+<DialogContent>
+  <DialogHeader>
+    <DialogTitle>Create a New Event</DialogTitle>
+    <DialogDescription>
+      Please fill in the details below to register your event. This action will
+      create a permanent event entry in our system.
+    </DialogDescription>
+  </DialogHeader>
+  <RegisterForm/>
+
+ 
+</DialogContent>
+</Dialog>
+              </div>
             </div>
           </div>
         </div>
