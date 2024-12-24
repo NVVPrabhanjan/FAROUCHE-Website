@@ -85,3 +85,17 @@ export const deleteEvent = async (req, res) => {
 
   }
 };
+
+
+export const getEventPag = async (req, res) => {
+  try {
+    const event = await Event.find() // You can add filters here if needed
+    .skip(req.params.skip*10)
+    .limit(req.params.limit*10);
+
+
+    res.status(200).json({ data: event });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch event.", error: error.message });
+  }
+}
