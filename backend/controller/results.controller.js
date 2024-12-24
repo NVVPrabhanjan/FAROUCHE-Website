@@ -4,7 +4,7 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 export const addResults = async (req, res) => {
   try {
-    const { name, teams, win ,manoftheman } = req.body;
+    const { name, teams, win ,manofthematch } = req.body;
 
     if (!req.file) {
       return res.status(400).json({ message: "Image file is required." });
@@ -20,7 +20,7 @@ export const addResults = async (req, res) => {
       name,
       teams,
       win,
-      manoftheman,
+      manofthematch,
       image: imageUrl.url,
     });
 
