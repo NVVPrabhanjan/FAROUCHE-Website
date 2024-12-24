@@ -105,8 +105,10 @@ export const getEventById = async (req, res) => {
    
   try{
 
+    console.log(req)
+
      const data= await Event.findOne({
-      eventid:req.params.id})
+      eventid:req.query.id})
       console.log(data)
   res.status(200).json({ data: data });
      }
