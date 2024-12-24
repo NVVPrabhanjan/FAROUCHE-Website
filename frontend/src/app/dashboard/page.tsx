@@ -13,6 +13,7 @@ import {
     DialogTrigger,
     DialogFooter
   } from "@/components/ui/dialog"
+  import {RegisterForm} from "../components/CreateEvent"
   
 export default function Dashboard() {
   const [events, setEvents] = useState([])
@@ -85,156 +86,12 @@ export default function Dashboard() {
       create a permanent event entry in our system.
     </DialogDescription>
   </DialogHeader>
+  <RegisterForm/>
 
-  <form
-    onSubmit={(e) => {
-      e.preventDefault();
-      // Add your form submission logic here
-    //   const newEvent = new Event({
-    //     title,
-    //     description,
-    //     date,
-    //     venue,
-    //     image: imageUrl.url,
-    //     group,
-    //   });
-      // Process newEvent (e.g., API call)
-    }}
-    className="space-y-4"
-  >
-    {/* Title Input */}
-    <div>
-      <label htmlFor="title" className="block text-sm font-semibold text-white">
-        Event Title
-      </label>
-      <input
-        id="title"
-        type="text"
-        placeholder="Event title"
-        className="mt-2 p-3 w-full rounded-md border border-neutral-700 bg-neutral-800 text-white placeholder-neutral-400"
-        required
-        // value={title}
-        // onChange={(e) => setTitle(e.target.value)}
-      />
-    </div>
-
-    {/* Description Input */}
-    <div>
-      <label
-        htmlFor="description"
-        className="block text-sm font-semibold text-white"
-      >
-        Description
-      </label>
-      <textarea
-        id="description"
-        placeholder="Event description"
-        rows={4}
-        className="mt-2 p-3 w-full rounded-md border border-neutral-700 bg-neutral-800 text-white placeholder-neutral-400"
-        required
-     //   value={description}
-        //onChange={(e) => setDescription(e.target.value)}
-      />
-    </div>
-
-    {/* Date Input */}
-    <div className=' flex gap-10'>
-    <div className=' basis-[30%]'>
-      <label htmlFor="date" className="block text-sm font-semibold text-white">
-        Event Date
-      </label>
-      <input
-        id="date"
-        type="date"
-        className="mt-2 p-3 w-full rounded-md border border-neutral-700 bg-neutral-800 text-white"
-        required
-      //  value={date}
-        //onChange={(e) => setDate(e.target.value)}
-      />
-    </div>
-
-    <div className=' basis-[30%]'>
-      <label htmlFor="StartTime" className="block text-sm font-semibold text-white">
-        Event start
-      </label>
-      <input
-        id="StartTime"
-        type="time"
-        className="mt-2 p-3 w-full rounded-md border border-neutral-700 bg-neutral-800 text-white"
-        required
-      //  value={date}
-        //onChange={(e) => setDate(e.target.value)}
-      />
-    </div>
-    <div className=' basis-[30%]'>
-      <label htmlFor="EndTime" className="block text-sm font-semibold text-white">
-        Event End
-      </label>
-      <input
-        id="EndTime"
-        type="time"
-        className="mt-2 p-3 w-full rounded-md border border-neutral-700 bg-neutral-800 text-white"
-        required
-      //  value={date}
-        //onChange={(e) => setDate(e.target.value)}
-      />
-    </div>
-    </div>
-
-
-    {/* Venue Input */}
-    <div>
-      <label htmlFor="venue" className="block text-sm font-semibold text-white">
-        Venue
-      </label>
-      <input
-        id="venue"
-        type="text"
-        placeholder="Event venue"
-        className="mt-2 p-3 w-full rounded-md border border-neutral-700 bg-neutral-800 text-white placeholder-neutral-400"
-        required
-      //  value={venue}
-        //onChange={(e) => setVenue(e.target.value)}
-      />
-    </div>
-
-
-    {/* Image Input */}
-    <div>
-      <label
-        htmlFor="image"
-        className="block text-sm font-semibold text-white"
-      >
-        Event Image
-      </label>
-      <input
-        id="image"
-        type="file"
-        accept="image/*"
-        className="mt-2 p-3 w-full rounded-md border border-neutral-700 bg-neutral-800 text-white"
-       // onChange={handleImageUpload}
-      />
-    </div>
-
-    {/* Submit Button */}
-    <DialogFooter>
-      <button
-        type="submit"
-        className="inline-flex items-center justify-center py-2 px-4 rounded-md bg-purple-600 text-white hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
-      >
-        Register Event
-      </button>
-    </DialogFooter>
-  </form>
+ 
 </DialogContent>
 </Dialog>
-
-              <Link
-                href="/edit-events"
-                className="block px-4 py-2 text-center rounded-lg bg-purple-600 hover:bg-purple-700 transition-colors"
-              >
-                Edit Events
-              </Link>
+              
             </div>
           </div>
         </div>
