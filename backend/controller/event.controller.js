@@ -99,3 +99,19 @@ export const getEventPag = async (req, res) => {
     res.status(500).json({ message: "Failed to fetch event.", error: error.message });
   }
 }
+
+
+export const getEventById = async (req, res) => {
+   
+  try{
+
+     const data= await Event.findOne({
+      eventid:req.params.id})
+      console.log(data)
+  res.status(200).json({ data: data });
+     }
+  catch(error){
+    res.status(500).json({ message: "Failed to fetch event.", error: error.message });
+  }
+
+}
