@@ -9,6 +9,11 @@ import bodyParser from "body-parser";
 import multer from "multer";
 import helmet from "helmet";
 import rateLimit from 'express-rate-limit';
+import { google } from 'googleapis';
+import fs from 'fs';
+
+const serviceAccount = JSON.parse(fs.readFileSync("./credentials.json"));
+
 
 dotenv.config({});
 const app = express();
@@ -33,6 +38,20 @@ const corsOptions = {
   credentials: true,
 };
 app.use(cors(corsOptions));
+
+//
+async function getSheetData() {
+  const auth = new google.auth.GoogleAuth({
+    keyfile:  serviceAccount,
+    scopes: ['https://www.googleapis.com/auth/spreadsheets']
+  });
+
+  const data = await auth.getClient();
+  const Sheets = google.sheets({ version: 'v4', auth: data });
+
+  return {data, Sheets};
+  // You can now proceed to interact with the Sheets API
+}
 
 const PORT = process.env.PORT || 3000;
 
@@ -60,7 +79,10 @@ app.post('/upload',upload.single('profilePic'), (req, res) => {
 
 
 
-app.listen(PORT, () => {
+app.listen(PORT,async () => {
   connectDB();
+  const {data, Sheets}=await getSheetData()
+  console.log("Connected to Google Sheets API",Sheets);
+
   console.log(`Server running at port ${PORT}`);
 });
