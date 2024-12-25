@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { DialogFooter } from "@/components/ui/dialog";
+import {toast} from "sonner"
 
 export function ResultForm() {
   const [name, setName] = useState(""); // changed from title to name
@@ -52,6 +53,8 @@ export function ResultForm() {
 
       if (response.ok) {
         // Handle successful form submission
+        toast.success('Result created successfully');
+        alert('Result created successfully');
         const result = await response.json();
         console.log('Event created:', result);
       } else {

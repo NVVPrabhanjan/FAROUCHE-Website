@@ -2,6 +2,7 @@
 
 import { useEffect,useState } from "react";
 import { DialogFooter } from "@/components/ui/dialog";
+import {toast} from "sonner"
 
 
 
@@ -57,6 +58,9 @@ export function RegisterForm(){
           });
       
           if (response.ok) {
+            alert('Event created successfully');
+            toast("Event created successfully")
+
             // Handle successful form submission
             const result = await response.json();
             console.log('Event created:', result);

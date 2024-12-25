@@ -15,8 +15,11 @@ import {
   } from "@/components/ui/dialog"
   import {RegisterForm} from "../components/CreateEvent"
   import {ResultForm} from "../components/CreateResult"  
+  import { Toaster, toast } from 'sonner';
+
 export default function Dashboard() {
   const [events, setEvents] = useState([])
+
 
   useEffect(() => {
     document.title = 'FAROUCHE - Dashboard'
@@ -31,6 +34,7 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-black text-white">
+      <Toaster />
       <ScrollProgressBar />
       <Navbar />
       <div className="container mx-auto px-4 py-20">
@@ -76,7 +80,8 @@ export default function Dashboard() {
             <div className=" flex gap-3">
             <div className="space-y-4 ">
 <Dialog>
-  <DialogTrigger                 className="block px-4 py-2 text-center rounded-lg bg-purple-600 hover:bg-purple-700 transition-colors"
+  <DialogTrigger     onClick={()=>{
+  }}            className="block px-4 py-2 text-center rounded-lg bg-purple-600 hover:bg-purple-700 transition-colors"
   >                Add Event
 </DialogTrigger>
 <DialogContent>
