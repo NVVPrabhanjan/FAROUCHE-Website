@@ -12,6 +12,7 @@ export default function Navbar() {
 
   const navItems = [
     { name: 'Home', href: '/', icon: Home },
+    { name: 'About', href: '/about', icon: Home },
     { name: 'Events', href: '/events', icon: Calendar },
     { name: 'Admin', href: '/admin/login', icon: UserCircle },
   ]
@@ -22,11 +23,11 @@ export default function Navbar() {
         <div className="container mx-auto px-6">
           <div className="flex items-center justify-between h-16">
             <Link href="/" className="flex items-center space-x-3">
-              <Image 
-                src="/logo.png" 
-                alt="Logo" 
-                width={40} 
-                height={40} 
+              <Image
+                src="/logo.png"
+                alt="Logo"
+                width={40}
+                height={40}
                 className="rounded-lg"
                 priority
               />

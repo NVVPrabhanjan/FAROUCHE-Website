@@ -1,10 +1,10 @@
-'use client'
+"use client";
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { Poppins } from 'next/font/google';
+import { Poppins } from "next/font/google";
 import {
   ArrowLeft,
   X,
@@ -15,7 +15,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 
-// Interfaces
+// Interfaces remain the same
 interface ImageData {
   src: string;
   caption: string;
@@ -46,12 +46,13 @@ interface HostelGroup {
   members: Leader[];
   description?: string;
 }
+
 const poppins = Poppins({
-  weight: ['400', '500', '600', '700'],
-  subsets: ['latin'],
-  display: 'swap',
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+  display: "swap",
 });
-// Data
+
 const hostelLeadership: HostelGroup[] = [
   {
     title: "Council of  Wardens",
@@ -233,15 +234,47 @@ const committees: Committee[] = [
     ],
   },
 ];
-
-// Animation variants
+// Enhanced animation variants
 const fadeInUp = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: -20 },
+  initial: { opacity: 0, y: 30 },
+  animate: { 
+    opacity: 1, 
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: "easeOut"
+    }
+  },
+  exit: { 
+    opacity: 0, 
+    y: -30,
+    transition: {
+      duration: 0.5,
+      ease: "easeIn"
+    }
+  }
 };
 
-// Committee Modal Component
+const staggerChildren = {
+  animate: {
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+};
+
+const cardHover = {
+  rest: { scale: 1 },
+  hover: { 
+    scale: 1.02,
+    transition: {
+      duration: 0.3,
+      ease: "easeInOut"
+    }
+  }
+};
+
+// Enhanced Committee Modal Component
 const CommitteeModal = ({ committee, onClose }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -339,64 +372,86 @@ const CommitteeModal = ({ committee, onClose }) => {
   );
 };
 
-// Main Component
+// Main Component with Enhanced Animations
 export default function Home() {
   const [selectedCommittee, setSelectedCommittee] = useState(null);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
-      const totalScroll =
-        document.documentElement.scrollHeight - window.innerHeight;
+      const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
       const currentProgress = window.scrollY;
       setScrollProgress((currentProgress / totalScroll) * 100);
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const navItems = [
-    { name: "Home", href: "/" },
-    { name: "Events", href: "/events" },
-    { name: "Admin", href: "/admin/login" },
-  ];
-
   return (
     <div className={`min-h-screen bg-black text-white ${poppins.className}`}>
-      {/* Progress bar */}
-      <div
-        className="fixed top-0 left-0 h-1 bg-gradient-to-r from-purple-600 to-pink-600 z-50 transition-all duration-300"
-        style={{ width: `${scrollProgress}%` }}
+      {/* Enhanced progress bar */}
+      <motion.div
+        className="fixed top-0 left-0 h-1 bg-gradient-to-r from-purple-600 via-pink-600 to-purple-600 z-50"
+        style={{ 
+          width: `${scrollProgress}%`,
+          backgroundSize: '200% 100%'
+        }}
+        animate={{
+          backgroundPosition: ['0% 50%', '100% 50%'],
+        }}
+        transition={{
+          duration: 2,
+          repeat: Infinity,
+          repeatType: "reverse"
+        }}
       />
 
-      {/* Hero Section */}
+      {/* Enhanced Hero Section */}
       <div className="relative min-h-screen flex items-center justify-center">
         <div className="absolute inset-0">
-          <Image
-            src="/img.png"
-            alt="HostelFest Background"
-            fill
-            className="object-cover"
-            priority
+          <video
+            src="/video.mp4"
+            autoPlay
+            loop
+            playsInline
+            className="object-cover w-full h-full"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black" />
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1 }}
+            className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black" 
+          />
         </div>
 
         <div className="container mx-auto px-4 pt-20 relative z-10">
-          <motion.div {...fadeInUp} className="text-center max-w-4xl mx-auto">
-            <h1 className="text-6xl md:text-8xl font-bold mb-6">
+          <motion.div
+            variants={staggerChildren}
+            initial="initial"
+            animate="animate"
+            className="text-center max-w-4xl mx-auto"
+          >
+            <motion.h1 
+              variants={fadeInUp}
+              className="text-6xl md:text-8xl font-bold mb-6"
+            >
               <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">
                 Farouche 25
               </span>
-            </h1>
-            <p className="text-xl md:text-2xl text-gray-300 mb-8">
-              Join us for an incredible celebration of talent, creativity, and
-              community
-            </p>
+            </motion.h1>
+            
+            <motion.p 
+              variants={fadeInUp}
+              className="text-xl md:text-2xl text-gray-300 mb-8"
+            >
+              Join us for an incredible celebration of talent, creativity, and community
+            </motion.p>
 
-            <div className="flex flex-col md:flex-row gap-6 justify-center items-center mb-12">
+            <motion.div 
+              variants={fadeInUp}
+              className="flex flex-col md:flex-row gap-6 justify-center items-center mb-12"
+            >
               <div className="flex items-center gap-2 text-gray-300">
                 <Calendar className="w-5 h-5 text-purple-400" />
                 <span>December 15-17, 2023</span>
@@ -406,31 +461,53 @@ export default function Home() {
                 <Users className="w-5 h-5 text-purple-400" />
                 <span>1000+ Participants</span>
               </div>
-            </div>
+            </motion.div>
 
-            <Link href="/events">
-              <button className="px-8 py-3 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-medium hover:from-purple-700 hover:to-pink-700 transition-all duration-300 transform hover:scale-105">
-                Explore Events
-              </button>
-            </Link>
+            <motion.div variants={fadeInUp}>
+              <Link href="/events">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-8 py-3 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-medium hover:from-purple-700 hover:to-pink-700 transition-all duration-300"
+                >
+                  Explore Events
+                </motion.button>
+              </Link>
+            </motion.div>
           </motion.div>
         </div>
 
         <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ repeat: Infinity, duration: 2 }}
+          animate={{ 
+            y: [0, 10, 0],
+            opacity: [0.5, 1, 0.5]
+          }}
+          transition={{ 
+            repeat: Infinity, 
+            duration: 2,
+            ease: "easeInOut"
+          }}
           className="absolute bottom-8 left-1/2 -translate-x-1/2"
         >
           <ChevronDown className="w-6 h-6 text-purple-400" />
         </motion.div>
       </div>
 
-      {/* Leadership Sections */}
+      {/* Enhanced Leadership Sections */}
       {hostelLeadership.map((group, groupIndex) => (
-        <section key={group.title} className="container mx-auto px-4 py-20">
+        <motion.section
+          key={group.title}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="container mx-auto px-4 py-20"
+        >
           <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            variants={fadeInUp}
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
             className="text-5xl md:text-7xl font-bold text-center mb-16"
           >
             <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">
@@ -440,91 +517,107 @@ export default function Home() {
 
           {group.description && (
             <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              variants={fadeInUp}
+              initial="initial"
+              whileInView="animate"
+              viewport={{ once: true }}
               className="text-xl text-gray-400 text-center mb-12 max-w-3xl mx-auto"
             >
               {group.description}
             </motion.p>
           )}
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <motion.div
+            variants={staggerChildren}
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+          >
             {group.members.map((member, idx) => (
               <motion.div
                 key={member.name}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.1 }}
+                variants={fadeInUp}
+                whileHover={cardHover.hover}
                 className="group relative overflow-hidden rounded-2xl bg-gradient-to-b from-purple-900/50 to-black/50 p-6 border border-purple-900/50"
               >
                 <div className="relative z-10 flex flex-col items-center text-center">
-                  <div className="relative w-32 h-32 mb-4 rounded-full overflow-hidden">
+                  <motion.div 
+                    whileHover={{ scale: 1.05 }}
+                    className="relative w-32 h-32 mb-4 rounded-full overflow-hidden"
+                  >
                     <Image
                       src={member.image}
                       alt={member.name}
                       fill
                       className="object-cover transition-transform duration-300 group-hover:scale-110"
+                      priority={idx < 3}
                     />
-                  </div>
+                  </motion.div>
                   <h3 className="text-2xl font-bold mb-2">{member.name}</h3>
                   <p className="text-purple-400 mb-2">{member.role}</p>
                   {member.description && (
-                    <p className="text-gray-400 text-sm">
-                      {member.description}
-                    </p>
+                    <p className="text-gray-400 text-sm">{member.description}</p>
                   )}
                 </div>
               </motion.div>
             ))}
-          </div>
-        </section>
+          </motion.div>
+        </motion.section>
       ))}
 
-      {/* Committees Section */}
-      <section id="committees" className="container mx-auto px-4 py-20">
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-5xl md:text-7xl font-bold text-center mb-16"
-        >
-          <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">
-            Our Committees
-          </span>
-        </motion.h2>
+      {/* Enhanced Committees Section */}
+      <motion.section
+  id="committees"
+  initial={{ opacity: 0 }}
+  whileInView={{ opacity: 1 }}
+  viewport={{ once: true }}
+  className="container mx-auto px-4 py-20"
+>
+  <motion.h2
+    variants={fadeInUp}
+    initial="initial"
+    whileInView="animate"
+    viewport={{ once: true }}
+    className="text-5xl md:text-7xl font-bold text-center mb-16"
+  >
+    <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">
+      Our Committees
+    </span>
+  </motion.h2>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {committees.map((committee, idx) => (
-            <motion.div
-              key={committee.name}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: idx * 0.1 }}
-              onClick={() => setSelectedCommittee(committee)}
-              className="group relative overflow-hidden rounded-2xl bg-gradient-to-b from-purple-900/50 to-black/50 p-6 border border-purple-900/50 cursor-pointer hover:border-purple-500 transition-colors duration-300"
-            >
-              <div className="relative z-10">
-                <h3 className="text-2xl font-bold mb-2">{committee.name}</h3>
-                <p className="text-gray-400 mb-4">{committee.description}</p>
-                <span className="inline-block px-3 py-1 rounded-full bg-purple-900/50 text-purple-300 text-sm">
-                  {committee.students} Members
-                </span>
-              </div>
-
-              <div className="absolute inset-0 -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent" />
-                <Image
-                  src={committee.images[0].src}
-                  alt={committee.name}
-                  fill
-                  className="object-cover opacity-50"
-                />
-              </div>
-            </motion.div>
-          ))}
+  <motion.div
+    variants={staggerChildren}
+    initial="initial"
+    whileInView="animate"
+    viewport={{ once: true }}
+    className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+  >
+    {committees.map((committee, idx) => (
+      <motion.div
+        key={committee.name}
+        variants={fadeInUp}
+        whileHover={cardHover.hover}
+        onClick={() => setSelectedCommittee(committee)}
+        className="group relative overflow-hidden rounded-2xl bg-gradient-to-b from-purple-900/50 to-black/50 p-6 border border-purple-900/50 cursor-pointer hover:border-purple-500 transition-colors duration-300"
+      >
+        <div className="relative z-10">
+          <h3 className="text-2xl font-bold mb-2">{committee.name}</h3>
+          <p className="text-gray-400 mb-4">{committee.description}</p>
+          <motion.span 
+            whileHover={{ scale: 1.05 }}
+            className="inline-block px-3 py-1 rounded-full bg-purple-900/50 text-purple-300 text-sm"
+          >
+            {committee.students} Members
+          </motion.span>
         </div>
-      </section>
+      </motion.div>
+    ))}
+  </motion.div>
+</motion.section>
+
       {/* Committee Modal */}
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {selectedCommittee && (
           <CommitteeModal
             committee={selectedCommittee}
@@ -532,6 +625,30 @@ export default function Home() {
           />
         )}
       </AnimatePresence>
+
+      {/* Footer with scroll to top button */}
+      <motion.footer 
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        className="bg-black/50 border-t border-purple-900/30 py-8 mt-20"
+      >
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col items-center justify-center gap-4">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="px-6 py-2 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-medium hover:from-purple-700 hover:to-pink-700 transition-all duration-300"
+            >
+              Back to Top
+            </motion.button>
+            <p className="text-gray-400 text-sm">
+              © 2024 Farouche. All rights reserved.
+            </p>
+          </div>
+        </div>
+      </motion.footer>
     </div>
   );
 }
