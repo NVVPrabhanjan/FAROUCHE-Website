@@ -14,7 +14,7 @@ import {
     DialogFooter
   } from "@/components/ui/dialog"
   import {RegisterForm} from "../components/CreateEvent"
-  
+  import {ResultForm} from "../components/CreateResult"  
 export default function Dashboard() {
   const [events, setEvents] = useState([])
 
@@ -101,13 +101,12 @@ export default function Dashboard() {
 </DialogTrigger>
 <DialogContent>
   <DialogHeader>
-    <DialogTitle>Create a New Event</DialogTitle>
+    <DialogTitle>Create a New Result</DialogTitle>
     <DialogDescription>
-      Please fill in the details below to register your event. This action will
-      create a permanent event entry in our system.
+      Please fill in the details below to add a new result.
     </DialogDescription>
   </DialogHeader>
-  <RegisterForm/>
+  <ResultForm/>
 
  
 </DialogContent>
