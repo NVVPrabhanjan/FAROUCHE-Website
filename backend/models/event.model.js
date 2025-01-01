@@ -1,50 +1,51 @@
 import mongoose from "mongoose";
 
-const eventSchema = new mongoose.Schema({
+const eventSchema = new mongoose.Schema(
+  {
     title: {
-        type: String,
-        required: true,
-        trim: true,
+      type: String,
+      required: true,
+      trim: true,
     },
     description: {
-        type: String,
-        trim: true,
+      type: String,
+      trim: true,
     },
     date: {
-        type: Date,
-        required: true,
+      type: Date,
+      required: true,
     },
     start: {
-        type: timestamps,
-        required: true,
+      type: Date,
+      required: true,
     },
     end: {
-        type: timestamps,
-        required: true,
+      type: Date,
+      required: true,
     },
-
     image: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     venue: {
-        type: String,
-        trim: true,
+      type: String,
+      trim: true,
     },
     eventid: {
-        type: String,
-        unique: true,
-        default: function() {
-            return `EVT-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
-        },
+      type: String,
+      unique: true,
+      default: function () {
+        return `EVT-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
+      },
     },
     group: {
-        type: Boolean,
-        required: true,
+      type: Boolean,
+      required: true,
     },
-}, {
+  },
+  {
     timestamps: true,
-});
-
+  }
+);
 
 export default mongoose.model("Event", eventSchema);

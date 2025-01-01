@@ -1,6 +1,5 @@
-import resultsModel from "../models/results.model";
+import resultsModel from "../models/results.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
-
 
 export const addResults = async (req, res) => {
   try {

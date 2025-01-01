@@ -15,7 +15,7 @@ import {
   } from "@/components/ui/dialog"
   import {RegisterForm} from "../components/CreateEvent"
   import {ResultForm} from "../components/CreateResult"  
-  import { Toaster, toast } from 'sonner';
+  // import { Toaster, toast } from 'sonner';
 
 export default function Dashboard() {
   const [events, setEvents] = useState([])
@@ -34,7 +34,7 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      <Toaster />
+      {/* <Toaster /> */}
       <ScrollProgressBar />
       <Navbar />
       <div className="container mx-auto px-4 py-20">
@@ -61,7 +61,7 @@ export default function Dashboard() {
           </div>
 
           {/* Upcoming Events */}
-          <div className="rounded-lg bg-gradient-to-b from-blue-800 to-black p-6 border border-blue-700">
+          {/* <div className="rounded-lg bg-gradient-to-b from-blue-800 to-black p-6 border border-blue-700">
             <h2 className="text-2xl font-bold text-blue-400 mb-3">Upcoming Events</h2>
             <ul className="text-gray-300 space-y-2">
               {events.slice(0, 5).map((event) => (
@@ -72,7 +72,7 @@ export default function Dashboard() {
                 </li>
               ))}
             </ul>
-          </div>
+          </div> */}
 
           {/* Admin Actions */}
           <div className="rounded-lg bg-gradient-to-b from-purple-800 to-black p-6 border border-purple-700">

@@ -49,7 +49,7 @@ export const getEvents = async (req, res) => {
 export const updateEventDate= async(req,res)=>{
 
   try{
-    
+
     const updatedEvent = await Event.findOneAndUpdate(
       { eventid: req.body.eventId }, // Filter by `eventid`
       { date: req.body.newDate }, // Update the `date` field
