@@ -14,7 +14,7 @@ const events = [
 
 export default function EventRegistration() {
   const { id } = useParams()
-  const event = events.find(e => e.id === parseInt(id as string))
+  //const event = events.find(e => e.id === parseInt(id as string))
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -29,23 +29,43 @@ export default function EventRegistration() {
   }
 
   const handleSubmit = (e: React.FormEvent) => {
+
+
     e.preventDefault()
+
+    fetch("http://localhost:4000/api/v1/registration/createRegistration", {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          hostelName: formData.hostelName,
+          phoneNumber: formData.phone,
+          eventTitle: "cricket"
+      })
+  })
+  .then(response => response.json())
+  .then(data => console.log("Success:", data))
+  .catch(error => console.error("Error:", error));
+  
     console.log('Form submitted:', formData)
     alert('Registration successful! You will receive confirmation details via email.')
   }
 
-  if (!event) {
-    return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold mb-4">Event Not Found</h1>
-          <Link href="/events" className="text-purple-400 hover:text-purple-300">
-            ← Back to Events
-          </Link>
-        </div>
-      </div>
-    )
-  }
+  // if (!event) {
+  //   return (
+  //     <div className="min-h-screen bg-black text-white flex items-center justify-center">
+  //       <div className="text-center">
+  //         <h1 className="text-4xl font-bold mb-4">Event Not Found</h1>
+  //         <Link href="/events" className="text-purple-400 hover:text-purple-300">
+  //           ← Back to Events
+  //         </Link>
+  //       </div>
+  //     </div>
+  //   )
+  // }
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -174,3 +194,5 @@ export default function EventRegistration() {
     </div>
   )
 }
+
+

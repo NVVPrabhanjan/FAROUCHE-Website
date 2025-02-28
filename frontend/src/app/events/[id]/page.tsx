@@ -25,6 +25,7 @@ export default function EventDetails() {
         },
       });
       const data = await res.json()
+
       console.log(data)
       setEvent(data.data)
 
