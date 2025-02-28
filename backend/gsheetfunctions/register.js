@@ -18,7 +18,7 @@ async function getSheetData() {
   // You can now proceed to interact with the Sheets API
 }
 
-
+getSheetData().catch(console.error);
 
 
 
@@ -31,6 +31,7 @@ const auth = new google.auth.GoogleAuth({
 const sheets = google.sheets({ version: 'v4', auth });
 
 export async function appendToSheet(values) {
+    console.log("kjbdsvkjbdkjsvdbkjhdbvksbh")
   const spreadsheetId = '1FMin3wicuOVHhMtC0DzNo8PnSBHsHHQCEMgvIul4I_k'; // Replace with actual Google Sheet ID
   const range = 'Sheet1!A:F'; // Adjust as needed
 
@@ -52,5 +53,3 @@ export async function appendToSheet(values) {
   }
 }
 
-
-appendToSheet(["name", "phoneNumber", "email", "hostelName", "eventTitle"]).then((data)=>{console.log(data)});

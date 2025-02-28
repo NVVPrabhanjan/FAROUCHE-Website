@@ -1,5 +1,6 @@
 import Registration from "../models/registration.model.js";
 import Event from "../models/event.model.js";
+import {appendToSheet} from "../gsheetfunctions/register.js";
 
 export const createRegistration = async (req, res) => {
     try {
@@ -31,6 +32,15 @@ export const createRegistration = async (req, res) => {
 
         const savedRegistration = await newRegistration.save();
 
+        console.log([name, phoneNumber, email, hostelName, eventTitle],"Hithesh")
+
+        try{
+        const data= await appendToSheet([name, phoneNumber, email, hostelName, eventTitle]).then((data)=>{console.log(data)});
+        console.log(data,"kjkjgkjgkjhgk kjgkjgkjgkjgkj jkkjgkjgkjgkjgkjgkjgjk kjkhgkhg")
+        }
+        catch(error){
+            console.log(error)
+        }
         res.status(201).json({
             message: "Registration successful.",
             data: savedRegistration
