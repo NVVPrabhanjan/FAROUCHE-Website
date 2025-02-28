@@ -14,7 +14,6 @@ async function getSheetData() {
 
   const data = await auth.getClient();
   const Sheets = google.sheets({ version: 'v4', auth: data });
-
   return {data, Sheets};
   // You can now proceed to interact with the Sheets API
 }

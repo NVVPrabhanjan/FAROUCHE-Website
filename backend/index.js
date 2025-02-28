@@ -85,11 +85,11 @@ app.listen(PORT,async () => {
   connectDB();
   const {data, Sheets}=await getSheetData()
   console.log("Connected to Google Sheets API");
-   var dataa=await Sheets.spreadsheets.values.get({
-    spreadsheetId:"1Qhup-rennkun5xLxbjU9rB_RfXT15M79T67WnJ0LYPM",
-    range:"A1:A2"
-  })
-  console.log(dataa)
+  //  var dataa=await Sheets.spreadsheets.values.get({
+  //   spreadsheetId:"1Qhup-rennkun5xLxbjU9rB_RfXT15M79T67WnJ0LYPM",
+  //   range:"A1:A2"
+  // })
+  console.log(data)
 
 
   console.log(`Server running at port ${PORT}`);
