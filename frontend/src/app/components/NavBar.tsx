@@ -14,7 +14,7 @@ export default function Navbar() {
     { name: 'Home', href: '/', icon: Home },
     { name: 'About', href: '/about', icon: Home },
     { name: 'Events', href: '/events', icon: Calendar },
-    { name: 'Admin', href: '/admin/login', icon: UserCircle },
+    { name: 'Admin', href: '/admin', icon: UserCircle },
   ]
 
   return (
@@ -32,8 +32,8 @@ export default function Navbar() {
                 priority
               />
               <div>
-                <span className="text-xl font-semibold text-white">Hostel</span>
-                <span className="text-xl font-semibold text-purple-400">Fest</span>
+                <span className="text-xl font-semibold text-white">Farouche </span>
+                <span className="text-xl font-semibold text-purple-400">25</span>
               </div>
             </Link>
 

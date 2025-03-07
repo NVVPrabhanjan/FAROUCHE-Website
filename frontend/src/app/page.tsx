@@ -416,6 +416,7 @@ export default function Home() {
             autoPlay
             loop
             playsInline
+            muted
             className="object-cover w-full h-full"
           />
           <motion.div 
@@ -455,12 +456,12 @@ export default function Home() {
             >
               <div className="flex items-center gap-2 text-gray-300">
                 <Calendar className="w-5 h-5 text-purple-400" />
-                <span>December 15-17, 2023</span>
+                <span>April - June, 2025</span>
               </div>
               <div className="hidden md:block w-1.5 h-1.5 rounded-full bg-purple-400" />
               <div className="flex items-center gap-2 text-gray-300">
                 <Users className="w-5 h-5 text-purple-400" />
-                <span>1000+ Participants</span>
+                <span>2000+ Participants</span>
               </div>
             </motion.div>
 

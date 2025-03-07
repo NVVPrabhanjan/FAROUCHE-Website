@@ -90,8 +90,8 @@ export default function About() {
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Hero Section */}
-      <div className="relative min-h-[50vh] flex items-center justify-center bg-gradient-to-b from-purple-900/20 to-black">
-        <div className="container mx-auto px-4 py-20 text-center">
+      <div className="relative min-h-[45vh] flex items-center justify-center bg-gradient-to-b from-purple-900/20 to-black">
+        <div className="container mx-auto px-4 text-center">
           <motion.h1 
             variants={fadeInUp}
             initial="initial"
@@ -118,7 +118,7 @@ export default function About() {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
-        className="container mx-auto px-4 py-20"
+        className="container mx-auto px-4"
       >
         <motion.h2
           variants={fadeInUp}

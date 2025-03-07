@@ -2,66 +2,38 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Calendar, Clock, MapPin } from 'lucide-react'
+import { Search } from 'lucide-react'
 import Navbar from '../components/NavBar'
 import ScrollProgressBar from '../components/ScrollProgressBar'
-import { useEffect,useState } from 'react'
-
-const events = [
-  {
-    id: 1,
-    title: 'Opening Ceremony & Cultural Night',
-    image: '/event1.jpg',
-    description: 'Grand inauguration followed by spectacular cultural performances.',
-    date: 'December 15, 2023',
-    time: '6:00 PM - 10:00 PM',
-    venue: 'Main Campus Grounds',
-  },
-  {
-    id: 2,
-    title: 'Sports Tournament Finals',
-    image: '/event2.jpg',
-    description: 'Championship matches across multiple sports categories.',
-    date: 'December 16, 2023',
-    time: '9:00 AM - 5:00 PM',
-    venue: 'Sports Complex',
-  },
-  { 
-    id: 3, 
-    title: 'Food Fiesta', 
-    image: '/event3.jpg',
-    description: 'A culinary journey featuring diverse cuisines and food competitions.',
-    date: 'December 16, 2023',
-    time: '12:00 PM - 8:00 PM',
-    venue: 'Hostel Grounds',
-  },
-  { 
-    id: 4, 
-    title: 'Closing Ceremony & DJ Night', 
-    image: '/event4.jpg',
-    description: 'Award distribution followed by an electrifying DJ performance.',
-    date: 'December 17, 2023',
-    time: '7:00 PM - 11:00 PM',
-    venue: 'Main Stage',
-  },
-]
+import { useEffect, useState } from 'react'
 
 export default function Events() {
-
-  const [data,setData]=useState([])
+  const [data, setData] = useState([])
+  const [searchTerm, setSearchTerm] = useState('')
+  
   useEffect(() => {
     document.title = 'FAROUCHE - Events'
 
-    async function data(){
+    async function fetchData() {
       const res = await fetch('http://127.0.0.1:4000/api/v1/event/getEvents')
       const data = await res.json()
       setData(data.data)
       console.log(data)
     }
-    data()
+    fetchData()
   }, [])
-
   
+  // Filter by search term and sort by date in descending order
+  const sortedEvents = data
+    .filter(event => 
+      event.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+      event.description.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .sort((a, b) => {
+      const dateA = new Date(a.date)
+      const dateB = new Date(b.date)
+      return dateB - dateA // Descending order
+    })
   
   return (
     <div className="min-h-screen bg-black text-white">
@@ -78,42 +50,45 @@ export default function Events() {
               Festival Events
             </span>
           </h1>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-10">
             Three days of excitement, creativity, and celebration
           </p>
+          
+          {/* Search Section */}
+          <div className="flex justify-center mb-10">
+            <div className="relative w-full max-w-md">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Search className="h-5 w-5 text-gray-400" />
+              </div>
+              <input
+                type="text"
+                className="block w-full pl-10 pr-4 py-2 border border-purple-600 rounded-full bg-black/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                placeholder="Search events..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+          </div>
         </motion.section>
 
-        <div className="grid md:grid-cols-2 gap-8">
-          {data.map((event, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {sortedEvents.map((event, index) => (
             <motion.div
               key={event.eventid}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="group relative overflow-hidden rounded-2xl bg-gradient-to-b from-purple-900/50 to-black/50 p-6 border border-purple-900/50"
+              className="group relative overflow-hidden rounded-2xl bg-gradient-to-b from-purple-900/50 to-black/50 p-6 border border-purple-900/50 h-full flex flex-col"
             >
-              <div className="relative z-10">
+              <div className="relative z-10 flex-1">
                 <h2 className="text-2xl font-bold mb-3">{event.title}</h2>
                 <p className="text-gray-300 mb-6">{event.description}</p>
-                
-                <div className="space-y-2 mb-6">
-                  <div className="flex items-center gap-2 text-gray-300">
-                    <Calendar className="w-4 h-4 text-purple-400" />
-                    <span>{new Date(event.date).toLocaleDateString()}</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-gray-300">
-                    <Clock className="w-4 h-4 text-purple-400" />
-                    <span>{event.time}</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-gray-300">
-                    <MapPin className="w-4 h-4 text-purple-400" />
-                    <span>{event.venue}</span>
-                  </div>
-                </div>
+              </div>
 
+              <div className="relative z-10 mt-4">
                 <Link 
                   href={`/events/${event.eventid}`}
-                  className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-medium hover:from-purple-700 hover:to-pink-700 transition-colors"
+                  className="inline-flex items-center justify-center px-6 py-2 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-medium hover:from-purple-700 hover:to-pink-700 transition-colors"
                 >
                   View Details
                 </Link>
@@ -131,6 +106,12 @@ export default function Events() {
             </motion.div>
           ))}
         </div>
+        
+        {sortedEvents.length === 0 && (
+          <div className="text-center py-16">
+            <p className="text-xl text-gray-400">No events found matching your search criteria.</p>
+          </div>
+        )}
       </div>
     </div>
   )

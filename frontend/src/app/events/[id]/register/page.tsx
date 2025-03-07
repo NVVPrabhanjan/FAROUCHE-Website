@@ -14,7 +14,8 @@ const events = [
 
 export default function EventRegistration() {
   const { id } = useParams()
-  //const event = events.find(e => e.id === parseInt(id as string))
+  const event = events.find(e => e.id === parseInt(id as string)) || { title: 'Event Registration' }
+  
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -29,8 +30,6 @@ export default function EventRegistration() {
   }
 
   const handleSubmit = (e: React.FormEvent) => {
-
-
     e.preventDefault()
 
     fetch("http://localhost:4000/api/v1/registration/createRegistration", {
@@ -45,35 +44,22 @@ export default function EventRegistration() {
           phoneNumber: formData.phone,
           eventTitle: "cricket"
       })
-  })
-  .then(response => response.json())
-  .then(data => console.log("Success:", data))
-  .catch(error => console.error("Error:", error));
+    })
+    .then(response => response.json())
+    .then(data => console.log("Success:", data))
+    .catch(error => console.error("Error:", error));
   
     console.log('Form submitted:', formData)
     alert('Registration successful! You will receive confirmation details via email.')
   }
 
-  // if (!event) {
-  //   return (
-  //     <div className="min-h-screen bg-black text-white flex items-center justify-center">
-  //       <div className="text-center">
-  //         <h1 className="text-4xl font-bold mb-4">Event Not Found</h1>
-  //         <Link href="/events" className="text-purple-400 hover:text-purple-300">
-  //           ← Back to Events
-  //         </Link>
-  //       </div>
-  //     </div>
-  //   )
-  // }
-
   return (
-    <div className="min-h-screen bg-black text-white">
-      <div className="container mx-auto px-4 py-20">
+    <div className="min-h-screen bg-black text-white flex items-center justify-center">
+      <div className="container mx-auto px-4 py-8 flex items-center justify-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="max-w-2xl mx-auto bg-gradient-to-b from-purple-900/50 to-black/50 rounded-2xl p-8 border border-purple-900/50"
+          className="w-full max-w-2xl mx-auto bg-gradient-to-b from-purple-900/50 to-black/50 rounded-2xl p-8 border border-purple-900/50"
         >
           <h1 className="text-4xl font-bold text-center mb-2">
             <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">
@@ -194,5 +180,3 @@ export default function EventRegistration() {
     </div>
   )
 }
-
-
