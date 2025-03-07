@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import fs from 'fs';
 const serviceAccount = JSON.parse(fs.readFileSync("./credentials.json"));
-console.log(serviceAccount)
+// console.log(serviceAccount)
 
 async function getSheetData() {
   const auth = new google.auth.GoogleAuth({
@@ -48,7 +48,7 @@ export async function appendToSheet(values,shetName) {
       }
     });
 
-    console.log(data)
+    // console.log(data)
     return { success: true };
   } catch (error) {
     console.error('Error appending to Google Sheets:', error);

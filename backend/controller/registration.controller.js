@@ -33,11 +33,8 @@ export const createRegistration = async (req, res) => {
 
         const savedRegistration = await newRegistration.save();
 
-        console.log([name, phoneNumber, email, hostelName, eventTitle],"Hithesh")
-
         try{
-        const data= await appendToSheet([name, phoneNumber, email, hostelName, eventTitle],eventTitle).then((data)=>{console.log(data)});
-        console.log(data,"kjkjgkjgkjhgk kjgkjgkjgkjgkj jkkjgkjgkjgkjgkjgkjgjk kjkhgkhg")
+        const data= await appendToSheet([name, phoneNumber, email, hostelName, eventTitle],eventTitle).then((data)=>{});
 
         await sendMail(
             email,

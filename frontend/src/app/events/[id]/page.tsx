@@ -15,6 +15,7 @@ export default function EventDetails() {
   const [error, setError] = useState(null)
 
   useEffect(() => {
+    console.log(id)
     async function fetchEvent() {
       try {
         setLoading(true)
@@ -24,12 +25,12 @@ export default function EventDetails() {
             'Content-Type': 'application/json',
           },
         });
-        
         if (!res.ok) {
           throw new Error('Failed to fetch event')
         }
         
         const data = await res.json()
+        console.log(data)
         setEvent(data.data)
         setLoading(false)
       } catch (error) {

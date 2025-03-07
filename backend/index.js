@@ -61,23 +61,13 @@ app.use("/api/v1/event", eventCreateRoute);
 app.use("/api/v1/registration", registrationRouter);
 app.use("/api/v1/results",resultsRouter)
 app.get("/", (req, res) => {
-  return res.json({ "All Routes are running": "Welcome to farushe" });
+  return res.json({ "All Routes are running": "Welcome to farouche" });
 });
 
 app.post("/",(req,res)=>{
 console.log(req.body)
   return res.json(200)
 })
-//var type = multer.single()
-const upload = multer(); // Default settings for memory storage
-//app.use(upload.none()); // This parses form-data fields
-
-
-app.post('/upload',upload.single('profilePic'), (req, res) => {
-  console.log(req.file)
-    // Handle multiple file uploads
-    res.send('Files uploaded successfully');
-});
 
 
 
@@ -85,12 +75,5 @@ app.listen(PORT,async () => {
   connectDB();
   const {data, Sheets}=await getSheetData()
   console.log("Connected to Google Sheets API");
-  //  var dataa=await Sheets.spreadsheets.values.get({
-  //   spreadsheetId:"1Qhup-rennkun5xLxbjU9rB_RfXT15M79T67WnJ0LYPM",
-  //   range:"A1:A2"
-  // })
-  console.log(data)
-
-
   console.log(`Server running at port ${PORT}`);
 });

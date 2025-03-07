@@ -34,7 +34,8 @@ export default function Events() {
       const dateB = new Date(b.date)
       return dateB - dateA // Descending order
     })
-  
+    //console.log(sortedEvents);
+    //console.log(sortedEvents[0]._id)
   return (
     <div className="min-h-screen bg-black text-white">
       <ScrollProgressBar />

@@ -30,10 +30,10 @@ const eventSchema = new mongoose.Schema(
         return `EVT-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
       },
     },
-    group: {
-      type: Boolean,
-      required: true,
-    },
+    // group: {
+    //   type: Boolean,
+    //   required: true,
+    // },
   },
   {
     timestamps: true,

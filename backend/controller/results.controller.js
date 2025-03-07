@@ -4,11 +4,9 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 export const addResults = async (req, res) => {
   try {
     const { name, teams, win ,manofthematch } = req.body;
-
     if (!req.file) {
       return res.status(400).json({ message: "Image file is required." });
     }
-
     const imagePath = req.file.path;
     const imageUrl = await uploadOnCloudinary(imagePath);
 

@@ -1,56 +1,57 @@
-import { authenticate } from '@google-cloud/local-auth';
-import { google } from 'googleapis';
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
-import fs from 'fs';
+import { authenticate } from "@google-cloud/local-auth";
+import { google } from "googleapis";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
+import fs from "fs";
 const serviceAccount = JSON.parse(fs.readFileSync("./credentials.json"));
-console.log(serviceAccount)
+console.log(serviceAccount);
 
 async function getSheetData() {
   const auth = new google.auth.GoogleAuth({
-    keyfile:  serviceAccount,
-    scopes: ['https://www.googleapis.com/auth/spreadsheets']
+    keyfile: serviceAccount,
+    scopes: ["https://www.googleapis.com/auth/spreadsheets"],
   });
 
   const data = await auth.getClient();
-  const Sheets = google.sheets({ version: 'v4', auth: data });
-  return {data, Sheets};
-  // You can now proceed to interact with the Sheets API
+  const Sheets = google.sheets({ version: "v4", auth: data });
+  return { data, Sheets };
 }
-
-
-
-
-
 
 const auth = new google.auth.GoogleAuth({
   credentials: serviceAccount,
-  scopes: ['https://www.googleapis.com/auth/spreadsheets']
+  scopes: ["https://www.googleapis.com/auth/spreadsheets"],
 });
 
-const sheets = google.sheets({ version: 'v4', auth });
+const sheets = google.sheets({ version: "v4", auth });
 
 export async function appendToSheet(values) {
-  const spreadsheetId = '1FMin3wicuOVHhMtC0DzNo8PnSBHsHHQCEMgvIul4I_k'; // Replace with actual Google Sheet ID
-  const range = 'Sheet1!A:F'; // Adjust as needed
+  const spreadsheetId = "1FMin3wicuOVHhMtC0DzNo8PnSBHsHHQCEMgvIul4I_k"; // Replace with actual Google Sheet ID
+  const range = "Sheet1!A:F"; // Adjust as needed
 
   try {
-   const data=  await sheets.spreadsheets.values.append({
+    const data = await sheets.spreadsheets.values.append({
       spreadsheetId,
       range,
-      valueInputOption: 'RAW',
+      valueInputOption: "RAW",
       requestBody: {
-        values: [values]
-      }
+        values: [values],
+      },
     });
 
-    console.log(data)
+    console.log(data);
     return { success: true };
   } catch (error) {
-    console.error('Error appending to Google Sheets:', error);
+    console.error("Error appending to Google Sheets:", error);
     return { success: false, error };
   }
 }
 
-
-appendToSheet(["name", "phoneNumber", "email", "hostelName", "eventTitle"]).then((data)=>{console.log(data)});
+appendToSheet([
+  "name",
+  "phoneNumber",
+  "email",
+  "hostelName",
+  "eventTitle",
+]).then((data) => {
+  console.log(data);
+});

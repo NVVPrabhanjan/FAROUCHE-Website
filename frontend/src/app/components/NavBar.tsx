@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { Menu, X, ChevronRight, Home, Calendar, UserCircle } from 'lucide-react'
+import { Menu, X, ChevronRight, Home, Calendar, Trophy, Info } from 'lucide-react'
 import Image from 'next/image'
 
 export default function Navbar() {
@@ -12,9 +12,9 @@ export default function Navbar() {
 
   const navItems = [
     { name: 'Home', href: '/', icon: Home },
-    { name: 'About', href: '/about', icon: Home },
+    { name: 'About', href: '/about', icon: Info },
     { name: 'Events', href: '/events', icon: Calendar },
-    { name: 'Admin', href: '/admin', icon: UserCircle },
+    { name: 'Results', href: '/results', icon: Trophy }
   ]
 
   return (

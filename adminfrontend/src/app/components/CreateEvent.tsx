@@ -36,7 +36,7 @@ export function RegisterForm(){
       
         // Create a new FormData object
         const formData = new FormData();
-      
+        console.log(1);
         // Append form data
         formData.append('title', title);  // Your form state value for title
         formData.append('description', description);  // Your form state value for description
@@ -44,18 +44,20 @@ export function RegisterForm(){
         formData.append('venue', venue);  // Your form state value for venue
         formData.append('eventStart', eventStart);  // Your form state value for eventStart
         formData.append('eventEnd', eventEnd);  // Your form state value for eventEnd
-      
+        console.log(2);
         // If there's an image, append it as well
         if (imageFile) {
           formData.append('image', imageFile);  // Your image file input
         }
-      
+        console.log(3);
         try {
+          console.log(4);
           const response = await fetch('http://127.0.0.1:4000/api/v1/event/addEvent', {
             method: 'POST',
             body: formData, // Send FormData as the body
+            
           });
-      
+          console.log(5);
           if (response.ok) {
             alert('Event created successfully');
             toast("Event created successfully")
