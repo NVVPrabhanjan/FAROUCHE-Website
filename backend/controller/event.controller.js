@@ -2,17 +2,19 @@ import Event from "../models/event.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 export const addEvent = async (req, res) => {
-  try {
     const { title, description, date, venue ,group} = req.body;
     if (!req.file) {
         return res.status(400).json({ message: "Image file is required." });
     }
     const imagePath = req.file.path;
     const imageUrl = await uploadOnCloudinary(imagePath);
-
+   console.log("Randi")
+   console.log(imageUrl)
     if (!imageUrl) {
       return res.status(500).json({ message: "Failed to upload image to Cloudinary." });
     }
+
+
 
     const newEvent = new Event({
       title,
@@ -23,7 +25,10 @@ export const addEvent = async (req, res) => {
       group:group
     });
 
+    try{
+
     const savedEvent = await newEvent.save();
+
 
     res.status(201).json({
       message: "Event added successfully.",
