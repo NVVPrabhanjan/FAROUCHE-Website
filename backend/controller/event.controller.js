@@ -39,6 +39,7 @@ export const addEvent = async (req, res) => {
 
 export const getEvents = async (req, res) => {
   try {
+    console.log(req,"Hithesh")
     const events = await Event.find();
     res.status(200).json({ data: events });
   } catch (error) {
@@ -105,10 +106,10 @@ export const getEventById = async (req, res) => {
    
   try{
 
-    console.log(req)
+    console.log(req.query.id,"Hithesh Ramesh")
 
      const data= await Event.findOne({
-      eventid:req.query.id})
+      eventid:"EVT-1734697714583-9114"})
       console.log(data)
   res.status(200).json({ data: data });
      }

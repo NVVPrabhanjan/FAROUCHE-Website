@@ -30,10 +30,13 @@ const auth = new google.auth.GoogleAuth({
 
 const sheets = google.sheets({ version: 'v4', auth });
 
-export async function appendToSheet(values) {
-    console.log("kjbdsvkjbdkjsvdbkjhdbvksbh")
+export async function appendToSheet(values,shetName) {
   const spreadsheetId = '1FMin3wicuOVHhMtC0DzNo8PnSBHsHHQCEMgvIul4I_k'; // Replace with actual Google Sheet ID
-  const range = 'Sheet1!A:F'; // Adjust as needed
+  const range = `${shetName}!A:F`; // Adjust as needed
+  await ensureSheetExists(auth, spreadsheetId, shetName);
+
+
+
 
   try {
    const data=  await sheets.spreadsheets.values.append({
@@ -53,3 +56,36 @@ export async function appendToSheet(values) {
   }
 }
 
+async function ensureSheetExists(auth, spreadsheetId, sheetName) {
+  const sheets = google.sheets({ version: 'v4', auth });
+
+  try {
+    // Get all sheets
+    const spreadsheet = await sheets.spreadsheets.get({ spreadsheetId });
+    const sheetExists = spreadsheet.data.sheets.some(
+      (s) => s.properties.title === sheetName
+    );
+
+    // If sheet exists, return
+    if (sheetExists) return;
+
+    // Otherwise, create the sheet
+    await sheets.spreadsheets.batchUpdate({
+      spreadsheetId,
+      resource: {
+        requests: [
+          {
+            addSheet: {
+              properties: { title: sheetName },
+            },
+          },
+        ],
+      },
+      auth,
+    });
+
+    console.log(`Sheet '${sheetName}' created successfully.`);
+  } catch (error) {
+    console.error('Error checking/creating sheet:', error);
+  }
+}
