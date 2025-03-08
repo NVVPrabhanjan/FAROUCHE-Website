@@ -10,6 +10,7 @@ export function RegisterationForm() {
   const [email, setEmail] = useState(""); // For storing the email
   const [hostelName, setHostelName] = useState(""); // For storing the hostel name
   const [eventTitle, setEventTitle] = useState(""); // For storing the event title
+  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

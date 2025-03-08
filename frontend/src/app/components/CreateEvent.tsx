@@ -14,8 +14,6 @@ export function RegisterForm(){
     const [venue, setVenue] = useState("");
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [group, setGroup] = useState(false);
-    const [eventStart, setEventStart] = useState("");
-    const [eventEnd, setEventEnd] = useState("");
     const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0]; // Get the selected file
     
@@ -180,6 +178,21 @@ export function RegisterForm(){
             required
           value={venue}
             onChange={(e) => setVenue(e.target.value)}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="venue" className="block text-sm font-semibold text-white">
+            Group
+          </label>
+          <input
+            id="Group"
+            type="checkbox"
+            placeholder="Group"
+            className="mt-2 p-3 w-full rounded-md border border-neutral-700 bg-neutral-800 text-white placeholder-neutral-400"
+            required
+          value={venue}
+            onChange={(e) => setG(e.target.value)}
           />
         </div>
     

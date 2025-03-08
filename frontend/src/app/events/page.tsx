@@ -6,7 +6,7 @@ import { Search } from 'lucide-react'
 import Navbar from '../components/NavBar'
 import ScrollProgressBar from '../components/ScrollProgressBar'
 import { useEffect, useState } from 'react'
-
+import { EVENT_API_END_POINT } from '@/utils/constants'
 export default function Events() {
   const [data, setData] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
@@ -15,10 +15,9 @@ export default function Events() {
     document.title = 'FAROUCHE - Events'
 
     async function fetchData() {
-      const res = await fetch('http://127.0.0.1:4000/api/v1/event/getEvents')
+      const res = await fetch(`${EVENT_API_END_POINT}/getEvents`);
       const data = await res.json()
       setData(data.data)
-      console.log(data)
     }
     fetchData()
   }, [])
@@ -34,8 +33,6 @@ export default function Events() {
       const dateB = new Date(b.date)
       return dateB - dateA // Descending order
     })
-    //console.log(sortedEvents);
-    //console.log(sortedEvents[0]._id)
   return (
     <div className="min-h-screen bg-black text-white">
       <ScrollProgressBar />
@@ -88,7 +85,7 @@ export default function Events() {
 
               <div className="relative z-10 mt-4">
                 <Link 
-                  href={`/events/${event.eventid}`}
+                  href={`/events/${event.eventid}/${event.teamSize}`}
                   className="inline-flex items-center justify-center px-6 py-2 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-medium hover:from-purple-700 hover:to-pink-700 transition-colors"
                 >
                   View Details

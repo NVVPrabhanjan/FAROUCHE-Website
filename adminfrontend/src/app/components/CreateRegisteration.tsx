@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { DialogFooter } from "../ui/dialog";
 import { toast } from "sonner";
-
+import { REGISTRATION_API_END_POINT } from "@/app/utils/constants"
 export function RegisterationForm() {
   const [names, setNames] = useState(""); // For storing the user's name
   const [phoneNumber, setPhoneNumber] = useState(""); // For storing the phone number
@@ -38,7 +38,6 @@ export function RegisterationForm() {
         toast.success("Result created successfully");
         alert("Result created successfully");
         const result = await response.json();
-        console.log("Event created:", result);
       } else {
         // Handle error response
         console.error("Error submitting form", response.status);

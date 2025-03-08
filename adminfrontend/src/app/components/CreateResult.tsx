@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { DialogFooter } from "../../app/ui/dialog";
 import { toast } from "sonner";
-
+import { RESULTS_END_POINT } from "@/app/utils/constants"
 export function ResultForm() {
   const [name, setName] = useState("");
   const [teams, setTeams] = useState("");
@@ -36,7 +36,7 @@ export function ResultForm() {
     }
 
     try {
-      const response = await fetch('http://127.0.0.1:4000/api/v1/results/addResults', {
+      const response = await fetch(`${RESULTS_END_POINT}/addResults`, {
         method: 'POST',
         body: formData,
       });
@@ -45,7 +45,6 @@ export function ResultForm() {
         toast.success('Result created successfully');
         alert('Result created successfully');
         const result = await response.json();
-        console.log('Event created:', result);
       } else {
         console.error('Error submitting form', response.status);
       }

@@ -26,6 +26,9 @@ const registrationSchema = new mongoose.Schema({
         type: String,
         ref: "Event"
     },
+    teamMembers:{
+        type: [String],
+    }
 }, {
     timestamps: true,
 });

@@ -4,7 +4,7 @@ import Navbar from '../components/NavBar';
 import ScrollProgressBar from '../components/ScrollProgressBar';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-
+import { RESULTS_END_POINT } from '@/utils/constants'
 export default function MatchDetails() {
   const [matches, setMatches] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -14,9 +14,8 @@ export default function MatchDetails() {
 
     async function fetchMatchDetails() {
       try {
-        const res = await fetch('http://127.0.0.1:4000/api/v1/results/getResults');
+        const res = await fetch(`${RESULTS_END_POINT}/getResults`);
         const data = await res.json();
-        console.log(data);
         setMatches(data.data);
       } catch (error) {
         console.error("Error fetching match details:", error);
@@ -79,24 +78,24 @@ export default function MatchDetails() {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+            className="grid md:grid-cols-2 gap-8"
           >
             {matches.map((match) => (
               <motion.div
                 key={match._id}
                 variants={itemVariants}
-                className="flex flex-col rounded-2xl overflow-hidden bg-gradient-to-b from-purple-900/30 to-black/90 border border-purple-800/30"
+                className="flex flex-row rounded-2xl overflow-hidden bg-gradient-to-b from-purple-900/30 to-black/90 border border-purple-800/30 h-full"
               >
-                {/* Content section at the top */}
-                <div className="p-6">
-                  <h2 className="text-2xl font-bold mb-2 text-white">
+                {/* Content section on the left */}
+                <div className="p-6 flex-1">
+                  <h2 className="text-5xl font-bold mb-2 text-white">
                     {match.name}
                   </h2>
-                  <p className="text-gray-300 mb-4">
+                  <p className="text-xl font-bold text-gray-300 mb-4">
                     {match.teams.replace(/[\[\]]/g, '').replace(/,/g, ' vs ')}
                   </p>
                   
-                  <div className="space-y-4 mt-4 mb-6">
+                  <div className="space-y-4 mt-4">
                     <div className="flex items-center gap-3 p-3 bg-purple-900/20 rounded-lg border-l-4 border-purple-500">
                       <div className="flex-shrink-0">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -123,24 +122,22 @@ export default function MatchDetails() {
                   </div>
                 </div>
                 
-                {/* Full image at the bottom */}
-                <div className="mt-auto rounded-t-lg overflow-hidden">
+                {/* Image on the right */}
+                <div className="w-2/5 relative overflow-hidden">
                   {match.image ? (
-                    <div className="relative">
-                      <div className="relative w-full overflow-hidden">
-                        <img
-                          src={match.image}
-                          alt={match.name}
-                          className="w-full hover:scale-105 transition-transform duration-500"
-                        />
-                      </div>
+                    <div className="relative h-full">
+                      <img
+                        src={match.image}
+                        alt={match.name}
+                        className="h-full w-full object-cover hover:scale-105 transition-transform duration-500"
+                      />
                       {/* Badge overlay */}
                       <div className="absolute top-4 right-4 bg-purple-600 text-white text-sm font-medium px-3 py-1 rounded-full shadow-lg">
                         Man of the Match
                       </div>
                     </div>
                   ) : (
-                    <div className="h-48 w-full flex items-center justify-center bg-purple-900/50">
+                    <div className="h-full w-full flex items-center justify-center bg-purple-900/50">
                       <span className="text-purple-300">No image available</span>
                     </div>
                   )}

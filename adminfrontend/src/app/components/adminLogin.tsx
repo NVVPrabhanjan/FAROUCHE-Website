@@ -1,24 +1,29 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { motion } from 'framer-motion'
-import { LogIn } from 'lucide-react'
-
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import { LogIn } from "lucide-react";
+import dotenv from "dotenv";
+dotenv.config();
 export default function AdminLogin() {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
-  const router = useRouter()
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const router = useRouter();
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (username === 'admin' && password === 'password') {
-      router.push('/dashboard')
+    e.preventDefault();
+    if (
+      username === "farouche" &&
+      password === "password"
+    ) {
+      localStorage.setItem("isAuthenticated", "true");
+      router.push("/dashboard");
     } else {
-      setError('Invalid username or password')
+      setError("Invalid username or password");
     }
-  }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-black">
@@ -33,7 +38,9 @@ export default function AdminLogin() {
         </h1>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="username" className="block text-gray-300 mb-2">Username</label>
+            <label htmlFor="username" className="block text-gray-300 mb-2">
+              Username
+            </label>
             <input
               type="text"
               id="username"
@@ -44,7 +51,9 @@ export default function AdminLogin() {
             />
           </div>
           <div>
-            <label htmlFor="password" className="block text-gray-300 mb-2">Password</label>
+            <label htmlFor="password" className="block text-gray-300 mb-2">
+              Password
+            </label>
             <input
               type="password"
               id="password"
@@ -66,5 +75,5 @@ export default function AdminLogin() {
         </form>
       </motion.div>
     </div>
-  )
+  );
 }

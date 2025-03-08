@@ -1,8 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import ScrollProgressBar from "../components/ScrollProgressBar";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { EVENT_API_END_POINT } from "../utils/constants"
 import {
   Dialog,
   DialogContent,
@@ -14,21 +16,59 @@ import {
 } from "../ui/dialog";
 import { RegisterForm } from "../components/CreateEvent";
 import { ResultForm } from "../components/CreateResult";
+import { Trash2 } from "lucide-react";
 // import { Toaster, toast } from 'sonner';
 
 export default function Dashboard() {
   const [events, setEvents] = useState([]);
-
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [eventToDelete, setEventToDelete] = useState(null);
+  const router = useRouter();
   useEffect(() => {
-    document.title = "FAROUCHE - Dashboard";
+    const isAuthenticated = localStorage.getItem("isAuthenticated");
 
-    async function fetchEvents() {
-      const res = await fetch("http://127.0.0.1:4000/api/v1/event/getEvents");
-      const data = await res.json();
-      setEvents(data.data);
+    if (!isAuthenticated) {
+      router.push("/"); // Redirect if not logged in
+    } else {
+      document.title = "FAROUCHE - Dashboard";
+      fetchEvents();
     }
-    fetchEvents();
   }, []);
+
+  async function fetchEvents() {
+    const res = await fetch(`${EVENT_API_END_POINT}/getEvents`);
+    const data = await res.json();
+    setEvents(data.data);
+  }
+
+  const handleDeleteEvent = async (eventId) => {
+    setIsDeleting(true);
+    try {
+      const response = await fetch(`${EVENT_API_END_POINT}/deleteEvent`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ eventId }),
+      });
+
+      if (response.ok) {
+        // Remove the deleted event from the state
+        setEvents(events.filter(event => event.eventid !== eventId));
+        // toast.success("Event deleted successfully");
+        console.log("Event deleted successfully");
+      } else {
+        // toast.error("Failed to delete event");
+        console.error("Failed to delete event");
+      }
+    } catch (error) {
+      console.error("Error deleting event:", error);
+      // toast.error("Error deleting event");
+    } finally {
+      setIsDeleting(false);
+      setEventToDelete(null);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -50,7 +90,7 @@ export default function Dashboard() {
           </p>
         </motion.section>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-3 gap-8 mb-12">
           {/* Total Events */}
           <div className="rounded-lg bg-gradient-to-b from-green-800 to-black p-6 border border-green-700">
             <h2 className="text-2xl font-bold text-green-400 mb-3">
@@ -61,33 +101,17 @@ export default function Dashboard() {
             </p>
           </div>
 
-          {/* Upcoming Events */}
-          {/* <div className="rounded-lg bg-gradient-to-b from-blue-800 to-black p-6 border border-blue-700">
-            <h2 className="text-2xl font-bold text-blue-400 mb-3">Upcoming Events</h2>
-            <ul className="text-gray-300 space-y-2">
-              {events.slice(0, 5).map((event) => (
-                <li key={event.id}>
-                  <Link href={`/events/${event.id}`} className="hover:underline">
-                    {event.title} - {new Date(event.date).toLocaleDateString()}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div> */}
-
           {/* Admin Actions */}
           <div className="rounded-lg bg-gradient-to-b from-purple-800 to-black p-6 border border-purple-700">
             <h2 className="text-2xl font-bold text-purple-400 mb-3">
               Admin Actions
             </h2>
-            <div className=" flex gap-3">
-              <div className="space-y-4 ">
+            <div className="flex gap-3">
+              <div className="space-y-4">
                 <Dialog>
                   <DialogTrigger
-                    onClick={() => {}}
                     className="block px-4 py-2 text-center rounded-lg bg-purple-600 hover:bg-purple-700 transition-colors"
                   >
-                    {" "}
                     Add Event
                   </DialogTrigger>
                   <DialogContent>
@@ -106,7 +130,6 @@ export default function Dashboard() {
               <div className="space-y-4">
                 <Dialog>
                   <DialogTrigger className="block px-4 py-2 text-center rounded-lg bg-purple-600 hover:bg-purple-700 transition-colors">
-                    {" "}
                     Add Results
                   </DialogTrigger>
                   <DialogContent>
@@ -122,6 +145,71 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Events List with Delete Option */}
+        <div className="rounded-lg bg-gray-900 p-6 border border-gray-700">
+          <h2 className="text-2xl font-bold text-blue-400 mb-4">Events List</h2>
+          {events.length > 0 ? (
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="bg-gray-800 text-left">
+                    <th className="p-3 rounded-tl-lg">Event Name</th>
+                    <th className="p-3">Date</th>
+                    <th className="p-3">Location</th>
+                    <th className="p-3 rounded-tr-lg text-center">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {events.map((event) => (
+                    <tr key={event.eventid} className="border-b border-gray-700">
+                      <td className="p-3">{event.title || event.eventname}</td>
+                      <td className="p-3">{new Date(event.date || event.eventdate).toLocaleDateString()}</td>
+                      <td className="p-3">{event.location || event.venue}</td>
+                      <td className="p-3 text-center">
+                        <Dialog>
+                          <DialogTrigger>
+                            <button 
+                              className="p-2 text-red-400 hover:text-red-300 hover:bg-red-900 rounded-full transition-colors"
+                              onClick={() => setEventToDelete(event.eventid)}
+                            >
+                              <Trash2 size={16} />
+                            </button>
+                          </DialogTrigger>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle className="text-red-400">Confirm Delete</DialogTitle>
+                              <DialogDescription>
+                                Are you sure you want to delete this event? This action cannot be undone.
+                              </DialogDescription>
+                            </DialogHeader>
+                            <DialogFooter className="mt-4 flex justify-end gap-2">
+                              <button 
+                                className="px-4 py-2 bg-gray-600 rounded-lg hover:bg-gray-700 transition-colors"
+                                onClick={() => setEventToDelete(null)}
+                              >
+                                Cancel
+                              </button>
+                              <button 
+                                className="px-4 py-2 bg-red-600 rounded-lg hover:bg-red-700 transition-colors"
+                                onClick={() => handleDeleteEvent(eventToDelete)}
+                                disabled={isDeleting}
+                              >
+                                {isDeleting ? "Deleting..." : "Delete"}
+                              </button>
+                            </DialogFooter>
+                          </DialogContent>
+                        </Dialog>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <p className="text-gray-400">No events found.</p>
+          )}
         </div>
       </div>
     </div>

@@ -7,19 +7,18 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Calendar, MapPin, ArrowLeft, Share2, Ticket, AlertCircle } from 'lucide-react'
 import ScrollProgressBar from '@/app/components/ScrollProgressBar'
-
+import { EVENT_API_END_POINT } from '@/utils/constants'
 export default function EventDetails() {
-  const { id } = useParams()
+  const { id,teamSize } = useParams()
   const [event, setEvent] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    console.log(id)
     async function fetchEvent() {
       try {
         setLoading(true)
-        const res = await fetch(`http://127.0.0.1:4000/api/v1/event/getEventID?id=${id}`, {
+        const res = await fetch(`${EVENT_API_END_POINT}/getEventID?id=${id}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -30,7 +29,6 @@ export default function EventDetails() {
         }
         
         const data = await res.json()
-        console.log(data)
         setEvent(data.data)
         setLoading(false)
       } catch (error) {
@@ -137,7 +135,7 @@ export default function EventDetails() {
                 {/* Action Buttons */}
                 <div className="flex flex-col sm:flex-row gap-4 justify-between items-center">
                   <Link 
-                    href="/events" 
+                    href="/events"
                     className="text-purple-400 hover:text-purple-300 transition-colors flex items-center"
                   >
                     <ArrowLeft className="w-4 h-4 mr-2" />
@@ -163,7 +161,7 @@ export default function EventDetails() {
                       Share
                     </button>
                     <Link 
-                      href={`/events/${id}/register`}
+                      href={`/events/${id}/${teamSize}/register`}
                       className="px-8 py-3 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-medium hover:from-purple-700 hover:to-pink-700 transition-colors"
                     >
                       Register Now

@@ -1,81 +1,72 @@
 "use client"
 
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import { DialogFooter } from "../ui/dialog";
-import {toast} from "sonner"
-
-
-
-export function RegisterForm(){
-
+import { toast } from "sonner"
+import { EVENT_API_END_POINT } from '@/app/utils/constants'
+export function RegisterForm() {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [date, setDate] = useState("");
     const [venue, setVenue] = useState("");
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [group, setGroup] = useState(false);
-    const [eventStart, setEventStart] = useState("");
-    const [eventEnd, setEventEnd] = useState("");
+    const [teamSize, setTeamSize] = useState<number>(2); // Default team size of 2
+    
     const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0]; // Get the selected file
     
         if (file) {
           setImageFile(file); // Update the state with the selected image file
         }
-      };
+    };
 
-    
-      const handleGroupChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleGroupChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setGroup(event.target.checked); // Update the state for the checkbox
-      };
+        
+        // Reset team size to default if group is unchecked
+        if (!event.target.checked) {
+            setTeamSize(2);
+        }
+    };
     
-    
+    const handleTeamSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = parseInt(event.target.value);
+        if (value > 0) {
+            setTeamSize(value);
+        }
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-      
-        // Create a new FormData object
         const formData = new FormData();
-        console.log(1);
-        // Append form data
-        formData.append('title', title);  // Your form state value for title
-        formData.append('description', description);  // Your form state value for description
-        formData.append('date', date);  // Your form state value for date
-        formData.append('venue', venue);  // Your form state value for venue
-        formData.append('eventStart', eventStart);  // Your form state value for eventStart
-        formData.append('eventEnd', eventEnd);  // Your form state value for eventEnd
-        console.log(2);
-        // If there's an image, append it as well
-        if (imageFile) {
-          formData.append('image', imageFile);  // Your image file input
+        formData.append('title', title);
+        formData.append('description', description);
+        formData.append('date', date);
+        formData.append('venue', venue);
+        formData.append('group', String(group));
+        if (group) {
+            formData.append('teamSize', String(teamSize));
         }
-        console.log(3);
+        if (imageFile) {
+          formData.append('image', imageFile);
+        }
         try {
-          console.log(4);
-          const response = await fetch('http://127.0.0.1:4000/api/v1/event/addEvent', {
+          const response = await fetch(`${EVENT_API_END_POINT}/addEvent`, {
             method: 'POST',
-            body: formData, // Send FormData as the body
-            
+            body: formData,
           });
-          console.log(5);
           if (response.ok) {
             alert('Event created successfully');
             toast("Event created successfully")
-
-            // Handle successful form submission
             const result = await response.json();
-            console.log('Event created:', result);
           } else {
-            // Handle error response
             console.error('Error submitting form', response.status);
           }
         } catch (error) {
-          // Handle any other errors
           console.error('Error:', error);
         }
-      };
-      
-
+    };
 
     return (
         <form
@@ -100,7 +91,7 @@ export function RegisterForm(){
             className="mt-2 p-3 w-full rounded-md border border-neutral-700 bg-neutral-800 text-white placeholder-neutral-400"
             required
             value={title}
-             onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => setTitle(e.target.value)}
           />
         </div>
     
@@ -118,8 +109,8 @@ export function RegisterForm(){
             rows={4}
             className="mt-2 p-3 w-full rounded-md border border-neutral-700 bg-neutral-800 text-white placeholder-neutral-400"
             required
-          value={description}
-        onChange={(e) => setDescription(e.target.value)}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
           />
         </div>
     
@@ -134,12 +125,11 @@ export function RegisterForm(){
             type="date"
             className="mt-2 p-3 w-full rounded-md border border-neutral-700 bg-neutral-800 text-white"
             required
-           value={date}
+            value={date}
             onChange={(e) => setDate(e.target.value)}
           />
         </div>
         </div>
-    
     
         {/* Venue Input */}
         <div>
@@ -152,37 +142,62 @@ export function RegisterForm(){
             placeholder="Event venue"
             className="mt-2 p-3 w-full rounded-md border border-neutral-700 bg-neutral-800 text-white placeholder-neutral-400"
             required
-          value={venue}
+            value={venue}
             onChange={(e) => setVenue(e.target.value)}
           />
         </div>
-    
+
+        {/* Group Checkbox */}
+        <div>
+          <label htmlFor="group" className="flex items-center space-x-2">
+            <input
+              id="group"
+              type="checkbox"
+              checked={group}
+              onChange={handleGroupChange}
+              className="h-5 w-5 mt-10 rounded border border-neutral-700 bg-neutral-800 text-white"
+            />
+            <span className="text-sm mt-10 text-white">Group Event</span>
+          </label>
+        </div>
+        
+        {/* Team Size Input - Only visible if group is checked */}
+        {group && (
+          <div>
+            <label htmlFor="teamSize" className="block text-sm font-semibold text-white">
+              Team Size
+            </label>
+            <input
+              id="teamSize"
+              type="number"
+              min="2"
+              value={teamSize}
+              onChange={handleTeamSizeChange}
+              className="mt-2 p-3 w-full rounded-md border border-neutral-700 bg-neutral-800 text-white placeholder-neutral-400"
+              required
+            />
+          </div>
+        )}
     
         {/* Image Input */}
         <div className="flex gap-4">
-
-        <div className='basis-[40%]'>
-          <label
-            htmlFor="image"
-            className="block text-sm font-semibold text-white"
-          >
-            Event Image
-          </label>
-          <input
-            id="image"
-            type="file"
-            accept="image/*"
-            className="mt-2 p-3 w-full rounded-md border border-neutral-700 bg-neutral-800 text-white"
-            onChange={handleImageUpload}
-          />
+          <div className='basis-[40%]'>
+            <label
+              htmlFor="image"
+              className="block text-sm font-semibold text-white"
+            >
+              Event Image
+            </label>
+            <input
+              id="image"
+              type="file"
+              accept="image/*"
+              className="mt-2 p-3 w-full rounded-md border border-neutral-700 bg-neutral-800 text-white"
+              onChange={handleImageUpload}
+            />
+          </div>
+          <div></div>
         </div>
-
-        <div>
-      </div>
-
-
-        </div>
-
     
         {/* Submit Button */}
         <DialogFooter>
@@ -194,5 +209,5 @@ export function RegisterForm(){
           </button>
         </DialogFooter>
       </form>
-    )
+    );
 }

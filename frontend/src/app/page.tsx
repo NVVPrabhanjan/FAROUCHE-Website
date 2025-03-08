@@ -57,7 +57,7 @@ const poppins = Poppins({
 const hostelLeadership: HostelGroup[] = [
   {
     title: "Council of  Wardens",
-    description: "Student leaders managing hostel affairs",
+    description: "Faculty core commitee",
     members: [
       {
         name: "Dr. Bheemsha Arya",
@@ -66,15 +66,15 @@ const hostelLeadership: HostelGroup[] = [
         description: "",
       },
       {
-        name: "Dr. Krishnappa Olekar",
+        name: "Dr. Rahul R",
         role: "Secretary, BMSET, Hostels",
-        image: "/sr-1.png",
+        image: "/w-1.png",
         description: "",
       },
       {
         name: "Dr.Boddapati Venkatesh",
         role: "Secretary, IH, Hostels",
-        image: "/priya.jpg",
+        image: "/sr-3.jpg",
         description: "",
       },
     ],
@@ -85,7 +85,7 @@ const hostelLeadership: HostelGroup[] = [
     members: [
       {
         name: "Sri. Rahul R",
-        role: " Warden for Mess",
+        role: "Mess Warden",
         image: "/w-1.png",
         description: "",
       },
@@ -131,7 +131,7 @@ const hostelLeadership: HostelGroup[] = [
 
 const committees: Committee[] = [
   {
-    name: "Hostel Core",
+    name: "Core",
     students: 11,
     featured: true,
     description: "Leading the vision and execution of HostelFest 2023",
@@ -150,7 +150,7 @@ const committees: Committee[] = [
     ],
   },
   {
-    name: "Technical Committee",
+    name: "Technical",
     students: 2,
     description: "Leading the technical aspects of HostelFest 2023",
     images: [
@@ -159,7 +159,7 @@ const committees: Committee[] = [
     ],
   },
   {
-    name: "Sport Committee",
+    name: "Sports",
     students: 9,
     description: "Organizing all sports events for HostelFest 2023",
     images: [
@@ -225,7 +225,7 @@ const committees: Committee[] = [
     ],
   },
   {
-    name: "Student Organising Committee",
+    name: "Student Organising",
     students: 3,
     description: "Student representatives coordinating HostelFest 2023",
     images: [
