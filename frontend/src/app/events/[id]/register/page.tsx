@@ -1,21 +1,20 @@
 'use client'
-
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 
-const events = [
-  { id: 1, title: 'Opening Ceremony & Cultural Night' },
-  { id: 2, title: 'Sports Tournament Finals' },
-  { id: 3, title: 'Food Fiesta' },
-  { id: 4, title: 'Closing Ceremony & DJ Night' }
-]
+// const events = [
+//   { id: 1, title: 'Opening Ceremony & Cultural Night' },
+//   { id: 2, title: 'Sports Tournament Finals' },
+//   { id: 3, title: 'Food Fiesta' },
+//   { id: 4, title: 'Closing Ceremony & DJ Night' }
+// ]
 
 export default function EventRegistration() {
   const { id } = useParams()
-  const event = events.find(e => e.id === parseInt(id as string)) || { title: 'Event Registration' }
-  
+  // const event = events.find(e => e.id === parseInt(id as string)) || { title: 'Event Registration' }
+
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -38,11 +37,11 @@ export default function EventRegistration() {
           "Content-Type": "application/json"
       },
       body: JSON.stringify({
+          id,
           name: formData.name,
           email: formData.email,
           hostelName: formData.hostelName,
           phoneNumber: formData.phone,
-          eventTitle: "cricket"
       })
     })
     .then(response => response.json())

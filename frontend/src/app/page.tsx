@@ -163,8 +163,8 @@ const committees: Committee[] = [
     students: 9,
     description: "Organizing all sports events for HostelFest 2023",
     images: [
-      { src: "/s-1.jpg", caption: "Borish" },
-      { src: "/s-2.jpg", caption: "Lohit" },
+      { src: "/s-1.jpg", caption: "Lohit" },
+      { src: "/s-2.jpg", caption: "Borish" },
       { src: "/s-3.jpg", caption: "Samith" },
       { src: "/s-4.jpg", caption: "Shahid" },
       { src: "/s-5.jpg", caption: "Tanisha" },
