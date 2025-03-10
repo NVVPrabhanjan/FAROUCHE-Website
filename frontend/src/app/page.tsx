@@ -68,7 +68,7 @@ const hostelLeadership: HostelGroup[] = [
       {
         name: "Dr. Rahul R",
         role: "Secretary, BMSET, Hostels",
-        image: "/w-1.png",
+        image: "/s-1.png",
         description: "",
       },
       {
@@ -77,6 +77,20 @@ const hostelLeadership: HostelGroup[] = [
         image: "/sr-3.jpg",
         description: "",
       },
+      
+      {
+        name: "Dr. Srinidhi M",
+        role: "Joint Secretary",
+        image: "/j-1.png",
+        description: "",
+      },
+      {
+        name: "Smt Archana K",
+        role: "Joint Secretary",
+        image: "/j-2.jpeg",
+        description: "",
+      }
+
     ],
   },
   {
@@ -84,45 +98,51 @@ const hostelLeadership: HostelGroup[] = [
     description: "Faculty members overseeing hostel management",
     members: [
       {
-        name: "Sri. Rahul R",
+        name: "Dr. Bandaru Mallikarjuna",
         role: "Mess Warden",
-        image: "/w-1.png",
+        image: "/w-1.jpg",
         description: "",
       },
       {
-        name: "Dr. Srinidhi M",
+        name: "Dr. Sreenivasamurthy A",
         role: "Hostel Warden",
-        image: "/w-2.png",
+        image: "/w-2.jpeg",
         description: "",
       },
       {
-        name: "Sri. Reddy Naik",
+        name: "Dr. Chetan Raj D",
         role: "Hostel Warden",
-        image: "/w-3.png",
+        image: "/w-3.jpeg",
         description: "",
       },
       {
-        name: "Smt. Chandrakala G Raju",
+        name: "Dr. Latha H N",
         role: "Hostel Warden",
-        image: "/w-4.png",
+        image: "/w-4.jpeg",
         description: "",
       },
       {
-        name: "Smt. Archana K.",
+        name: "Sri Harish V Mekali",
         role: "Hostel Warden",
-        image: "/w-5.png",
+        image: "/w-5.jpeg",
         description: "",
       },
       {
-        name: "Smt. Lalitha S",
+        name: "Dr. Ambika K",
         role: "Hostel Warden",
-        image: "/w-6.png",
+        image: "/w-6.jpeg",
+        description: "",
+      },
+      {
+        name: "Dr. Shekar M",
+        role: "Hostel Warden",
+        image: "/w-7.jpg",
         description: "",
       },
       {
         name: "SRI. JOHN",
         role: "AO",
-        image: "/w-7.png",
+        image: "/w-8.png",
         description: "",
       },
     ],
