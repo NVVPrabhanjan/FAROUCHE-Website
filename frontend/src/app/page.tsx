@@ -14,6 +14,7 @@ import {
   Users,
   ChevronDown,
 } from "lucide-react";
+import CreditCard from "./components/CreditCard";
 
 
 // Interfaces remain the same
@@ -89,6 +90,12 @@ const hostelLeadership: HostelGroup[] = [
         role: "Joint Secretary",
         image: "/j-2.jpeg",
         description: "",
+      },
+      {
+        name: "Hadagali Ashoka",
+        role: "Joint Secretary - IH",
+        image: "/j-3.jpeg",
+        description: "",
       }
 
     ],
@@ -141,7 +148,7 @@ const hostelLeadership: HostelGroup[] = [
       },
       {
         name: "SRI. JOHN",
-        role: "AO",
+        role: "Administrative Officer",
         image: "/w-8.png",
         description: "",
       },
@@ -154,7 +161,7 @@ const committees: Committee[] = [
     name: "Core",
     students: 11,
     featured: true,
-    description: "Leading the vision and execution of HostelFest 2023",
+    description: "Leading the vision and execution of Farouche",
     images: [
       { src: "/co-1.jpg", caption: "Akshanth" },
       { src: "/co-2.jpg", caption: "Anshu" },
@@ -172,7 +179,7 @@ const committees: Committee[] = [
   {
     name: "Technical",
     students: 2,
-    description: "Leading the technical aspects of HostelFest 2023",
+    description: "Leading the technical aspects of Farouche",
     images: [
       { src: "/t-1.jpg", caption: "Nithish" },
       { src: "/t-2.png", caption: "Koushik" },
@@ -181,26 +188,25 @@ const committees: Committee[] = [
   {
     name: "Sports",
     students: 9,
-    description: "Organizing all sports events for HostelFest 2023",
+    description: "Organizing all sports events for Farouche",
     images: [
       { src: "/s-1.jpg", caption: "Lohit" },
       { src: "/s-2.jpg", caption: "Borish" },
       { src: "/s-3.jpg", caption: "Samith" },
       { src: "/s-4.jpg", caption: "Shahid" },
       { src: "/s-5.jpg", caption: "Tanisha" },
-      { src: "/s-6.jpg", caption: "Deeksha" },
-      { src: "/s-7.jpg", caption: "Dikshyant" },
+      { src: "/s-7.jpg", caption: "Deeksha" },
+      { src: "/s-6.jpg", caption: "Dikshyant" },
       { src: "/s-8.HEIC", caption: "Faraz" },
-      { src: "/s-9.HEIC", caption: "Amisha" },
+      { src: "/s-9.jpeg", caption: "Amisha" },
     ],
   },
   {
     name: "Organising",
     students: 6,
-    description: "Managing the overall organization of HostelFest 2023",
+    description: "Managing the overall organization of Farouche",
     images: [
       { src: "/o-1.jpg", caption: "Venkatesh" },
-      { src: "/Sathvik.jpg", caption: "Saathvik" },
       { src: "/o-3.jpg", caption: "Surakshith" },
       { src: "/o-4.jpg", caption: "Chethan" },
       { src: "/o-5.jpg", caption: "Kshitij" },
@@ -210,7 +216,7 @@ const committees: Committee[] = [
   {
     name: "Cultural",
     students: 6,
-    description: "Coordinating cultural activities for HostelFest 2023",
+    description: "Coordinating cultural activities for Farouche",
     images: [
       { src: "/c-1.jpg", caption: "Sai Raj" },
       { src: "/c-2.jpg", caption: "Aadishwar" },
@@ -223,7 +229,7 @@ const committees: Committee[] = [
   {
     name: "Backdrop",
     students: 5,
-    description: "Creating the visual experience of HostelFest 2023",
+    description: "Creating the visual experience of Farouche",
     images: [
       { src: "/b-1.jpg", caption: "Ankith" },
       { src: "/b-2.jpg", caption: "Ananya" },
@@ -235,19 +241,19 @@ const committees: Committee[] = [
   {
     name: "Food Fiesta",
     students: 5,
-    description: "Managing food and refreshments for HostelFest 2023",
+    description: "Managing food and refreshments for Farouche",
     images: [
       { src: "/f-1.jpg", caption: "Krishn Maloo" },
       { src: "/f-2.jpg", caption: "Sujay" },
       { src: "/f-3.jpg", caption: "Aadhya" },
-      { src: "/f-4.png", caption: "Hasnain" },
+      { src: "/f-4.jpg", caption: "Hasnain" },
       { src: "/f-5.jpg", caption: "Harsh" },
     ],
   },
   {
     name: "Student Organising",
     students: 3,
-    description: "Student representatives coordinating HostelFest 2023",
+    description: "Student representatives coordinating Farouche",
     images: [
       { src: "/so-1.jpg", caption: "Shreyansh" },
       { src: "/so-2.jpg", caption: "Pramananda" },
@@ -258,16 +264,16 @@ const committees: Committee[] = [
 // Enhanced animation variants
 const fadeInUp = {
   initial: { opacity: 0, y: 30 },
-  animate: { 
-    opacity: 1, 
+  animate: {
+    opacity: 1,
     y: 0,
     transition: {
       duration: 0.6,
       ease: "easeOut"
     }
   },
-  exit: { 
-    opacity: 0, 
+  exit: {
+    opacity: 0,
     y: -30,
     transition: {
       duration: 0.5,
@@ -647,7 +653,6 @@ export default function Home() {
           />
         )}
       </AnimatePresence>
-
       {/* Footer with scroll to top button */}
       <motion.footer 
         initial={{ opacity: 0 }}
@@ -655,6 +660,7 @@ export default function Home() {
         viewport={{ once: true }}
         className="bg-black/50 border-t border-purple-900/30 py-8 mt-20"
       >
+        
         <div className="container mx-auto px-4">
           <div className="flex flex-col items-center justify-center gap-4">
             <motion.button

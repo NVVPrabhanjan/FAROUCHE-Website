@@ -8,18 +8,17 @@ export default function Footer() {
   const currentYear = new Date().getFullYear()
 
   const socialLinks = [
-    { icon: Facebook, href: 'https://facebook.com', label: 'Facebook' },
-    { icon: Instagram, href: 'https://instagram.com', label: 'Instagram' },
-    { icon: Twitter, href: 'https://twitter.com', label: 'Twitter' },
+    // { icon: Facebook, href: 'https://facebook.com', label: 'Facebook' },
+    { icon: Instagram, href: 'https://www.instagram.com/bmshostels?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==', label: 'Instagram' },
+    // { icon: Twitter, href: 'https://twitter.com', label: 'Twitter' },
   ]
 
   const quickLinks = [
-    { name: 'About', href: '#about' },
+    { name: 'Home', href: '/' },
+    { name: 'About', href: '/About' },
     { name: 'Events', href: '/events' },
-    { name: 'Gallery', href: '#gallery' },
-    { name: 'Contact', href: '#contact' },
-    { name: 'Register', href: '/register' },
-  ]
+    { name: 'Results', href: '/Results' },
+    ]
 
   return (
     <footer className="bg-black border-t border-purple-900/50">
@@ -29,7 +28,7 @@ export default function Footer() {
           <div>
             <h3 className="text-2xl font-bold mb-4">
               <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">
-                HostelFest 2023
+                Farouche 25
               </span>
             </h3>
             <p className="text-gray-300 mb-4">
@@ -78,11 +77,11 @@ export default function Footer() {
             <div className="space-y-4">
               <div className="flex items-center gap-3 text-gray-300">
                 <MapPin className="w-5 h-5 text-purple-400 flex-shrink-0" />
-                <span>NMAMIT, Nitte, Karkala Taluk, Udupi - 574110</span>
+                <span>BMSETH, Bull Temple Rd, Basavanagudi, Bengaluru, Karnataka 560019</span>
               </div>
               <div className="flex items-center gap-3 text-gray-300">
                 <Phone className="w-5 h-5 text-purple-400 flex-shrink-0" />
-                <span>+91 98765 43210</span>
+                <span>+91 7483119808</span>
               </div>
               <div className="flex items-center gap-3 text-gray-300">
                 <Mail className="w-5 h-5 text-purple-400 flex-shrink-0" />
@@ -90,7 +89,7 @@ export default function Footer() {
                   href="mailto:hostelfest2023@nmamit.in"
                   className="hover:text-white transition-colors"
                 >
-                  hostelfest2023@nmamit.in
+                  design.farouche25@gmail.com
                 </a>
               </div>
             </div>
@@ -101,7 +100,7 @@ export default function Footer() {
         <div className="pt-8 border-t border-purple-900/50">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-gray-400 text-sm">
-              © {currentYear} HostelFest. All rights reserved.
+              © {currentYear} FAROUCHE25. All rights reserved.
             </p>
             <div className="flex gap-6 text-sm">
               <Link href="/privacy" className="text-gray-400 hover:text-white transition-colors">

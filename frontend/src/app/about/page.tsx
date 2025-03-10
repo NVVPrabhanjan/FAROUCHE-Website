@@ -15,6 +15,7 @@ import {
   Music2,
   Camera
 } from 'lucide-react';
+import CreditCardGrid from '../components/CreditCard';
 
 // Optimized animation variants
 const fadeInUp = {
@@ -296,9 +297,13 @@ export default function About() {
               <p className="text-purple-400 text-sm">{event.subtitle}</p>
             </motion.div>
           ))}
+
+
         </motion.div>
       </motion.section>
-
+      <div className='my-10 '>
+      <CreditCardGrid/>
+      </div>
       {/* Additional CSS for animation control */}
       <style jsx global>{`
         .animate-section {
