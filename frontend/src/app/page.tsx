@@ -14,7 +14,6 @@ import {
   Users,
   ChevronDown,
 } from "lucide-react";
-import CreditCard from "./components/CreditCard";
 
 
 // Interfaces remain the same
@@ -149,7 +148,7 @@ const hostelLeadership: HostelGroup[] = [
       {
         name: "SRI. JOHN",
         role: "Administrative Officer",
-        image: "/w-8.png",
+        image: "/ao-1.png",
         description: "",
       },
     ],
@@ -203,7 +202,7 @@ const committees: Committee[] = [
   },
   {
     name: "Organising",
-    students: 6,
+    students: 5,
     description: "Managing the overall organization of Farouche",
     images: [
       { src: "/o-1.jpg", caption: "Venkatesh" },
@@ -403,7 +402,6 @@ const CommitteeModal = ({ committee, onClose }) => {
 export default function Home() {
   const [selectedCommittee, setSelectedCommittee] = useState(null);
   const [scrollProgress, setScrollProgress] = useState(0);
-
   useEffect(() => {
     const handleScroll = () => {
       const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
@@ -414,7 +412,6 @@ export default function Home() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
   return (
     <div className={`min-h-screen bg-black text-white ${poppins.className}`}>
       {/* Enhanced progress bar */}
