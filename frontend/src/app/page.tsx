@@ -146,11 +146,23 @@ const hostelLeadership: HostelGroup[] = [
         description: "",
       },
       {
+        name: "Dr. Shyamala G",
+        role: "Hostel Warden",
+        image: "/w-8.jpeg",
+        description: "",
+      },
+      {
+        name: "Dr. Madhusudhan K N",
+        role: "Hostel Warden",
+        image: "/w-9.jpg",
+        description: "",
+      },
+      {
         name: "SRI. JOHN",
         role: "Administrative Officer",
         image: "/ao-1.png",
         description: "",
-      },
+      }
     ],
   },
 ];
