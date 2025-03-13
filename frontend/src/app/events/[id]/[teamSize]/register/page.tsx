@@ -10,6 +10,8 @@ export default function EventRegistration() {
   const parsedTeamSize = parseInt(teamSize as string) || 1
   const [isLoading, setIsLoading] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
+  const [error, setError] = useState('')
+  const [showError, setShowError] = useState(false)
 
   const [formData, setFormData] = useState({
     name: '',
@@ -44,6 +46,8 @@ export default function EventRegistration() {
   const handleSubmit = (e) => {
     e.preventDefault()
     setIsLoading(true)
+    setError('')
+    setShowError(false)
 
     fetch(`${REGISTRATION_API_END_POINT}/createRegistration`, {
       method: "POST",
@@ -60,7 +64,14 @@ export default function EventRegistration() {
         teamMembers: parsedTeamSize > 1 ? teamMembers : undefined
       })
     })
-    .then(response => response.json())
+    .then(response => {
+      if (!response.ok) {
+        return response.json().then(data => {
+          throw new Error(data.message || 'Registration failed');
+        });
+      }
+      return response.json();
+    })
     .then(data => {
       console.log("Success:", data)
       setIsLoading(false)
@@ -74,7 +85,13 @@ export default function EventRegistration() {
     .catch(error => {
       console.error("Error:", error)
       setIsLoading(false)
-      alert('Registration failed. Please try again.')
+      setError(error.message || 'Registration failed. Please try again.')
+      setShowError(true)
+      
+      // Auto-hide error after 5 seconds
+      setTimeout(() => {
+        setShowError(false)
+      }, 5000)
     })
   }
 
@@ -104,6 +121,43 @@ export default function EventRegistration() {
   return (
     <div className="min-h-screen bg-black text-white flex items-center justify-center py-24 overflow-hidden">
       <div className="container max-w-4xl mx-auto px-4 relative">
+        {/* Error notification */}
+        <AnimatePresence>
+          {showError && (
+            <motion.div
+              className="fixed top-8 inset-x-0 mx-auto max-w-md z-50"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+            >
+              <div className="bg-gradient-to-r from-red-900/90 to-pink-900/90 border border-red-500/30 rounded-xl p-4 shadow-lg backdrop-blur-sm">
+                <div className="flex items-start">
+                  <div className="flex-shrink-0">
+                    <svg className="h-6 w-6 text-red-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <div className="ml-3 flex-1">
+                    <h3 className="text-sm font-medium text-red-200">Registration Error</h3>
+                    <div className="mt-1 text-sm text-red-100">{error}</div>
+                  </div>
+                  <div className="ml-4 flex-shrink-0 flex">
+                    <button
+                      onClick={() => setShowError(false)}
+                      className="bg-red-800/50 rounded-md inline-flex text-red-300 hover:text-red-200 focus:outline-none"
+                    >
+                      <span className="sr-only">Close</span>
+                      <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      
         {/* Enhanced Success animation overlay */}
         <AnimatePresence>
           {isSuccess && (
