@@ -1,8 +1,8 @@
 import Event from "../models/event.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
-import fs from "fs";
+
 export const addEvent = async (req, res) => {
-  const { title, description, date, venue, group,teamSize } = req.body;
+  const { title, description, date, venue, group } = req.body;
   if (!req.file) {
     return res.status(400).json({ message: "Image file is required." });
   }
@@ -13,15 +13,13 @@ export const addEvent = async (req, res) => {
       .status(500)
       .json({ message: "Failed to upload image to Cloudinary." });
   }
-  fs.unlinkSync(imagePath);
   const newEvent = new Event({
     title,
     description,
     date,
     venue,
     image: imageUrl.url,
-    group,
-    teamSize
+    group: group,
   });
 
   try {

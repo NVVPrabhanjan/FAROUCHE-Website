@@ -12,16 +12,17 @@ import fs from "fs"
                 console.log("no local path");
                 return null
             }
-            console.log("testing...")
             const responce = await cloudinary.uploader.upload(localFilePath , {
                 resource_type : "auto"
             })
-            console.log("File is uploaded ", responce.url);
             return responce;
         }
         catch (error){
             fs.unlinkSync(localFilePath);
             return null;
+        }
+        finally{
+            fs.unlinkSync(localFilePath);
         }
     }
     export {uploadOnCloudinary}
