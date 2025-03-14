@@ -15,9 +15,9 @@ export default function Footer() {
 
   const quickLinks = [
     { name: 'Home', href: '/' },
-    { name: 'About', href: '/About' },
+    { name: 'About', href: '/about' },
     { name: 'Events', href: '/events' },
-    { name: 'Results', href: '/Results' },
+    { name: 'Results', href: '/results' },
     ]
 
   return (
@@ -32,7 +32,7 @@ export default function Footer() {
               </span>
             </h3>
             <p className="text-gray-300 mb-4">
-              Join us for three days of excitement, creativity, and celebration at the biggest hostel festival of the year.
+              Join us for excitement, creativity, and celebration at the biggest hostel festival of the year.
             </p>
             <div className="flex space-x-4">
               {socialLinks.map((social, index) => {
@@ -81,7 +81,7 @@ export default function Footer() {
               </div>
               <div className="flex items-center gap-3 text-gray-300">
                 <Phone className="w-5 h-5 text-purple-400 flex-shrink-0" />
-                <span>+91 7483119808</span>
+                <span>+91 7483119808, +91 7893152309</span>
               </div>
               <div className="flex items-center gap-3 text-gray-300">
                 <Mail className="w-5 h-5 text-purple-400 flex-shrink-0" />
@@ -89,7 +89,7 @@ export default function Footer() {
                   href="mailto:hostelfest2023@nmamit.in"
                   className="hover:text-white transition-colors"
                 >
-                  design.farouche25@gmail.com
+                  technical.farouche25@gmail.com
                 </a>
               </div>
             </div>

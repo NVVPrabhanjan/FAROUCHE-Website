@@ -71,11 +71,11 @@ export default function Events() {
             >
               <h1 className="text-5xl md:text-7xl font-bold mb-6">
                 <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">
-                  Festival Events
+                  Farouche Events
                 </span>
               </h1>
               <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-10">
-                Three days of excitement, creativity, and celebration
+                Excitement, creativity, and celebration
               </p>
               
               {/* Search Section */}

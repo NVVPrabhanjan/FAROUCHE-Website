@@ -61,32 +61,32 @@ const hostelLeadership: HostelGroup[] = [
     members: [
       {
         name: "Dr. Bheemsha Arya",
-        role: "Hostel Working Chairman",
+        role: "Working Chairman, BMSETH ",
         image: "/pr-1.png",
         description: "",
       },
       {
         name: "Dr. Rahul R",
-        role: "Secretary, BMSET, Hostels",
+        role: "Secretary - NH, BMSETH",
         image: "/s-1.png",
         description: "",
       },
       {
         name: "Dr.Boddapati Venkatesh",
-        role: "Secretary, IH, Hostels",
+        role: "Secretary - IH, BMSETH",
         image: "/sr-3.jpg",
         description: "",
       },
       
       {
         name: "Dr. Srinidhi M",
-        role: "Joint Secretary",
+        role: "Joint Secretary - NH",
         image: "/j-1.png",
         description: "",
       },
       {
         name: "Smt Archana K",
-        role: "Joint Secretary",
+        role: "Joint Secretary - NH",
         image: "/j-2.jpeg",
         description: "",
       },
@@ -177,7 +177,7 @@ const committees: Committee[] = [
       { src: "/co-1.jpg", caption: "Akshanth" },
       { src: "/co-2.jpg", caption: "Anshu" },
       { src: "/co-3.jpg", caption: "Ayush" },
-      { src: "/co-4.jpg", caption: "Sachidananda" },
+      { src: "/co-4.JPG", caption: "Sachidananda" },
       { src: "/co-5.jpg", caption: "Chirag" },
       { src: "/co-6.jpg", caption: "Soumya" },
       { src: "/co-7.jpg", caption: "Anushka" },
@@ -252,7 +252,7 @@ const committees: Committee[] = [
   {
     name: "Food Fiesta",
     students: 5,
-    description: "Managing food and refreshments for Farouche",
+    description: "Managing food fiesta for Farouche",
     images: [
       { src: "/f-1.jpg", caption: "Krishn Maloo" },
       { src: "/f-2.jpg", caption: "Sujay" },
