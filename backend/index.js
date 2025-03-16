@@ -35,7 +35,7 @@ app.use(express.json());
 //app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 const corsOptions = {
-  origin: ['http://13.60.17.160:3000','https://farouche-website.vercel.app'],
+  origin: ['http://13.60.17.160:3000','https://farouche-website.vercel.app', 'http://localhost:3000','http://localhost:3001'],
   credentials: true,
 };
 app.use(cors(corsOptions));
