@@ -21,5 +21,8 @@ import fs from "fs"
             fs.unlinkSync(localFilePath);
             return null;
         }
+        finally{
+            fs.unlinkSync(localFilePath);
+        }
     }
     export {uploadOnCloudinary}

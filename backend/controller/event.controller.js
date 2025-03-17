@@ -2,7 +2,7 @@ import Event from "../models/event.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 export const addEvent = async (req, res) => {
-  const { title, description, date, venue, group } = req.body;
+  const { teamSize,title, description, date, venue, group } = req.body;
   if (!req.file) {
     return res.status(400).json({ message: "Image file is required." });
   }
@@ -19,7 +19,8 @@ export const addEvent = async (req, res) => {
     date,
     venue,
     image: imageUrl.url,
-    group: group,
+    group,
+    teamSize
   });
 
   try {
