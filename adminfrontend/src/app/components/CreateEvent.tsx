@@ -26,12 +26,9 @@ export function RegisterForm() {
     };
 
     const handleGroupChange = (event) => {
-        setGroup(event.target.checked); // Update the state for the checkbox
-        
-        // Reset team size to default if group is unchecked
-        if (!event.target.checked) {
-            setTeamSize(2);
-        }
+        const isChecked = event.target.checked;
+        setGroup(isChecked); // Update the state for the checkbox
+        setTeamSize(2);
     };
     
     const handleTeamSizeChange = (event) => {
@@ -203,7 +200,7 @@ export function RegisterForm() {
                                 id="teamSize"
                                 type="number"
                                 min="2"
-                                value={teamSize}
+                                value={teamSize || 2} // Ensure a fallback value
                                 onChange={handleTeamSizeChange}
                                 className="mt-2 p-3 w-full rounded-md border border-neutral-700 bg-neutral-800 text-white placeholder-neutral-400"
                                 required

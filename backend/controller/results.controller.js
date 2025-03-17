@@ -44,3 +44,16 @@ export const getResults = async (req, res) => {
     res.status(500).json({ message: "Failed to fetch results.", error: error.message });
   }
 };
+
+export const deleteResult = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedResult = await resultsModel.findByIdAndDelete(id);
+    if (!deletedResult) {
+      return res.status(404).json({ message: "Result not found." });
+    }
+    res.status(200).json({ message: "Result deleted successfully.", data: deletedResult });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to delete result.", error: error.message });
+  }
+};

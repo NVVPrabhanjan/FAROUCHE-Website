@@ -680,9 +680,6 @@ export default function Home() {
             >
               Back to Top
             </motion.button>
-            <p className="text-gray-400 text-sm">
-              © 2024 Farouche. All rights reserved.
-            </p>
           </div>
         </div>
       </motion.footer>
