@@ -11,10 +11,10 @@ export default function Navbar() {
   const [activeItem, setActiveItem] = useState('Home')
 
   const navItems = [
-    { name: 'Home', href: '/', icon: Home },
-    { name: 'About', href: '/about', icon: Info },
+    // { name: 'Home', href: '/', icon: Home },
+    // { name: 'About', href: '/about', icon: Info },
     { name: 'Events', href: '/events', icon: Calendar },
-    { name: 'Results', href: '/results', icon: Trophy }
+    // { name: 'Results', href: '/results', icon: Trophy }
   ]
 
   return (
@@ -22,7 +22,7 @@ export default function Navbar() {
       <div className="bg-black/30 backdrop-blur-md border-b border-white/10">
         <div className="container mx-auto px-6">
           <div className="flex items-center justify-between h-16">
-            <Link href="/" className="flex items-center space-x-3">
+            {/* <Link href="/" className="flex items-center space-x-3">
               <Image
                 src="/logo.png"
                 alt="Logo"
@@ -30,12 +30,12 @@ export default function Navbar() {
                 height={40}
                 className="rounded-lg"
                 priority
-              />
+              /> */}
               <div>
                 <span className="text-xl font-semibold text-white">Farouche </span>
                 <span className="text-xl font-semibold text-purple-400">25</span>
               </div>
-            </Link>
+            {/* </Link> */}
 
             <div className="hidden md:flex items-center">
               {navItems.map((item) => {
