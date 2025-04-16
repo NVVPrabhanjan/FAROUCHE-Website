@@ -1,7 +1,7 @@
 import Registration from "../models/registration.model.js";
 import Event from "../models/event.model.js";
 import { appendToSheet } from "../gsheetfunctions/register.js";
-import { sendMail } from "../utils/mail.js";
+import axios from "axios";
 
 export const createRegistration = async (req, res) => {
   try {
@@ -58,39 +58,14 @@ export const createRegistration = async (req, res) => {
         );
       }
 
-      await sendMail(
-        email,
-        `Registration Confirmation: ${eventTitle} - Farouche Festival`,
-        `Dear ${name},
-
-We are pleased to confirm your registration for "${eventTitle}" as part of the Farouche Festival. 
-
-Event Details:
-- Event Name: ${eventTitle}
-- Date: ${event.date}
-- Venue: ${event.venue}
-
-About the Event:
-This event is designed to provide a unique experience, bringing together students for a series of competitions, performances, and interactive sessions. We encourage you to make the most of this opportunity.
-
-Important Guidelines:
-- Please carry your hostel ID for verification and entry.
-- Stay updated with the official event schedule for any changes.
-- Ensure you arrive at the venue on time to avoid any inconvenience.
-
-Support and Assistance:
-If you have any questions or require any assistance, feel free to reach out to us.
-
-Email: support@farouche.com
-Contact: +1234567890
-
-We look forward to your participation and an enriching experience at "${eventTitle}".
-
-Best Regards,  
-Farouche Technical Team`
-      );
+    axios.post("http://3.92.134.227:3000/sendMail",{
+	name,
+	eventTitle,
+	venue:event.venue,
+	email
+    });
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
     }
 
     res.status(201).json({
