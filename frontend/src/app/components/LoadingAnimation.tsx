@@ -1,163 +1,178 @@
 import React from "react";
 import { motion } from "framer-motion";
+import Image from 'next/image';
 
 const LoadingAnimation = () => {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-xl">
       <div className="flex flex-col items-center">
-        {/* Improved background effects with multiple layers */}
-        <div className="absolute w-96 h-96 bg-gradient-to-r from-purple-600/20 via-fuchsia-500/10 to-pink-600/20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute w-64 h-64 bg-gradient-radial from-indigo-500/15 to-transparent rounded-full blur-2xl"></div>
+        {/* Subtle background effects that don't compete with the logo */}
+        <div className="absolute w-96 h-96 bg-gradient-to-r from-amber-900/20 via-yellow-800/15 to-amber-900/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute w-72 h-72 bg-gradient-radial from-yellow-800/20 to-transparent rounded-full blur-2xl"></div>
         
         <motion.div className="relative">
-          {/* Enhanced particle ring with more particles and varied sizes */}
+          {/* Reduced particle effects to not distract from the logo */}
           <motion.div
-            className="absolute -inset-12"
+            className="absolute -inset-10"
             animate={{ rotate: 360 }}
-            transition={{
-              duration: 12,
-              repeat: Infinity,
-              ease: "linear"
-            }}
-          >
-            {[...Array(18)].map((_, i) => (
-              <motion.div
-                key={i}
-                className="absolute"
-                style={{
-                  left: "50%",
-                  top: "50%",
-                  transform: `rotate(${i * 20}deg) translateY(-${28 + (i % 3) * 6}px)`,
-                }}
-                animate={{
-                  opacity: [0.4, 1, 0.4],
-                  scale: [0.8, 1.2, 0.8],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  delay: i * 0.15,
-                  ease: "easeInOut",
-                }}
-              >
-                <div 
-                  className={`rounded-full bg-gradient-to-r ${i % 3 === 0 ? 'from-purple-400 to-pink-500' : i % 3 === 1 ? 'from-indigo-500 to-purple-400' : 'from-pink-500 to-rose-400'}`}
-                  style={{
-                    width: `${(i % 3 + 1) * 2}px`,
-                    height: `${(i % 3 + 1) * 2}px`,
-                    boxShadow: `0 0 6px ${i % 3 === 0 ? 'rgba(168, 85, 247, 0.7)' : i % 3 === 1 ? 'rgba(99, 102, 241, 0.7)' : 'rgba(236, 72, 153, 0.7)'}`,
-                  }}
-                ></div>
-              </motion.div>
-            ))}
-          </motion.div>
-          
-          {/* Outer spinning orbit */}
-          <motion.div
-            className="absolute -inset-16"
-            animate={{ rotate: -360 }}
             transition={{
               duration: 20,
               repeat: Infinity,
               ease: "linear"
             }}
           >
-            {[...Array(6)].map((_, i) => (
+            {[...Array(12)].map((_, i) => (
               <motion.div
                 key={i}
                 className="absolute"
                 style={{
                   left: "50%",
                   top: "50%",
-                  transform: `rotate(${i * 60}deg) translateY(-48px)`,
+                  transform: `rotate(${i * 30}deg) translateY(-${24 + (i % 3) * 5}px)`,
                 }}
                 animate={{
-                  opacity: [0.3, 0.7, 0.3],
+                  opacity: [0.2, 0.6, 0.2],
+                  scale: [0.8, 1.1, 0.8],
                 }}
                 transition={{
                   duration: 4,
                   repeat: Infinity,
-                  delay: i * 0.3,
+                  delay: i * 0.2,
                   ease: "easeInOut",
                 }}
               >
-                <div className="w-1 h-1 rounded-full bg-indigo-300"></div>
+                <div 
+                  className={`rounded-full bg-gradient-to-r ${i % 3 === 0 ? 'from-amber-300 to-yellow-500' : i % 3 === 1 ? 'from-yellow-500 to-amber-400' : 'from-amber-200 to-yellow-400'}`}
+                  style={{
+                    width: `${(i % 3 + 1) * 1.5}px`,
+                    height: `${(i % 3 + 1) * 1.5}px`,
+                    boxShadow: `0 0 5px ${i % 3 === 0 ? 'rgba(245, 158, 11, 0.6)' : i % 3 === 1 ? 'rgba(252, 211, 77, 0.6)' : 'rgba(251, 191, 36, 0.6)'}`,
+                  }}
+                ></div>
               </motion.div>
             ))}
           </motion.div>
           
-          {/* Improved animated circles with varying colors and timing */}
-          {[...Array(5)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute left-1/2 top-1/2"
-              initial={{ scale: 0, opacity: 0.7 }}
-              animate={{
-                scale: [0, 2.2, 0],
-                opacity: [0.8, 0, 0.8],
-              }}
-              transition={{
-                duration: i % 2 === 0 ? 3.5 : 4,
-                repeat: Infinity,
-                delay: i * 0.5,
-                ease: "easeInOut",
-              }}
-            >
-              <div 
-                className="rounded-full -ml-10 -mt-10"
-                style={{
-                  width: `${i % 2 === 0 ? '20px' : '24px'}`,
-                  height: `${i % 2 === 0 ? '20px' : '24px'}`,
-                  border: `2px solid ${i % 3 === 0 ? '#a855f7' : i % 3 === 1 ? '#818cf8' : '#ec4899'}`,
-                  boxShadow: `0 0 20px ${i % 3 === 0 ? 'rgba(168, 85, 247, 0.6)' : i % 3 === 1 ? 'rgba(129, 140, 248, 0.6)' : 'rgba(236, 72, 153, 0.6)'}`,
-                }}
-              />
-            </motion.div>
-          ))}
-          
-          {/* Enhanced pulsing logo with better animation */}
+          {/* Enhanced prominent logo container - INCREASED SIZE */}
           <motion.div
             className="relative z-10 mx-auto"
             animate={{
-              scale: [1, 1.15, 1],
-              rotate: [0, 3, 0, -3, 0],
+              scale: [1, 1.08, 1],
             }}
             transition={{
               scale: {
-                duration: 2,
-                repeat: Infinity,
-                ease: "easeInOut",
-              },
-              rotate: {
-                duration: 7,
+                duration: 3,
                 repeat: Infinity,
                 ease: "easeInOut",
               }
             }}
           >
-            <div className="h-24 w-24 rounded-full bg-gradient-to-br from-purple-600 via-fuchsia-500 to-pink-600 flex items-center justify-center shadow-lg shadow-purple-500/40">
-              {/* Inner glow */}
-              <div className="absolute inset-1 rounded-full bg-gradient-to-r from-purple-500/30 to-pink-500/30 blur-sm"></div>
+            {/* Dark background circle to create contrast for the gold logo - LARGER CIRCLE */}
+            <div className="relative h-32 w-32 rounded-full bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-center shadow-xl">
+              {/* Gold rim glow */}
+              <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-amber-500/50 to-yellow-500/50 blur-md"></div>
               
-              <div className="text-center relative">
-                <span className="font-bold text-white text-lg tracking-wide">Farouche</span>
-                <div className="text-xs text-white/90 font-semibold mt-0.5">2025</div>
+              {/* Inner darker area for better contrast */}
+              <div className="absolute inset-1 rounded-full bg-gradient-to-br from-gray-900 to-black flex items-center justify-center">
+                {/* Gold lighting accent */}
+                <motion.div
+                  className="absolute inset-0 rounded-full opacity-70"
+                  animate={{
+                    background: [
+                      'radial-gradient(circle at 30% 30%, rgba(252, 211, 77, 0.15), transparent 60%)',
+                      'radial-gradient(circle at 70% 70%, rgba(245, 158, 11, 0.15), transparent 60%)',
+                      'radial-gradient(circle at 30% 30%, rgba(252, 211, 77, 0.15), transparent 60%)'
+                    ]
+                  }}
+                  transition={{
+                    duration: 6,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                ></motion.div>
+                
+                {/* Gold directional lighting to enhance the gold logo */}
+                <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/10 via-transparent to-transparent rounded-full"></div>
+                
+                {/* Centralized and LARGER logo container relative to the circle */}
+                <div className="relative flex items-center justify-center w-full h-full p-2">
+                  {/* Dynamic gold highlight behind logo */}
+                  <motion.div
+                    className="absolute inset-0 rounded-full"
+                    animate={{
+                      boxShadow: [
+                        'inset 0 0 12px rgba(252, 211, 77, 0.3)',
+                        'inset 0 0 20px rgba(252, 211, 77, 0.5)',
+                        'inset 0 0 12px rgba(252, 211, 77, 0.3)'
+                      ]
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                  ></motion.div>
+                  
+                  {/* ENLARGED Logo with optimized sizing and enhanced visibility */}
+                  <Image
+                    src="/logo1.png"
+                    alt="Gold Logo"
+                    width={160}
+                    height={112}
+                    className="relative z-10 drop-shadow-[0_0_8px_rgba(252,211,77,0.7)]"
+                    priority
+                    style={{ 
+                      objectFit: "contain",
+                      filter: "brightness(1.3) contrast(1.2)",
+                      transform: "scale(1.3)" // Additional scaling to make logo larger relative to circle
+                    }}
+                  />
+                </div>
               </div>
             </div>
           </motion.div>
+          
+          {/* Gold accent rings - adjusted for larger center */}
+          {[...Array(3)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute left-1/2 top-1/2"
+              initial={{ scale: 0, opacity: 0.7 }}
+              animate={{
+                scale: [0, 2.5, 0],
+                opacity: [0.5, 0, 0.5],
+              }}
+              transition={{
+                duration: i === 0 ? 4 : i === 1 ? 5 : 6,
+                repeat: Infinity,
+                delay: i * 1.5,
+                ease: "easeInOut",
+              }}
+            >
+              <div 
+                className="rounded-full -ml-16 -mt-16"
+                style={{
+                  width: "32px",
+                  height: "32px",
+                  border: `2px solid ${i === 0 ? '#f59e0b' : i === 1 ? '#fbbf24' : '#fcd34d'}`,
+                  boxShadow: `0 0 20px ${i === 0 ? 'rgba(245, 158, 11, 0.6)' : i === 1 ? 'rgba(251, 191, 36, 0.6)' : 'rgba(252, 211, 77, 0.6)'}`,
+                }}
+              />
+            </motion.div>
+          ))}
         </motion.div>
         
-        {/* Enhanced animated text with shimmer effect */}
+        {/* Gold text branding with Festivr Roman font */}
         <motion.div
-          className="mt-12 relative"
+          className="mt-10 relative"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
         >
           <motion.h3
-            className="text-4xl font-bold relative z-10 tracking-wider"
+            className="text-5xl font-bold relative z-10 tracking-wider"
             animate={{ 
-              backgroundPosition: ["0% center", "100% center", "0% center"]
+              backgroundPosition: ["0% center", "100% center", "0% center"] 
             }}
             transition={{
               duration: 8,
@@ -165,8 +180,9 @@ const LoadingAnimation = () => {
               ease: "easeInOut"
             }}
             style={{
-              backgroundSize: "200% auto",
-              backgroundImage: "linear-gradient(to right, #a855f7, #ec4899, #818cf8, #a855f7)",
+              fontFamily: "Cinzel",
+              backgroundSize: "300% auto",
+              backgroundImage: "linear-gradient(to right, #f59e0b, #fcd34d, #d97706, #fbbf24, #f59e0b)",
               WebkitBackgroundClip: "text",
               backgroundClip: "text",
               color: "transparent",
@@ -175,27 +191,35 @@ const LoadingAnimation = () => {
             FAROUCHE
           </motion.h3>
           
-          {/* Enhanced glow behind text */}
-          <div className="absolute -inset-4 bg-gradient-to-r from-purple-500/10 via-fuchsia-500/15 to-pink-500/10 rounded-lg blur-xl -z-10"></div>
+          <div className="absolute -inset-4 bg-gradient-to-r from-amber-500/10 via-yellow-500/15 to-amber-500/10 rounded-lg blur-xl -z-10"></div>
         </motion.div>
         
-        {/* Improved loading indicator with fading dots */}
-        <div className="flex items-center mt-6 text-gray-300">
-          <span className="mr-2 text-sm font-medium tracking-wide">Loading Experience</span>
-          <div className="flex space-x-1.5">
+        {/* Gold-themed loading indicator */}
+        <div className="flex items-center mt-5">
+          <motion.span 
+            className="mr-3 text-sm font-medium tracking-wider text-amber-200"
+          >
+            Loading Experience
+          </motion.span>
+          <div className="flex space-x-2">
             {[...Array(3)].map((_, i) => (
               <motion.div
                 key={i}
-                className="h-2 w-2 rounded-full bg-gradient-to-r from-purple-400 to-pink-400"
+                className="h-2 w-2 rounded-full bg-gradient-to-r from-amber-400 to-yellow-400"
                 animate={{
-                  opacity: [0.3, 1, 0.3],
-                  y: [0, -5, 0],
-                  scale: [0.8, 1.2, 0.8]
+                  opacity: [0.4, 1, 0.4],
+                  y: [0, -4, 0],
+                  scale: [0.8, 1.2, 0.8],
+                  boxShadow: [
+                    '0 0 2px rgba(245, 158, 11, 0.5)',
+                    '0 0 8px rgba(245, 158, 11, 0.8)',
+                    '0 0 2px rgba(245, 158, 11, 0.5)'
+                  ]
                 }}
                 transition={{
                   duration: 1.2,
                   repeat: Infinity,
-                  delay: i * 0.15,
+                  delay: i * 0.2,
                   ease: "easeInOut",
                 }}
               />

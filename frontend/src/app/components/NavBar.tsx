@@ -26,7 +26,7 @@ export default function Navbar() {
             <Link href="/" className="flex items-center space-x-4">
               {/* Increased logo size */}
               <Image
-                src="/logo.png"
+                src="/logo1.png"
                 alt="Logo"
                 width={90}
                 height={60}
@@ -35,8 +35,8 @@ export default function Navbar() {
               />
               <div>
                 {/* Increased text sizes */}
-                <span className="text-2xl font-semibold text-white">Farouche </span>
-                <span className="text-2xl font-semibold text-purple-400">25</span>
+                {/* <span className="text-2xl font-semibold text-white">Farouche </span>
+                <span className="text-2xl font-semibold text-purple-400">25</span> */}
               </div>
             </Link>
 
