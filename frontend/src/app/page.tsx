@@ -208,7 +208,7 @@ const committees: Committee[] = [
       { src: "/s-5.jpg", caption: "Tanisha" },
       { src: "/s-7.jpg", caption: "Deeksha" },
       { src: "/s-6.jpg", caption: "Dikshyant" },
-      { src: "/s-8.HEIC", caption: "Faraz" },
+      { src: "/s-8.png", caption: "Faraz" },
       { src: "/s-9.jpeg", caption: "Amisha" },
     ],
   },
@@ -268,7 +268,7 @@ const committees: Committee[] = [
     images: [
       { src: "/so-1.jpg", caption: "Shreyansh" },
       { src: "/so-2.jpg", caption: "Pramananda" },
-      { src: "/so-3.jpg", caption: "Robin" },
+      { src: "/so-3.png", caption: "Robin" },
     ],
   },
 ];
