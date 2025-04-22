@@ -72,7 +72,7 @@ export default function CategoryResults() {
           <ScrollProgressBar />
           <Navbar />
           
-          <div className="container mx-auto px-4 py-12 md:py-20">
+          <div className="container mx-auto px-4 py-12 md:py-20 pt-16 md:pt-20">
             <div className="flex items-center mb-8">
               <Link 
                 href="/results"
