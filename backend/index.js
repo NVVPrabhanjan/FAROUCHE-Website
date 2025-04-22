@@ -39,7 +39,7 @@ app.use(express.json());
 //app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 const corsOptions = {
-	origin: ['http://139.59.85.84:3000','https://farouche25.tech','https://farouche-website.vercel.app'],
+	origin: ['http://139.59.85.84:3000','https://farouche25.tech','https://farouche-website.vercel.app', 'http://localhost:3000', 'http://localhost:3001'],
   credentials: true,
 };
 app.use(cors(corsOptions));

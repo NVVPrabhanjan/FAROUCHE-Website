@@ -1,147 +1,229 @@
-"use client";
+import { useState } from "react";
+import { RESULTS_END_POINT } from "../utils/constants";
 
-import { useEffect, useState } from "react";
-import { DialogFooter } from "../../app/ui/dialog";
-import { toast } from "sonner";
-import { RESULTS_END_POINT } from "@/app/utils/constants"
 export function ResultForm() {
-  const [name, setName] = useState("");
-  const [teams, setTeams] = useState("");
-  const [win, setWin] = useState("");
-  const [manOfTheMatch, setManOfTheMatch] = useState("");
-  const [imageFile, setImageFile] = useState(null);
-  
-  const handleImageUpload = (event) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setImageFile(file);
+  const [formData, setFormData] = useState({
+    name: "",
+    teams: "",
+    win: "",
+    manofthematch: "",
+    category: ""
+  });
+  const [image, setImage] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  // List of sports categories
+  const categories = [
+    "Badminton",
+    "Table Tennis",
+    "E Sports",
+    "Lagori",
+    "Arm Wrestling",
+    "Carrom",
+    "Tug Of War",
+    "Basket Ball",
+    "Throw Ball",
+    "Foot Ball",
+    "Volley Ball",
+    "Cricket",
+    "Chess",
+    "Others"
+  ];
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleImageChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setImage(e.target.files[0]);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError("");
+    setSuccess("");
 
-    // Create a new FormData object
-    const formData = new FormData();
-
-    // Append form data
-    formData.append('name', name);
-    formData.append('teams', teams);
-    formData.append('win', win);
-    formData.append('manofthematch', manOfTheMatch);
-
-    // If there's an image, append it as well
-    if (imageFile) {
-      formData.append('image', imageFile);
+    // Validate form
+    if (!formData.name || !formData.teams || !formData.win || !formData.category || !image) {
+      setError("Please fill all required fields and upload an image.");
+      setLoading(false);
+      return;
     }
 
     try {
+      const resultFormData = new FormData();
+      resultFormData.append("name", formData.name);
+      resultFormData.append("teams", formData.teams);
+      resultFormData.append("win", formData.win);
+      resultFormData.append("manofthematch", formData.manofthematch);
+      resultFormData.append("category", formData.category);
+      resultFormData.append("image", image);
+
       const response = await fetch(`${RESULTS_END_POINT}/addResults`, {
-        method: 'POST',
-        body: formData,
+        method: "POST",
+        body: resultFormData,
       });
 
+      const data = await response.json();
+
       if (response.ok) {
-        toast.success('Result created successfully');
-        alert('Result created successfully');
-        const result = await response.json();
+        setSuccess("Result added successfully!");
+        // Reset form
+        setFormData({
+          name: "",
+          teams: "",
+          win: "",
+          manofthematch: "",
+          category: ""
+        });
+        setImage(null);
+        
+        // Refresh the results list if needed
+        // This assumes you have a parent component function to refresh the list
+        // if (props.onResultAdded) {
+        //   props.onResultAdded();
+        // }
       } else {
-        console.error('Error submitting form', response.status);
+        setError(data.message || "Failed to add result.");
       }
-    } catch (error) {
-      console.error('Error:', error);
+    } catch (err) {
+      setError("Error submitting form. Please try again.");
+      console.error("Error adding result:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      {/* Event Name Input */}
       <div>
-        <label htmlFor="name" className="block text-sm font-semibold text-white">
-          Event Name
+        <label className="block text-sm font-medium text-gray-300 mb-1">
+          Event Name*
         </label>
         <input
-          id="name"
           type="text"
-          placeholder="Event name"
-          className="mt-2 p-3 w-full rounded-md border border-neutral-700 bg-neutral-800 text-white placeholder-neutral-400"
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          className="w-full p-2 border border-gray-600 rounded-md bg-gray-800 text-white"
+          placeholder="Event Name"
           required
-          value={name}
-          onChange={(e) => setName(e.target.value)}
         />
       </div>
 
-      {/* Teams Input */}
       <div>
-        <label htmlFor="teams" className="block text-sm font-semibold text-white">
-          Teams
+        <label className="block text-sm font-medium text-gray-300 mb-1">
+          Teams/Participants*
         </label>
         <input
-          id="teams"
           type="text"
-          placeholder="Teams (e.g. NH2,MH,IH)"
-          className="mt-2 p-3 w-full rounded-md border border-neutral-700 bg-neutral-800 text-white placeholder-neutral-400"
+          name="teams"
+          value={formData.teams}
+          onChange={handleChange}
+          className="w-full p-2 border border-gray-600 rounded-md bg-gray-800 text-white"
+          placeholder="Teams or Participants"
           required
-          value={teams}
-          onChange={(e) => setTeams(e.target.value)}
         />
       </div>
 
-      {/* Winning Team Input */}
       <div>
-        <label htmlFor="win" className="block text-sm font-semibold text-white">
-          Winning Team
+        <label className="block text-sm font-medium text-gray-300 mb-1">
+          Winner*
         </label>
         <input
-          id="win"
           type="text"
-          placeholder="Winning team"
-          className="mt-2 p-3 w-full rounded-md border border-neutral-700 bg-neutral-800 text-white placeholder-neutral-400"
+          name="win"
+          value={formData.win}
+          onChange={handleChange}
+          className="w-full p-2 border border-gray-600 rounded-md bg-gray-800 text-white"
+          placeholder="Winner"
           required
-          value={win}
-          onChange={(e) => setWin(e.target.value)}
         />
       </div>
 
-      {/* Man of the Match Input */}
       <div>
-        <label htmlFor="manofthematch" className="block text-sm font-semibold text-white">
+        <label className="block text-sm font-medium text-gray-300 mb-1">
           Man of the Match
         </label>
         <input
-          id="manofthematch"
           type="text"
-          placeholder="Man of the match"
-          className="mt-2 p-3 w-full rounded-md border border-neutral-700 bg-neutral-800 text-white placeholder-neutral-400"
-          required
-          value={manOfTheMatch}
-          onChange={(e) => setManOfTheMatch(e.target.value)}
+          name="manofthematch"
+          value={formData.manofthematch}
+          onChange={handleChange}
+          className="w-full p-2 border border-gray-600 rounded-md bg-gray-800 text-white"
+          placeholder="Man of the Match (if applicable)"
         />
       </div>
 
-      {/* Image Input */}
       <div>
-        <label htmlFor="image" className="block text-sm font-semibold text-white">
-          Event Image
+        <label className="block text-sm font-medium text-gray-300 mb-1">
+          Category*
+        </label>
+        <select
+          name="category"
+          value={formData.category}
+          onChange={handleChange}
+          className="w-full p-2 border border-gray-600 rounded-md bg-gray-800 text-white"
+          required
+        >
+          <option value="" disabled>Select Category</option>
+          {categories.map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-300 mb-1">
+          Event Image*
         </label>
         <input
-          id="image"
           type="file"
           accept="image/*"
-          className="mt-2 p-3 w-full rounded-md border border-neutral-700 bg-neutral-800 text-white"
-          onChange={handleImageUpload}
+          onChange={handleImageChange}
+          className="w-full p-2 border border-gray-600 rounded-md bg-gray-800 text-white"
+          required
         />
+        <p className="text-xs text-gray-400 mt-1">
+          Please upload an image related to the event
+        </p>
       </div>
 
-      {/* Submit Button */}
-      <DialogFooter>
+      {error && (
+        <div className="p-2 bg-red-900/50 border border-red-700 rounded-md text-red-200 text-sm">
+          {error}
+        </div>
+      )}
+
+      {success && (
+        <div className="p-2 bg-green-900/50 border border-green-700 rounded-md text-green-200 text-sm">
+          {success}
+        </div>
+      )}
+
+      <div className="flex justify-end">
         <button
           type="submit"
-          className="inline-flex items-center justify-center py-2.5 px-5 rounded-md bg-purple-600 text-white hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
+          disabled={loading}
+          className={`px-4 py-2 rounded-md ${
+            loading
+              ? "bg-gray-600 cursor-not-allowed"
+              : "bg-blue-600 hover:bg-blue-700"
+          } transition-colors`}
         >
-          Submit Result
+          {loading ? "Adding..." : "Add Result"}
         </button>
-      </DialogFooter>
+      </div>
     </form>
   );
 }

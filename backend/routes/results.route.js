@@ -5,5 +5,5 @@ const router = express.Router();
 
 router.route("/addResults").post(upload.single('image'),addResults);
 router.route("/getResults").get(getResults);
-router.route("/results/:id").delete(deleteResult);
+router.route("/results").delete(deleteResult);
 export default router;

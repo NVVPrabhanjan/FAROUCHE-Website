@@ -3,7 +3,7 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 export const addResults = async (req, res) => {
   try {
-    const { name, teams, win ,manofthematch } = req.body;
+    const { name, teams, win ,manofthematch ,category} = req.body;
     if (!req.file) {
       return res.status(400).json({ message: "Image file is required." });
     }
@@ -18,11 +18,11 @@ export const addResults = async (req, res) => {
       teams,
       win,
       manofthematch,
+      category,
       image: imageUrl.url,
     });
 
     const savedResult = await newResult.save();
-
     res.status(201).json({
       message: "Result added successfully.",
       data: savedResult,
@@ -47,13 +47,19 @@ export const getResults = async (req, res) => {
 
 export const deleteResult = async (req, res) => {
   try {
-    const { id } = req.params;
-    const deletedResult = await resultsModel.findByIdAndDelete(id);
+    const { resultId } = req.body;
+    const deletedResult = await resultsModel.findByIdAndDelete(resultId);
     if (!deletedResult) {
       return res.status(404).json({ message: "Result not found." });
     }
-    res.status(200).json({ message: "Result deleted successfully.", data: deletedResult });
+    res.status(200).json({
+      message: "Result deleted successfully.",
+      data: deletedResult
+    });
   } catch (error) {
-    res.status(500).json({ message: "Failed to delete result.", error: error.message });
+    res.status(500).json({
+      message: "Failed to delete result.",
+      error: error.message
+    });
   }
 };

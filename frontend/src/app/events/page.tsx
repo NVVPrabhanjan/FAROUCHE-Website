@@ -58,7 +58,7 @@ export default function Events() {
       <AnimatePresence>
         {loading && <LoadingAnimation />}
       </AnimatePresence>
-      
+      <div className="relative min-h-[45vh] pt-16 md:pt-20 flex items-center justify-center bg-gradient-to-b from-purple-900/20 to-black">
       {!loading && (
         <>
           <ScrollProgressBar />
@@ -139,6 +139,7 @@ export default function Events() {
           </div>
         </>
       )}
+      </div>
     </div>
   )
 }
