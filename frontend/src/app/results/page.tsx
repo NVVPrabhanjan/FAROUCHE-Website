@@ -72,7 +72,7 @@ export default function MatchDetails() {
       <ScrollProgressBar />
       <Navbar />
       {isLoading && <LoadingAnimation />}
-      <div className="relative min-h-[45vh] pt-16 md:pt-20 flex items-center justify-center bg-gradient-to-b from-purple-900/20 to-black text-white">
+      <div className="relative min-h-[45vh] pt-16 md:pt-20 flex items-center justify-center bg-gradient-to-b from-purple-900/60 to-black text-white">
         {!isLoading && (
           <>
             <div className="container mx-auto px-4 py-12 md:py-20">

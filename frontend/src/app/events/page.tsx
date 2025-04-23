@@ -58,7 +58,7 @@ export default function Events() {
       <AnimatePresence>
         {loading && <LoadingAnimation />}
       </AnimatePresence>
-      <div className="relative min-h-[45vh] pt-16 md:pt-20 flex items-center justify-center bg-gradient-to-b from-purple-900/20 to-black">
+      <div className="relative min-h-[45vh] pt-16 md:pt-20 flex items-center justify-center bg-gradient-to-b from-purple-900/30 to-black text-white">
       {!loading && (
         <>
           <ScrollProgressBar />
@@ -106,7 +106,6 @@ export default function Events() {
                 >
                   <div className="relative z-10 flex-1">
                     <h2 className="text-2xl font-bold mb-3">{event.title}</h2>
-                    <p className="text-gray-300 mb-6">{event.description}</p>
                   </div>
 
                   <div className="relative z-10 mt-4">

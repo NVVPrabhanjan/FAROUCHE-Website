@@ -64,7 +64,8 @@ export default function CategoryResults() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black to-purple-950 text-white">
+    <div className="min-h-screen bg-black text-white overflow-x-hidden">
+    <div className="relative min-h-[45vh] pt-16 md:pt-20 flex items-center justify-center bg-gradient-to-b from-purple-900/60 to-black text-white">
       {isLoading && <LoadingAnimation />}
       
       {!isLoading && (
@@ -197,6 +198,7 @@ export default function CategoryResults() {
           </div>
         </>
       )}
+    </div>
     </div>
   );
 }

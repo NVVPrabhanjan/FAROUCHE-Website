@@ -145,7 +145,7 @@ export default function About() {
 
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden">
-      <div className="relative min-h-[45vh] flex items-center justify-center bg-gradient-to-b from-purple-900/20 to-black">
+      <div className="relative min-h-[45vh] flex items-center justify-center bg-gradient-to-b from-purple-900/60 to-black">
         <div className="container mx-auto px-4 text-center">
           <motion.h1
             variants={fadeInUp}
