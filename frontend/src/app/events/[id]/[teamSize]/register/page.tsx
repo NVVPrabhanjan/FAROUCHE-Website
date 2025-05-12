@@ -85,10 +85,10 @@ export default function EventRegistration() {
     try {
       validatePhoneNumber(formData.phone);
 
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@(bmsce\.ac\.in|bmsca\.ac\.in)$/;
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@(bmsce\.ac\.in|bmsca\.org|bmscl\.ac\.in)$/;
       if (!emailRegex.test(formData.email)) {
         throw new Error(
-          "Only college email IDs (@bmsce.ac.in or @bmsca.ac.in) are allowed."
+          "Only college email IDs (@bmsce.ac.in or @bmsca.org or @bmscl.ac.in) are allowed."
         );
       }
       fetch(`${REGISTRATION_API_END_POINT}/createRegistration`, {
@@ -642,6 +642,7 @@ export default function EventRegistration() {
                     <option value="2">2nd Year</option>
                     <option value="3">3rd Year</option>
                     <option value="4">4th Year</option>
+		    <option value="5">5th Year</option>
                   </select>
                 </div>
               </div>
