@@ -82,7 +82,7 @@ export default function Gallery() {
 
   const fetchImages = async () => {
     try {
-      const res = await axios.get("http://localhost:4001/api/v1/gallery/");
+      const res = await axios.get("http://143.110.185.244:4001/api/v1/gallery/");
       console.log(res);
       setImages(res.data.images);
       setMessage("");

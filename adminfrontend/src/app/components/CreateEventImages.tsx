@@ -24,7 +24,7 @@ export default function UploadImages() {
     }
 
     try {
-      const res = await axios.post("http://localhost:4001/api/v1/gallery/add", formData, {
+      const res = await axios.post("http://143.110.185.244:4001/api/v1/gallery/add", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
