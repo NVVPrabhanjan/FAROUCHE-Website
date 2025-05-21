@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.6",
+    "axios": "^1.9.0",
     "clsx": "^2.1.1",
     "dialog": "^0.3.1",
     "dotenv": "^16.4.7",

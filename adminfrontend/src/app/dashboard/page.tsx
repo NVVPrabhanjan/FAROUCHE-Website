@@ -16,7 +16,8 @@ import {
 } from "../ui/dialog";
 import { RegisterForm } from "../components/CreateEvent";
 import { ResultForm } from "../components/CreateResult";
-import { Trash2, Menu, X, Plus } from "lucide-react";
+import UploadImages from "../components/CreateEventImages"
+import { Trash2, Menu, X, Plus, Upload } from "lucide-react";
 // import { Toaster, toast } from 'sonner';
 
 export default function Dashboard() {
@@ -116,6 +117,7 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-black text-white">
+      
       {/* <Toaster /> */}
       <ScrollProgressBar />
       
@@ -168,6 +170,14 @@ export default function Dashboard() {
                 <ResultForm />
               </DialogContent>
             </Dialog>
+
+            <Link 
+              href="/imageUpload"
+              className="block w-full py-3 text-center rounded-lg bg-teal-600 hover:bg-teal-700 transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Upload Images
+            </Link>
             
             <button 
               onClick={() => setIsMenuOpen(false)}
@@ -222,7 +232,7 @@ export default function Dashboard() {
             <h2 className="text-xl md:text-2xl font-bold text-purple-400 mb-2">
               Admin Actions
             </h2>
-            <div className="flex gap-3">
+            <div className="flex flex-wrap gap-3">
               <Dialog>
                 <DialogTrigger
                   className="block px-4 py-2 text-center rounded-lg bg-purple-600 hover:bg-purple-700 transition-colors"
@@ -256,12 +266,20 @@ export default function Dashboard() {
                   <ResultForm />
                 </DialogContent>
               </Dialog>
+
+              <Link
+                href="/imageUpload"
+                className="block px-4 py-2 text-center rounded-lg bg-teal-600 hover:bg-teal-700 transition-colors"
+              >
+                <Upload size={16} className="inline mr-1" />
+                Upload Images
+              </Link>
             </div>
           </div>
         </div>
 
         {/* Mobile Action Buttons (visible on sm screens only) */}
-        <div className="grid grid-cols-2 gap-3 mb-8 sm:hidden">
+        <div className="grid grid-cols-3 gap-3 mb-8 sm:hidden">
           <Dialog>
             <DialogTrigger
               className="block w-full py-3 text-sm text-center rounded-lg bg-purple-600 hover:bg-purple-700 transition-colors"
@@ -295,6 +313,14 @@ export default function Dashboard() {
               <ResultForm />
             </DialogContent>
           </Dialog>
+
+          <Link
+            href="/imageUpload"
+            className="block w-full py-3 text-sm text-center rounded-lg bg-teal-600 hover:bg-teal-700 transition-colors"
+          >
+            <Upload size={16} className="inline mr-1" />
+            Images
+          </Link>
         </div>
 
         {/* Events List with Responsive Table */}

@@ -267,7 +267,7 @@ const committees: Committee[] = [
     description: "Student representatives coordinating Farouche",
     images: [
       { src: "/so-1.jpg", caption: "Shreyansh" },
-      { src: "/so-2.jpg", caption: "Pramananda" },
+      { src: "/so-2.jpg", caption: "Prathik" },
       { src: "/so-3.png", caption: "Robin" },
     ],
   },
