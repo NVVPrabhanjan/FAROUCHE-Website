@@ -64,7 +64,7 @@ export default function MatchDetails() {
         // Set a minimum loading time for a better UX
         setTimeout(() => {
           setIsLoading(false);
-        }, 2000);
+        }, 500);
       }
     }
 

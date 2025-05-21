@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { REGISTRATION_API_END_POINT } from "@/utils/constants";
+import { EVENT_API_END_POINT } from "@/utils/constants";
 
 const validatePhoneNumber = (phone: string) => {
   const phoneRegex = /^\d{10}$/;
@@ -21,8 +22,12 @@ const formatErrorMessage = (error: string) => {
   if (lowerError.includes("phone")) {
     return "Please enter a valid 10-digit phone number.";
   }
+  if (lowerError.includes("image")) {
+    return "Please upload an image for MH Cricket registration.";
+  }
   return error || "An error occurred during registration. Please try again.";
 };
+
 export default function EventRegistration() {
   const { id, teamSize } = useParams();
   const parsedTeamSize = parseInt(teamSize as string) || 1;
@@ -30,6 +35,10 @@ export default function EventRegistration() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState("");
   const [showError, setShowError] = useState(false);
+  const [eventTitle, setEventTitle] = useState("");
+  const [isMHCricket, setIsMHCricket] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState("");
 
   const [formData, setFormData] = useState({
     name: "",
@@ -39,8 +48,48 @@ export default function EventRegistration() {
     year: "",
   });
 
-  // Change teamMembers to an array of strings instead of objects
+  // Initialize teamMembers as an array of strings
   const [teamMembers, setTeamMembers] = useState([]);
+  const params = useParams();
+
+  // Fetch event details to determine if it's MH Cricket
+useEffect(() => {
+  const eventId = id || params?.id;
+  if (!eventId) return;
+
+  const fetchEventDetails = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(`${EVENT_API_END_POINT}/getEventID?id=${eventId}`);;
+      if (!response.ok) {
+        throw new Error(`Failed to fetch event: ${response.status}`);
+      }
+      const json = await response.json();
+      const event = json?.data;
+
+      if (event?.title) {
+        setEventTitle(event.title);
+        if (event.title === "MH Cricket") {
+          setIsMHCricket(true);
+          console.log("MH Cricket event detected");
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching event details:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  fetchEventDetails();
+}, [id, params]);
+
+
+  // For testing - uncomment this to force MH Cricket mode
+  // useEffect(() => {
+  //   setIsMHCricket(true);
+  //   console.log("MH Cricket mode forced via useEffect");
+  // }, []);
 
   // Initialize team members array based on teamSize
   useEffect(() => {
@@ -54,6 +103,16 @@ export default function EventRegistration() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // Handle image selection
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      console.log("Image selected:", file.name);
+      setSelectedImage(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
+
   // Simplified handler that directly updates the name string at the given index
   const handleTeamMemberChange = (index, value) => {
     const updatedTeamMembers = [...teamMembers];
@@ -61,80 +120,90 @@ export default function EventRegistration() {
     setTeamMembers(updatedTeamMembers);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setError("");
     setShowError(false);
 
-    // fetch(`${REGISTRATION_API_END_POINT}/createRegistration`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json"
-    //   },
-    //   body: JSON.stringify({
-    //     id,
-    //     name: formData.name,
-    //     email: formData.email,
-    //     hostelName: formData.hostelName,
-    //     phoneNumber: formData.phone,
-    //     year: formData.year,
-    //     teamMembers: parsedTeamSize > 1 ? teamMembers : undefined
-    //   })
-    // })
     try {
       validatePhoneNumber(formData.phone);
 
+<<<<<<< HEAD
       const emailRegex = /^[a-zA-Z0-9._%+-]+@(bmsce\.ac\.in|bmsca\.org|bmscl\.ac\.in)$/;
+=======
+      const emailRegex =
+        /^[a-zA-Z0-9._%+-]+@(bmsce\.ac\.in|bmsca\.org|bmscl\.ac\.in)$/;
+>>>>>>> d3e6724 (added gallery and mh cricket)
       if (!emailRegex.test(formData.email)) {
         throw new Error(
           "Only college email IDs (@bmsce.ac.in or @bmsca.org or @bmscl.ac.in) are allowed."
         );
       }
-      fetch(`${REGISTRATION_API_END_POINT}/createRegistration`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id,
-          name: formData.name,
-          email: formData.email,
-          hostelName: formData.hostelName,
-          phoneNumber: formData.phone,
-          year: formData.year,
-          teamMembers: parsedTeamSize > 1 ? teamMembers : undefined,
-        }),
-      })
-        .then(async (response) => {
-          if (!response.ok) {
-            const data = await response.json();
-            throw new Error(data.message || "Registration failed");
-          }
-          setIsSuccess(true);
-          setIsLoading(false);
 
-          // Add a delay before redirecting to allow users to see the success animation
-          setTimeout(() => {
-            window.location.href = `/events`; // Redirect to events page
-          }, 5000); // 3 seconds delay
+      // Debug log about cricket event and image
+      console.log("Is MH Cricket:", isMHCricket);
+      console.log("Has selected image:", !!selectedImage);
 
-          return response.json();
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-          setIsLoading(false);
-          const formattedError = formatErrorMessage(error.message);
-          setError(formattedError);
-          setShowError(true);
+      // Check if image is required for MH Cricket
+      if (isMHCricket && !selectedImage) {
+        throw new Error("Image is required for MH Cricket registration.");
+      }
 
-          setTimeout(() => {
-            setShowError(false);
-          }, 5000);
+      // Create FormData for multipart/form-data submission ALWAYS
+      // Changed approach: Always use FormData for consistency
+      const formDataToSubmit = new FormData();
+      formDataToSubmit.append("id", id);
+      formDataToSubmit.append("name", formData.name);
+      formDataToSubmit.append("email", formData.email);
+      formDataToSubmit.append("hostelName", formData.hostelName);
+      formDataToSubmit.append("phoneNumber", formData.phone);
+      formDataToSubmit.append("year", formData.year);
+
+      if (parsedTeamSize > 1 && teamMembers.length > 0) {
+        teamMembers.forEach((member, index) => {
+          formDataToSubmit.append(`teamMembers[${index}]`, member);
         });
-    } catch (error: any) {
+      }
+
+      // Append image if selected (for MH Cricket)
+      if (isMHCricket && selectedImage) {
+        console.log("Appending image to form data");
+        formDataToSubmit.append("image", selectedImage);
+      }
+
+      // IMPORTANT FIX: Don't set Content-Type header when using FormData
+      // Let the browser set the correct boundary for multipart/form-data
+      const fetchOptions = {
+        method: "POST",
+        headers: undefined, // Let browser handle the headers for multipart/form-data
+        body: formDataToSubmit,
+      };
+
+      console.log("Submitting registration...");
+      const response = await fetch(
+        `${REGISTRATION_API_END_POINT}/createRegistration`,
+        fetchOptions
+      );
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message || "Registration failed");
+      }
+
+      console.log("Registration successful!");
+      setIsSuccess(true);
       setIsLoading(false);
-      setError(formatErrorMessage(error.message));
+
+      // Add a delay before redirecting to allow users to see the success animation
+      setTimeout(() => {
+        window.location.href = "/events"; // Redirect to events page
+      }, 5000); // 5 seconds delay
+    } catch (error) {
+      console.error("Error:", error);
+      setIsLoading(false);
+      const formattedError = formatErrorMessage(error.message);
+      setError(formattedError);
       setShowError(true);
 
       setTimeout(() => {
@@ -493,7 +562,7 @@ export default function EventRegistration() {
           )}
         </AnimatePresence>
 
-        {/* Rest of your form code remains the same */}
+        {/* Form Container */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -512,14 +581,28 @@ export default function EventRegistration() {
               </h1>
               <div className="h-1 w-24 bg-gradient-to-r from-purple-500 to-pink-600 mx-auto rounded-full mb-2"></div>
               <p className="text-gray-300 text-lg">
+                {eventTitle && (
+                  <span className="font-medium">{eventTitle}</span>
+                )}{" "}
+                •{" "}
                 {parsedTeamSize > 1
                   ? `Team Event (${parsedTeamSize} members)`
                   : "Individual Event"}
               </p>
+              {/* Debug indicator for MH Cricket status - remove in production */}
+              {isMHCricket && (
+                <span className="inline-block bg-green-500/20 text-green-300 text-xs px-2 py-1 rounded-full mt-2">
+                  MH Cricket Event Detected ✓
+                </span>
+              )}
             </motion.div>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-8">
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-8"
+            encType="multipart/form-data" // Ensure this attribute is set
+          >
             {/* Team Leader Section */}
             <div className="mb-6">
               <div className="flex items-center mb-6">
@@ -642,13 +725,123 @@ export default function EventRegistration() {
                     <option value="2">2nd Year</option>
                     <option value="3">3rd Year</option>
                     <option value="4">4th Year</option>
+<<<<<<< HEAD
 		    <option value="5">5th Year</option>
+=======
+                    <option value="5">5th Year</option>
+>>>>>>> d3e6724 (added gallery and mh cricket)
                   </select>
                 </div>
               </div>
+
+              {/* Image Upload Section - Only visible for MH Cricket */}
+              {isMHCricket && (
+                <motion.div
+                  className="mt-6"
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div className="p-6 rounded-xl border border-purple-500/20 bg-gradient-to-b from-purple-900/20 to-black/20">
+                    <div className="flex items-center mb-4">
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-600 flex items-center justify-center mr-3">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-4 w-4 text-white"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </div>
+                      <h3 className="text-purple-200 text-lg font-medium">
+                        Upload Image
+                      </h3>
+                    </div>
+
+                    <label
+                      htmlFor="image-upload"
+                      className="block mb-2 text-purple-100 font-medium text-sm"
+                    >
+                      Photo <span className="text-red-400">*</span>
+                    </label>
+
+                    <div className="flex items-center justify-center w-full">
+                      <label
+                        htmlFor="image-upload"
+                        className={`flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-lg cursor-pointer 
+                        ${
+                          imagePreview
+                            ? "border-purple-600/30 bg-black/40"
+                            : "border-purple-600/20 bg-black/20 hover:bg-black/30"
+                        }`}
+                      >
+                        {imagePreview ? (
+                          <div className="relative w-full h-full overflow-hidden rounded-lg">
+                            <img
+                              src={imagePreview}
+                              alt="Preview"
+                              className="w-full h-full object-cover"
+                            />
+                            <div className="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
+                              <p className="text-white text-sm bg-black/70 px-4 py-2 rounded-full">
+                                Click to change image
+                              </p>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="w-10 h-10 mb-3 text-purple-500"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                              />
+                            </svg>
+                            <p className="mb-2 text-sm text-center text-purple-200">
+                              <span className="font-semibold">
+                                Click to upload
+                              </span>{" "}
+                              or drag and drop
+                            </p>
+                            <p className="text-xs text-center text-purple-300">
+                              Upload a team photo (JPG, PNG, or JPEG)
+                            </p>
+                          </div>
+                        )}
+                        <input
+                          id="image-upload"
+                          name="image"
+                          type="file"
+                          accept="image/png, image/jpeg, image/jpg"
+                          className="hidden"
+                          onChange={handleImageChange}
+                          required={isMHCricket}
+                          key={selectedImage ? selectedImage.name : "empty"} // force re-render if new image selected
+                        />
+                      </label>
+                    </div>
+                    <p className="mt-2 text-xs text-purple-300/80">
+                      This image will be used for the MH Cricket tournament
+                      display.
+                    </p>
+                  </div>
+                </motion.div>
+              )}
             </div>
 
-            {/* Team Members Section */}
+            {/* Team Members Section - Only visible for team events */}
             {parsedTeamSize > 1 && (
               <div className="mb-6">
                 <div className="flex items-center mb-6">
@@ -660,123 +853,111 @@ export default function EventRegistration() {
                 </div>
 
                 <div className="space-y-6">
-                  {teamMembers.map((memberName, index) => (
-                    <motion.div
+                  {teamMembers.map((member, index) => (
+                    <div
                       key={index}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      className="p-6 rounded-xl border border-purple-500/20 bg-black/50"
+                      className="bg-purple-900/10 p-5 rounded-xl border border-purple-900/30"
                     >
                       <div className="flex items-center mb-4">
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-600 flex items-center justify-center mr-3">
-                          <span className="text-white font-semibold">
-                            {index + 1}
+                        <div className="bg-purple-700/20 h-6 w-6 rounded-full flex items-center justify-center mr-3">
+                          <span className="text-sm font-medium text-purple-300">
+                            {index + 2}
                           </span>
                         </div>
-                        <h3 className="text-lg font-medium text-gray-200">
-                          Team Member {index + 1}
+                        <h3 className="text-purple-200 font-medium">
+                          Team Member {index + 2}
                         </h3>
                       </div>
 
-                      <div className="w-full">
+                      <div>
                         <label
-                          htmlFor={`memberName${index}`}
+                          htmlFor={`teamMember-${index}`}
                           className="block mb-2 text-purple-200 font-medium text-sm"
                         >
                           Full Name
                         </label>
                         <input
                           type="text"
-                          id={`memberName${index}`}
-                          value={memberName}
+                          id={`teamMember-${index}`}
+                          value={member}
                           onChange={(e) =>
                             handleTeamMemberChange(index, e.target.value)
                           }
                           required
                           className="w-full px-4 py-3 rounded-xl bg-black/50 text-white border border-purple-900/50 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500 transition-all"
-                          placeholder={`Enter name for team member ${
-                            index + 1
-                          }`}
+                          placeholder={`Enter team member ${index + 2}'s name`}
                         />
                       </div>
-                    </motion.div>
+                    </div>
                   ))}
                 </div>
               </div>
             )}
 
-            {/* Submit Button */}
-            <div className="pt-6">
-              <motion.button
-                whileHover={{
-                  scale: 1.02,
-                  boxShadow: "0 0 15px rgba(168, 85, 247, 0.5)",
-                }}
-                whileTap={{ scale: 0.98 }}
+            {/* Submit button */}
+            <div className="pt-4">
+              <button
                 type="submit"
                 disabled={isLoading}
-                className={`w-full py-4 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold text-lg transition-all shadow-md shadow-purple-900/30 relative overflow-hidden ${
+                className={`w-full py-4 px-6 text-white font-medium text-lg rounded-xl transition-all duration-200 shadow-lg ${
                   isLoading
-                    ? "cursor-not-allowed opacity-80"
-                    : "hover:from-purple-700 hover:to-pink-700"
+                    ? "bg-gray-700 cursor-not-allowed"
+                    : "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 shadow-purple-500/20"
                 }`}
               >
                 {isLoading ? (
                   <div className="flex items-center justify-center">
-                    <motion.div
-                      className="w-6 h-6 border-3 border-t-white border-r-transparent border-b-transparent border-l-transparent rounded-full"
-                      animate={{ rotate: 360 }}
-                      transition={{
-                        duration: 1,
-                        repeat: Infinity,
-                        ease: "linear",
-                      }}
-                    />
-                    <span className="ml-3">Registering...</span>
+                    <svg
+                      className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    Processing...
                   </div>
                 ) : (
-                  <span>Register Now</span>
+                  "Complete Registration"
                 )}
+              </button>
 
-                {/* Animated button background for loading state */}
-                {isLoading && (
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-pink-600/20"
-                    animate={{
-                      x: ["-100%", "100%"],
-                    }}
-                    transition={{
-                      duration: 1.5,
-                      repeat: Infinity,
-                      ease: "linear",
-                    }}
-                  />
-                )}
-              </motion.button>
+              <div className="flex justify-center mt-6">
+                <Link
+                  href="/events"
+                  className="text-purple-400 hover:text-purple-300 text-sm flex items-center transition-colors"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4 mr-1"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                    />
+                  </svg>
+                  Back to Events
+                </Link>
+              </div>
             </div>
           </form>
-
-          <div className="mt-8 text-center">
-            <Link
-              href={`/events/${id}/${teamSize}`}
-              className="inline-flex items-center text-purple-400 hover:text-purple-300 transition-colors"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 mr-2"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              Back to Event Details
-            </Link>
-          </div>
         </motion.div>
       </div>
     </div>
