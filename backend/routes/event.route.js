@@ -10,4 +10,4 @@ router.route("/deleteEvent").delete(deleteEvent);
 router.route("/getEventPag").get(getEventPag);
 router.route("/getEventID").get(getEventById);
 
-export default router;
+export default router

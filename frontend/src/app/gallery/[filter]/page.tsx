@@ -71,7 +71,7 @@ export default function FilteredGallery() {
     setLoading(true);
     try {
       const result = await axios.get(
-        `http://143.110.185.244:4001/api/v1/gallery/${eventName}`
+        `https://farouche25.tech/api/v1/gallery/${eventName}`
       );
       console.log(result);
       setImages(result.data.images);
