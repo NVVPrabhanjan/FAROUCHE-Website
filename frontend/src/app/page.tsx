@@ -14,6 +14,7 @@ import {
   Users,
   ChevronDown,
 } from "lucide-react";
+import CreditCardGrid from "./components/CreditCard";
 
 
 // Interfaces remain the same
@@ -313,102 +314,102 @@ const cardHover = {
 };
 
 // Enhanced Committee Modal Component
-const CommitteeModal = ({ committee, onClose }) => {
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+// const CommitteeModal = ({ committee, onClose }) => {
+//   const [selectedImage, setSelectedImage] = useState(null);
+//   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  useEffect(() => {
-    if (!selectedImage) {
-      const timer = setInterval(() => {
-        setCurrentImageIndex((prev) =>
-          prev === committee.images.length - 1 ? 0 : prev + 1
-        );
-      }, 3000);
-      return () => clearInterval(timer);
-    }
-  }, [selectedImage, committee.images.length]);
+//   useEffect(() => {
+//     if (!selectedImage) {
+//       const timer = setInterval(() => {
+//         setCurrentImageIndex((prev) =>
+//           prev === committee.images.length - 1 ? 0 : prev + 1
+//         );
+//       }, 3000);
+//       return () => clearInterval(timer);
+//     }
+//   }, [selectedImage, committee.images.length]);
 
-  if (!committee) return null;
+//   if (!committee) return null;
 
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className={`fixed inset-0 z-50 bg-black/90 backdrop-blur-lg overflow-y-auto ${poppins.className}`}
-    >
-      <div className="container mx-auto px-4 py-20">
-        <button
-          onClick={onClose}
-          className="fixed top-8 left-8 flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
-        >
-          <ArrowLeft /> Back
-        </button>
+//   return (
+//     <motion.div
+//       initial={{ opacity: 0 }}
+//       animate={{ opacity: 1 }}
+//       exit={{ opacity: 0 }}
+//       className={`fixed inset-0 z-50 bg-black/90 backdrop-blur-lg overflow-y-auto ${poppins.className}`}
+//     >
+//       <div className="container mx-auto px-4 py-20">
+//         <button
+//           onClick={onClose}
+//           className="fixed top-8 left-8 flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
+//         >
+//           <ArrowLeft /> Back
+//         </button>
 
-        <motion.div {...fadeInUp} className="max-w-5xl mx-auto">
-          <h2 className="text-4xl md:text-6xl font-bold mb-4">
-            {committee.name}
-          </h2>
-          <p className="text-xl text-gray-400 mb-8">{committee.description}</p>
+//         <motion.div {...fadeInUp} className="max-w-5xl mx-auto">
+//           <h2 className="text-4xl md:text-6xl font-bold mb-4">
+//             {committee.name}
+//           </h2>
+//           <p className="text-xl text-gray-400 mb-8">{committee.description}</p>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {committee.images.map((image, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: idx * 0.1 }}
-                className="relative aspect-square group cursor-pointer"
-                onClick={() => setSelectedImage(image)}
-              >
-                <div className="absolute inset-0 rounded-xl overflow-hidden">
-                  <Image
-                    src={image.src}
-                    alt={image.caption}
-                    fill
-                    className="object-cover transition-transform duration-300 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className="absolute bottom-4 left-4 space-y-1">
-                      <p className="text-white font-medium">{image.caption}</p>
-                      {image.role && (
-                        <p className="text-purple-400 text-sm">{image.role}</p>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-      </div>
+//           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+//             {committee.images.map((image, idx) => (
+//               <motion.div
+//                 key={idx}
+//                 initial={{ opacity: 0, scale: 0.8 }}
+//                 animate={{ opacity: 1, scale: 1 }}
+//                 transition={{ delay: idx * 0.1 }}
+//                 className="relative aspect-square group cursor-pointer"
+//                 onClick={() => setSelectedImage(image)}
+//               >
+//                 <div className="absolute inset-0 rounded-xl overflow-hidden">
+//                   <Image
+//                     src={image.src}
+//                     alt={image.caption}
+//                     fill
+//                     className="object-cover transition-transform duration-300 group-hover:scale-110"
+//                   />
+//                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+//                     <div className="absolute bottom-4 left-4 space-y-1">
+//                       <p className="text-white font-medium">{image.caption}</p>
+//                       {image.role && (
+//                         <p className="text-purple-400 text-sm">{image.role}</p>
+//                       )}
+//                     </div>
+//                   </div>
+//                 </div>
+//               </motion.div>
+//             ))}
+//           </div>
+//         </motion.div>
+//       </div>
 
-      <AnimatePresence>
-        {selectedImage && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-60 bg-black/95 flex items-center justify-center p-4"
-            onClick={() => setSelectedImage(null)}
-          >
-            <div className="relative w-full max-w-4xl aspect-square">
-              <Image
-                src={selectedImage.src}
-                alt={selectedImage.caption}
-                fill
-                className="object-contain"
-              />
-              <p className="absolute bottom-4 left-4 text-white text-xl font-medium">
-                {selectedImage.caption}
-              </p>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.div>
-  );
-};
+//       <AnimatePresence>
+//         {selectedImage && (
+//           <motion.div
+//             initial={{ opacity: 0 }}
+//             animate={{ opacity: 1 }}
+//             exit={{ opacity: 0 }}
+//             className="fixed inset-0 z-60 bg-black/95 flex items-center justify-center p-4"
+//             onClick={() => setSelectedImage(null)}
+//           >
+//             <div className="relative w-full max-w-4xl aspect-square">
+//               <Image
+//                 src={selectedImage.src}
+//                 alt={selectedImage.caption}
+//                 fill
+//                 className="object-contain"
+//               />
+//               <p className="absolute bottom-4 left-4 text-white text-xl font-medium">
+//                 {selectedImage.caption}
+//               </p>
+//             </div>
+//           </motion.div>
+//         )}
+//       </AnimatePresence>
+//     </motion.div>
+//   );
+// };
 
 // Main Component with Enhanced Animations
 export default function Home() {
@@ -529,8 +530,6 @@ export default function Home() {
           <ChevronDown className="w-6 h-6 text-purple-400" />
         </motion.div>
       </div>
-
-      {/* Enhanced Leadership Sections */}
       {hostelLeadership.map((group, groupIndex) => (
         <motion.section
           key={group.title}
@@ -602,8 +601,10 @@ export default function Home() {
           </motion.div>
         </motion.section>
       ))}
-
-      {/* Enhanced Committees Section */}
+          <div className="my-10 ">
+        <CreditCardGrid />
+      </div>
+      {/* Enhanced Committees Section
       <motion.section
   id="committees"
   initial={{ opacity: 0 }}
@@ -617,8 +618,8 @@ export default function Home() {
     whileInView="animate"
     viewport={{ once: true }}
     className="text-5xl md:text-7xl font-bold text-center mb-16"
-  >
-    <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">
+  > */}
+    {/* <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">
       Our Committees
     </span>
   </motion.h2>
@@ -651,17 +652,17 @@ export default function Home() {
       </motion.div>
     ))}
   </motion.div>
-</motion.section>
-
+</motion.section> */}
+{/* 
       {/* Committee Modal */}
-      <AnimatePresence mode="wait">
+      {/* <AnimatePresence mode="wait">
         {selectedCommittee && (
           <CommitteeModal
             committee={selectedCommittee}
             onClose={() => setSelectedCommittee(null)}
           />
         )}
-      </AnimatePresence>
+      </AnimatePresence> */}
       {/* Footer with scroll to top button */}
       <motion.footer 
         initial={{ opacity: 0 }}

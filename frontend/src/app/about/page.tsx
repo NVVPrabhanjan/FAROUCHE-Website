@@ -314,9 +314,7 @@ export default function About() {
           ))}
         </motion.div>
       </motion.section>
-      <div className="my-10 ">
-        <CreditCardGrid />
-      </div>
+
       {/* Additional CSS for animation control */}
       <style jsx global>{`
         .animate-section {
