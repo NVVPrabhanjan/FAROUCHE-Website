@@ -1,5 +1,5 @@
 ---
-# 🚀 Event Management Platform
+# 🚀 Farouche Website 
 
 A dynamic, full-stack platform designed to streamline large-scale event participation and management.  
 Successfully deployed for **2,000+ participants** across **45+ events**, ensuring high performance and scalability.  
@@ -59,4 +59,5 @@ Successfully deployed for **2,000+ participants** across **45+ events**, ensurin
 
 Contributions and feature requests are welcome.
 Please open an issue or submit a pull request.
+
 
