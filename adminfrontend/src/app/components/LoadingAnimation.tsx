@@ -45,7 +45,7 @@ const LoadingAnimation = () => {
                 transition={{ delay: 0.2 }}
                 className="font-mono text-purple-500 text-xs tracking-[0.3em] uppercase"
             >
-                Initializing Protocol
+                Initializing Admin Protocol
             </motion.div>
 
             <motion.div 

@@ -12,8 +12,9 @@ export const addImages = async (req, res) => {
     const uploadPromises = req.files.map((file) => {
       return uploadOnCloudinary(file.path);
     });
+    console.log(uploadPromises);
     const uploadResults = await Promise.all(uploadPromises);
-
+    console.log(uploadResults);
     let imageUrls = uploadResults;
     imageUrls = imageUrls
       .map((result) => result?.url)

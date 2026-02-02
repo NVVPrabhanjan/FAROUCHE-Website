@@ -1,118 +1,77 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import React from 'react'
 import Link from 'next/link'
-import { Facebook, Instagram, Twitter, Mail, MapPin, Phone } from 'lucide-react'
+import { Instagram, MapPin, Phone, Mail, ArrowUpRight } from 'lucide-react'
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
 
-  const socialLinks = [
-    { icon: Facebook, href: 'https://facebook.com', label: 'Facebook' },
-    { icon: Instagram, href: 'https://instagram.com', label: 'Instagram' },
-    { icon: Twitter, href: 'https://twitter.com', label: 'Twitter' },
+  const quickLinks = [
+    { name: 'Dashboard', href: '/dashboard' },
+    // { name: 'Home', href: '/' },
   ]
 
-  const quickLinks = [
-    { name: 'About', href: '#about' },
-    { name: 'Events', href: '/events' },
-    { name: 'Gallery', href: '#gallery' },
-    { name: 'Contact', href: '#contact' },
-    { name: 'Register', href: '/register' },
+  const contactInfo = [
+    { icon: MapPin, text: 'BMSETH, Bull Temple Rd, Bengaluru' },
+    { icon: Phone, text: '+91 7483119808' },
+    { icon: Mail, text: 'technical.farouche25@gmail.com' },
   ]
 
   return (
-    <footer className="bg-black border-t border-purple-900/50">
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid md:grid-cols-3 gap-12 mb-8">
-          {/* About Section */}
-          <div>
-            <h3 className="text-2xl font-bold mb-4">
-              <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">
-                HostelFest 2023
-              </span>
-            </h3>
-            <p className="text-gray-300 mb-4">
-              Join us for three days of excitement, creativity, and celebration at the biggest hostel festival of the year.
-            </p>
-            <div className="flex space-x-4">
-              {socialLinks.map((social, index) => {
-                const Icon = social.icon
-                return (
-                  <motion.a
-                    key={social.label}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                    className="text-purple-400 hover:text-purple-300 transition-colors"
-                  >
-                    <Icon className="w-5 h-5" />
-                  </motion.a>
-                )
-              })}
-            </div>
-          </div>
+    <footer className="bg-black border-t border-white/10 relative overflow-hidden mt-20">
+      
+      {/* Massive Watermark */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center pointer-events-none select-none opacity-[0.03]">
+         <h1 className="text-[20vw] font-bold font-cinzel tracking-tighter text-white leading-none">ADMIN</h1>
+      </div>
 
-          {/* Quick Links */}
-          <div>
-            <h3 className="text-xl font-semibold mb-4 text-purple-400">Quick Links</h3>
-            <ul className="space-y-2">
-              {quickLinks.map((link) => (
-                <li key={link.name}>
-                  <Link
-                    href={link.href}
-                    className="text-gray-300 hover:text-white transition-colors"
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Contact Info */}
-          <div>
-            <h3 className="text-xl font-semibold mb-4 text-purple-400">Contact Us</h3>
-            <div className="space-y-4">
-              <div className="flex items-center gap-3 text-gray-300">
-                <MapPin className="w-5 h-5 text-purple-400 flex-shrink-0" />
-                <span>NMAMIT, Nitte, Karkala Taluk, Udupi - 574110</span>
-              </div>
-              <div className="flex items-center gap-3 text-gray-300">
-                <Phone className="w-5 h-5 text-purple-400 flex-shrink-0" />
-                <span>+91 98765 43210</span>
-              </div>
-              <div className="flex items-center gap-3 text-gray-300">
-                <Mail className="w-5 h-5 text-purple-400 flex-shrink-0" />
-                <a 
-                  href="mailto:hostelfest2023@nmamit.in"
-                  className="hover:text-white transition-colors"
-                >
-                  hostelfest2023@nmamit.in
-                </a>
-              </div>
+      <div className="container mx-auto px-6 pt-20 pb-10 relative z-10">
+         
+         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8 border-b border-white/10 pb-16">
+            {/* Brand Column */}
+            <div className="md:col-span-5 space-y-8">
+                <div>
+                    <h2 className="text-3xl font-bold font-cinzel text-white tracking-wider mb-2">FAROUCHE<span className="text-purple-500">.</span></h2>
+                    <p className="text-neutral-500 max-w-sm leading-relaxed">
+                        Admin Portal
+                    </p>
+                </div>
             </div>
-          </div>
-        </div>
 
-        {/* Bottom Bar */}
-        <div className="pt-8 border-t border-purple-900/50">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-gray-400 text-sm">
-              © {currentYear} HostelFest. All rights reserved.
-            </p>
-            <div className="flex gap-6 text-sm">
-              <Link href="/privacy" className="text-gray-400 hover:text-white transition-colors">
-                Privacy Policy
-              </Link>
-              <Link href="/terms" className="text-gray-400 hover:text-white transition-colors">
-                Terms of Service
-              </Link>
+            {/* Links Column */}
+            <div className="md:col-span-3">
+                <h3 className="text-sm font-mono uppercase tracking-widest text-neutral-500 mb-6">Quick Actions</h3>
+                <ul className="space-y-4">
+                    {quickLinks.map(link => (
+                        <li key={link.name}>
+                            <Link href={link.href} className="group flex items-center gap-2 text-neutral-300 hover:text-white transition-colors">
+                                <span className="uppercase tracking-wider text-sm">{link.name}</span>
+                                <ArrowUpRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity -translate-y-1 group-hover:translate-y-0" />
+                            </Link>
+                        </li>
+                    ))}
+                </ul>
             </div>
-          </div>
-        </div>
+
+             {/* Contact Column */}
+             <div className="md:col-span-4">
+                <h3 className="text-sm font-mono uppercase tracking-widest text-neutral-500 mb-6">Support</h3>
+                <ul className="space-y-6">
+                    {contactInfo.map((item, idx) => (
+                        <li key={idx} className="flex items-start gap-4">
+                            <div className="mt-1 text-purple-500"><item.icon size={18} /></div>
+                            <span className="text-neutral-300 text-sm leading-relaxed">{item.text}</span>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+         </div>
+
+         {/* Bottom Bar */}
+         <div className="pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-mono text-neutral-600 uppercase tracking-widest">
+            <p>&copy; {currentYear} Farouche. All rights reserved.</p>
+         </div>
       </div>
     </footer>
   )

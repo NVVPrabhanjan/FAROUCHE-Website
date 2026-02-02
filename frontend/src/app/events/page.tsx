@@ -2,14 +2,24 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Search } from 'lucide-react'
-import Navbar from '../components/NavBar'
+import { Search, ArrowRight, Calendar, MapPin } from 'lucide-react'
 import ScrollProgressBar from '../components/ScrollProgressBar'
 import { useEffect, useState } from 'react'
 import { EVENT_API_END_POINT } from '@/utils/constants'
 import LoadingAnimation from "../components/LoadingAnimation";
+
+// Define Event Interface
+interface Event {
+    eventid: string;
+    title: string;
+    description: string;
+    date: string;
+    teamSize: number;
+    image?: string; // Assuming API returns image, if not we handle it
+}
+
 export default function Events() {
-  const [data, setData] = useState([])
+  const [data, setData] = useState<Event[]>([])
   const [searchTerm, setSearchTerm] = useState('')
   const [loading, setLoading] = useState(true)
   
@@ -19,12 +29,20 @@ export default function Events() {
     async function fetchData() {
       try {
         const res = await fetch(`${EVENT_API_END_POINT}/getEvents`);
-        const data = await res.json()
-        setData(data.data)
+        const result = await res.json()
+        // Ensure we are setting an array
+        if (Array.isArray(result.data)) {
+            setData(result.data)
+        } else if (Array.isArray(result)) {
+            setData(result)
+        } else {
+             console.error("Unexpected API response format:", result)
+             setData([])
+        }
       } catch (error) {
         console.error("Failed to fetch events:", error)
+        setData([])
       } finally {
-        // Add a slight delay to ensure animation is visible even on fast connections
         setTimeout(() => setLoading(false), 1200)
       }
     }
@@ -40,105 +58,117 @@ export default function Events() {
     .sort((a, b) => {
       const dateA = new Date(a.date)
       const dateB = new Date(b.date)
-      return dateB - dateA // Descending order
+      return dateB.getTime() - dateA.getTime() // Descending order
     })
 
-  // Enhanced loading screen component with festival-themed elements
-  const [isLoading, setIsLoading] = useState(true);
-  useEffect(() => {
-    // Simulate loading time (you can replace this with actual data loading)
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 2500);
-    
-    return () => clearTimeout(timer);
-  }, []);
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-black text-white selection:bg-purple-500/30">
       <AnimatePresence>
         {loading && <LoadingAnimation />}
       </AnimatePresence>
-      <div className="relative min-h-[45vh] pt-16 md:pt-20 flex items-center justify-center bg-gradient-to-b from-purple-900/30 to-black text-white">
+
       {!loading && (
         <>
           <ScrollProgressBar />
-          <Navbar />
-          <div className="container mx-auto px-4 py-20">
-            <motion.section
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-center mb-16"
-            >
-              <h1 className="text-5xl md:text-7xl font-bold mb-6">
-                <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">
-                  Farouche Events
-                </span>
-              </h1>
-              <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-10">
-                Excitement, creativity, and celebration
-              </p>
-              
-              {/* Search Section */}
-              <div className="flex justify-center mb-10">
-                <div className="relative w-full max-w-md">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Search className="h-5 w-5 text-gray-400" />
-                  </div>
-                  <input
-                    type="text"
-                    className="block w-full pl-10 pr-4 py-2 border border-purple-600 rounded-full bg-black/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                    placeholder="Search events..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                  />
-                </div>
-              </div>
-            </motion.section>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {sortedEvents.map((event, index) => (
-                <motion.div
-                  key={event.eventid}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="group relative overflow-hidden rounded-2xl bg-gradient-to-b from-purple-900/50 to-black/50 p-6 border border-purple-900/50 h-full flex flex-col"
-                >
-                  <div className="relative z-10 flex-1">
-                    <h2 className="text-2xl font-bold mb-3">{event.title}</h2>
-                  </div>
-
-                  <div className="relative z-10 mt-4">
-                    <Link 
-                      href={`/events/${event.eventid}/${event.teamSize}`}
-                      className="inline-flex items-center justify-center px-6 py-2 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-medium hover:from-purple-700 hover:to-pink-700 transition-colors"
-                    >
-                      View Details
-                    </Link>
-                  </div>
-
-                  <div className="absolute inset-0 -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent" />
-                    <Image
-                      src={""}
-                      alt={event.title}
-                      fill
-                      className="object-cover opacity-50"
-                    />
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+          
+          <main className="pt-32 pb-20 px-6 container mx-auto">
             
-            {sortedEvents.length === 0 && (
-              <div className="text-center py-16">
-                <p className="text-xl text-gray-400">No events found matching your search criteria.</p>
-              </div>
-            )}
-          </div>
+            {/* Header Section */}
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-10 border-b border-white/10 pb-10">
+                <div>
+                    <motion.p 
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="text-purple-500 font-mono text-xs uppercase tracking-widest mb-4"
+                    >
+                        // Official Schedule
+                    </motion.p>
+                    <motion.h1 
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.1 }}
+                        className="text-6xl md:text-9xl font-bold font-cinzel uppercase tracking-tighter leading-none"
+                    >
+                        Events<span className="text-neutral-800">.</span>
+                    </motion.h1>
+                </div>
+
+                {/* Architectural Search */}
+                <motion.div 
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.2 }}
+                    className="w-full md:w-auto min-w-[300px]"
+                >
+                    <div className="relative group">
+                        <input
+                            type="text"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            placeholder="SEARCH PROTOCOL..."
+                            className="w-full bg-transparent border-b border-white/20 py-4 pl-0 pr-10 text-xl font-mono uppercase tracking-widest text-white placeholder-neutral-700 focus:outline-none focus:border-purple-500 transition-colors"
+                        />
+                        <Search className="absolute right-0 top-1/2 -translate-y-1/2 text-neutral-600 group-focus-within:text-purple-500 transition-colors" size={20} />
+                    </div>
+                </motion.div>
+            </div>
+
+            {/* Event List - Architectural/Brutalist Style */}
+            <div className="space-y-4">
+                {sortedEvents.length > 0 ? (
+                    sortedEvents.map((event, index) => (
+                        <motion.div
+                            key={event.eventid}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: index * 0.05 }}
+                        >
+                            <Link href={`/events/${event.eventid}/${event.teamSize}`} className="block group">
+                                <article className="relative border border-white/10 p-8 md:p-12 transition-all duration-500 hover:border-purple-500/50 hover:bg-white/[0.02] flex flex-col md:flex-row gap-8 justify-between items-start md:items-center overflow-hidden">
+                                    
+                                    {/* Hover Background Accent */}
+                                    <div className="absolute top-0 left-0 w-1 h-full bg-purple-500 transform -translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+
+                                    {/* Event Info */}
+                                    <div className="flex-1 z-10">
+                                        <div className="flex items-center gap-4 mb-4 text-xs font-mono text-neutral-500 uppercase tracking-widest">
+                                            <span className="flex items-center gap-2">
+                                                <Calendar size={12} className="text-purple-500" />
+                                                {new Date(event.date).toLocaleDateString()}
+                                            </span>
+                                            <span className="w-px h-3 bg-white/10" />
+                                            <span>Team Size: {event.teamSize}</span>
+                                        </div>
+                                        <h2 className="text-4xl md:text-5xl font-bold uppercase tracking-tight mb-2 group-hover:text-purple-400 transition-colors duration-300">
+                                            {event.title}
+                                        </h2>
+                                        <p className="text-neutral-400 max-w-2xl line-clamp-2 md:line-clamp-1 group-hover:text-neutral-300 transition-colors">
+                                            {event.description}
+                                        </p>
+                                    </div>
+
+                                    {/* Action Arrow */}
+                                    <div className="z-10 bg-white/5 p-4 rounded-full border border-white/10 group-hover:bg-purple-500 group-hover:text-black group-hover:border-purple-500 transition-all duration-300">
+                                        <ArrowRight className="transform group-hover:-rotate-45 transition-transform duration-500" size={24} />
+                                    </div>
+
+                                </article>
+                            </Link>
+                        </motion.div>
+                    ))
+                ) : (
+                     <motion.div 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="py-20 text-center border border-white/10 border-dashed"
+                     >
+                        <p className="font-mono text-neutral-500 uppercase tracking-widest">No Events Found</p>
+                     </motion.div>
+                )}
+            </div>
+          </main>
         </>
       )}
-      </div>
     </div>
   )
 }

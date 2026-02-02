@@ -1,6 +1,6 @@
 "use client";
-import React, { useEffect } from "react";
-import { motion, useAnimation } from "framer-motion";
+import React from "react";
+import { motion } from "framer-motion";
 import {
   Users,
   Music,
@@ -14,69 +14,49 @@ import {
   Sparkles,
   Music2,
   Camera,
+  ArrowRight
 } from "lucide-react";
-import CreditCardGrid from "../components/CreditCard";
 
-// Optimized animation variants
+// Animation Variants
 const fadeInUp = {
-  initial: { opacity: 0, y: 20 },
-  animate: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.4,
-      ease: "easeOut",
-    },
-  },
+  initial: { opacity: 0, y: 30 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
 };
 
 const staggerContainer = {
-  initial: { opacity: 0 },
-  animate: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.08,
-      delayChildren: 0.1,
-    },
-  },
+  animate: { transition: { staggerChildren: 0.1 } },
 };
 
-// Data arrays with unique icons for each event
+// Data
 const events = [
   {
     title: "Rafaga",
-    description:
-      "The yearly orientation event for freshmen, brimming with engaging interactions between newcomers and upperclassmen, featuring a lively schedule of dancing, music, performances, refreshments, and guidance from mentors.",
+    description: "The yearly orientation event for freshmen, a lively schedule of dancing, music, and guidance.",
     icon: Users,
   },
   {
     title: "Holi",
-    description:
-      "An occasion where we come together to celebrate the joyous festival of Holi, creating cherished memories away from our hometowns in the comforting embrace of our second home, surrounded by beloved friends and companions.",
+    description: "Celebrating the joyous festival of colors away from home with friends and companions.",
     icon: Paintbrush,
   },
   {
     title: "Farouche",
-    description:
-      "Farouche is a month-long hostel festival filled with a dynamic array of activities, including spontaneous performances, dancing, singing, trivia competitions, a culinary extravaganza, various sports tournaments, and a mix of indoor and outdoor recreational pursuits.",
+    description: "A month-long hostel festival with sports, cultural events, and culinary extravaganzas.",
     icon: PartyPopper,
   },
   {
     title: "Flash Mob",
-    description:
-      "The Flashmob, performed during the inauguration of Farouche, adds an electrifying start to the festival. This dynamic performance is paired with the logo reveal, creating a memorable visual moment that sets the tone for the month-long celebration.",
+    description: "An electrifying performance marking the inauguration and logo reveal of Farouche.",
     icon: Music,
   },
   {
     title: "Chiguru",
-    description:
-      "Chiguru is a vibrant celebration that pays homage to Karnataka's diverse cultural legacy, featuring a variety of activities such as indulging in delicious cuisine, engaging in traditional dances, enjoying soulful music, and fostering a profound connection to our cultural heritage.",
+    description: "Paying homage to Karnataka's cultural legacy with cuisine, dance, and music.",
     icon: Music2,
   },
   {
     title: "Movie Night",
-    description:
-      "Movie Night is a delightful gathering where we come together to enjoy a curated Kannada film, immerse ourselves in captivating storytelling, share in the joy of cinema, and strengthen our bonds through the shared experience of film and culture.",
+    description: "A curated cinema experience to strengthen bonds through captivating storytelling.",
     icon: Film,
   },
 ];
@@ -84,21 +64,19 @@ const events = [
 const activities = [
   {
     title: "Back Drop",
-    description:
-      "Students create a stunning backdrop by painting it according to a specific theme. The backdrop adds a unique visual element, making the event even more memorable.",
+    description: "Creating stunning themed backdrops that add unique visual elements to events.",
     icon: Palette,
   },
   {
     title: "Food Fiesta",
-    description:
-      "Food Fiesta is a unique event where students take the lead in cooking and serving meals for the entire day, bringing creativity to the kitchen. The mess is transformed with vibrant decorations that align with the chosen theme.",
+    description: "Students take the lead in cooking and serving creative meals for the entire fraternity.",
     icon: Utensils,
   },
 ];
 
 const sports = [
   { name: "OUTDOOR", icon: Gamepad },
-  { name: "INDOOR", icon: Mic },
+  { name: "INDOOR", icon: Mic }, // Mic icon seemed wrong in original for indoor, but keeping for now or swapping to something generic if needed. Swapping to Gamepad generic for consistency in "Sports" context if vague, but keeping original mapping intent.
   { name: "E-SPORTS", icon: Sparkles },
 ];
 
@@ -113,224 +91,133 @@ const culturalEvents = [
   { name: "Mobile Phone Photography", subtitle: "Click it up", icon: Camera },
 ];
 
-// Custom hook for scroll-triggered animations
-const useScrollAnimation = () => {
-  const controls = useAnimation();
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const sections = document.querySelectorAll(".animate-section");
-
-      sections.forEach((section) => {
-        const rect = section.getBoundingClientRect();
-        const isVisible = rect.top < window.innerHeight * 0.8;
-
-        if (isVisible) {
-          section.classList.add("animate");
-        }
-      });
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Check on initial load
-
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  return controls;
-};
-
 export default function About() {
-  const controls = useScrollAnimation();
-
   return (
-    <div className="min-h-screen bg-black text-white overflow-x-hidden">
-      <div className="relative min-h-[45vh] flex items-center justify-center bg-gradient-to-b from-purple-900/60 to-black">
-        <div className="container mx-auto px-4 text-center">
-          <motion.h1
-            variants={fadeInUp}
-            initial="initial"
-            animate="animate"
-            className="text-6xl md:text-8xl font-bold mb-6"
-          >
-            <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">
-              About Farouche
-            </span>
-          </motion.h1>
-          <motion.p
-            variants={fadeInUp}
-            initial="initial"
-            animate="animate"
-            className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto"
-          >
-            A celebration of talent, culture, and community spirit
-          </motion.p>
+    <div className="min-h-screen bg-black text-white selection:bg-purple-500/30">
+        
+      {/* Hero Header */}
+      <section className="relative pt-40 pb-20 border-b border-white/10">
+        <div className="container mx-auto px-6">
+            <motion.div 
+                initial="initial"
+                animate="animate"
+                variants={staggerContainer}
+                className="max-w-4xl"
+            >
+                <motion.span variants={fadeInUp} className="block text-purple-500 font-mono text-sm uppercase tracking-widest mb-4">
+                    // Est. 2025
+                </motion.span>
+                <motion.h1 variants={fadeInUp} className="text-6xl md:text-9xl font-bold font-cinzel tracking-tighter uppercase leading-none mb-8">
+                    About<br/><span className="text-neutral-700">Farouche</span>
+                </motion.h1>
+                <motion.p variants={fadeInUp} className="text-xl md:text-2xl text-neutral-400 max-w-2xl leading-relaxed">
+                    More than a festival. A celebration of talent, culture, and the indomitable community spirit that defines our hostel life.
+                </motion.p>
+            </motion.div>
         </div>
-      </div>
+      </section>
 
-      {/* Main Events Section */}
-      <motion.section
-        className="container mx-auto px-4 py-20 animate-section"
-        variants={staggerContainer}
-        initial="initial"
-        whileInView="animate"
-        viewport={{ once: true, amount: 0.2 }}
-      >
-        <motion.h2
-          variants={fadeInUp}
-          className="text-4xl md:text-5xl font-bold text-center mb-16"
-        >
-          <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">
-            Our Events
-          </span>
-        </motion.h2>
+      {/* Main Events Grid */}
+      <section className="py-24 border-b border-white/10">
+         <div className="container mx-auto px-6">
+            <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+                <h2 className="text-4xl md:text-5xl font-bold font-cinzel uppercase tracking-wide">Signature Events</h2>
+                <p className="font-mono text-neutral-500 text-sm uppercase tracking-widest">Curated Experiences</p>
+            </div>
 
-        <motion.div
-          className="grid md:grid-cols-2 gap-8"
-          variants={staggerContainer}
-        >
-          {events.map((event, idx) => (
-            <motion.div
-              key={event.title}
-              variants={fadeInUp}
-              className="bg-gradient-to-b from-purple-900/20 to-black/20 rounded-2xl p-6 border border-purple-900/30 hover:border-purple-500 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/20 transform hover:-translate-y-1"
+            <motion.div 
+               variants={staggerContainer}
+               initial="initial"
+               whileInView="animate"
+               viewport={{ once: true }}
+               className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-white/10 border border-white/10"
             >
-              {React.createElement(event.icon, {
-                className: "w-8 h-8 text-purple-400 mb-4",
-              })}
-              <h3 className="text-2xl font-bold mb-3">{event.title}</h3>
-              <p className="text-gray-400">{event.description}</p>
+                {events.map((event) => (
+                    <motion.div
+                        key={event.title}
+                        variants={fadeInUp}
+                        className="group bg-black p-10 hover:bg-neutral-900/50 transition-colors duration-500 relative overflow-hidden"
+                    >
+                        <div className="absolute top-0 left-0 w-1 h-full bg-purple-500 transform -translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+                        
+                        <div className="mb-8 flex justify-between items-start">
+                             <div className="p-3 rounded-full border border-white/10 text-neutral-400 group-hover:text-white group-hover:border-purple-500 transition-colors">
+                                {React.createElement(event.icon, { size: 24 })}
+                             </div>
+                             <span className="font-mono text-xs text-neutral-600 group-hover:text-purple-400 transition-colors">01</span>
+                        </div>
+                        
+                        <h3 className="text-2xl font-bold uppercase tracking-tight mb-4">{event.title}</h3>
+                        <p className="text-neutral-500 text-sm leading-relaxed group-hover:text-neutral-300 transition-colors">
+                            {event.description}
+                        </p>
+                    </motion.div>
+                ))}
             </motion.div>
-          ))}
-        </motion.div>
-      </motion.section>
+         </div>
+      </section>
 
-      {/* Activities Section */}
-      <motion.section
-        className="container mx-auto px-4 py-20 animate-section"
-        variants={staggerContainer}
-        initial="initial"
-        whileInView="animate"
-        viewport={{ once: true, amount: 0.2 }}
-      >
-        <motion.h2
-          variants={fadeInUp}
-          className="text-4xl md:text-5xl font-bold text-center mb-16"
-        >
-          <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">
-            Special Activities
-          </span>
-        </motion.h2>
+      {/* Activities & Sports split */}
+      <section className="grid md:grid-cols-2 border-b border-white/10">
+          {/* Activities */}
+          <div className="p-12 md:p-20 border-b md:border-b-0 md:border-r border-white/10">
+               <h3 className="text-3xl font-cinzel uppercase tracking-wider mb-10 text-center md:text-left">Special Activities</h3>
+               <div className="space-y-8">
+                   {activities.map(activity => (
+                       <div key={activity.title} className="group border border-white/10 p-8 rounded-xl hover:border-purple-500/50 transition-colors">
+                           <div className="flex items-center gap-4 mb-4">
+                                <activity.icon className="text-purple-500" size={20} />
+                                <h4 className="text-xl font-bold uppercase">{activity.title}</h4>
+                           </div>
+                           <p className="text-neutral-400 text-sm leading-relaxed">{activity.description}</p>
+                       </div>
+                   ))}
+               </div>
+          </div>
 
-        <motion.div
-          className="grid md:grid-cols-2 gap-8"
-          variants={staggerContainer}
-        >
-          {activities.map((activity) => (
-            <motion.div
-              key={activity.title}
-              variants={fadeInUp}
-              className="bg-gradient-to-b from-purple-900/20 to-black/20 rounded-2xl p-6 border border-purple-900/30 hover:border-purple-500 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/20 transform hover:-translate-y-1"
-            >
-              {React.createElement(activity.icon, {
-                className: "w-8 h-8 text-purple-400 mb-4",
-              })}
-              <h3 className="text-2xl font-bold mb-3">{activity.title}</h3>
-              <p className="text-gray-400">{activity.description}</p>
-            </motion.div>
-          ))}
-        </motion.div>
-      </motion.section>
+          {/* Sports */}
+          <div className="p-12 md:p-20 bg-neutral-900/20">
+              <h3 className="text-3xl font-cinzel uppercase tracking-wider mb-10 text-center md:text-left">Sports Categories</h3>
+              <div className="grid gap-4">
+                  {sports.map((sport, i) => (
+                      <div key={sport.name} className="flex items-center justify-between p-6 border-b border-white/10 hover:pl-10 transition-all duration-300 group cursor-default">
+                          <div className="flex items-center gap-6">
+                              <span className="font-mono text-neutral-600 text-xs">0{i+1}</span>
+                              <span className="text-xl font-bold tracking-widest">{sport.name}</span>
+                          </div>
+                          <sport.icon className="text-neutral-600 group-hover:text-purple-500 transition-colors" size={24} />
+                      </div>
+                  ))}
+              </div>
+          </div>
+      </section>
 
-      {/* Sports Section */}
-      <motion.section
-        className="container mx-auto px-4 py-20 animate-section"
-        variants={staggerContainer}
-        initial="initial"
-        whileInView="animate"
-        viewport={{ once: true, amount: 0.2 }}
-      >
-        <motion.h2
-          variants={fadeInUp}
-          className="text-4xl md:text-5xl font-bold text-center mb-16"
-        >
-          <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">
-            Sports Categories
-          </span>
-        </motion.h2>
+      {/* Cultural Events - Dense Grid */}
+      <section className="py-24">
+         <div className="container mx-auto px-6">
+             <div className="flex flex-col items-center mb-16 text-center">
+                <span className="text-purple-500 font-mono text-sm uppercase tracking-widest mb-4">Talent Showcase</span>
+                <h2 className="text-5xl md:text-7xl font-bold font-cinzel uppercase tracking-tight">Cultural Events</h2>
+             </div>
 
-        <motion.div
-          className="grid md:grid-cols-3 gap-8"
-          variants={staggerContainer}
-        >
-          {sports.map((sport) => (
-            <motion.div
-              key={sport.name}
-              variants={fadeInUp}
-              className="bg-gradient-to-b from-purple-900/20 to-black/20 rounded-2xl p-6 border border-purple-900/30 hover:border-purple-500 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/20 transform hover:-translate-y-1 text-center"
-            >
-              {React.createElement(sport.icon, {
-                className: "w-8 h-8 text-purple-400 mb-4 mx-auto",
-              })}
-              <h3 className="text-2xl font-bold">{sport.name}</h3>
-            </motion.div>
-          ))}
-        </motion.div>
-      </motion.section>
+             <div className="grid grid-cols-2 lg:grid-cols-4 border-t border-l border-white/10">
+                 {culturalEvents.map((event) => (
+                     <motion.div 
+                        key={event.name}
+                        whileHover={{ backgroundColor: 'rgba(255,255,255,0.03)' }}
+                        className="p-8 border-r border-b border-white/10 flex flex-col items-center text-center group cursor-pointer"
+                     >
+                         <div className="mb-6 opacity-50 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500">
+                             {React.createElement(event.icon, { size: 32 })}
+                         </div>
+                         <h3 className="text-lg font-bold uppercase tracking-wider mb-2">{event.name}</h3>
+                         <p className="text-xs font-mono text-purple-400 uppercase tracking-widest">{event.subtitle}</p>
+                     </motion.div>
+                 ))}
+             </div>
+         </div>
+      </section>
 
-      {/* Cultural Events Section */}
-      <motion.section
-        className="container mx-auto px-4 py-20 animate-section"
-        variants={staggerContainer}
-        initial="initial"
-        whileInView="animate"
-        viewport={{ once: true, amount: 0.2 }}
-      >
-        <motion.h2
-          variants={fadeInUp}
-          className="text-4xl md:text-5xl font-bold text-center mb-16"
-        >
-          <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">
-            Cultural Events
-          </span>
-        </motion.h2>
-
-        <motion.div
-          className="grid md:grid-cols-3 lg:grid-cols-4 gap-8"
-          variants={staggerContainer}
-        >
-          {culturalEvents.map((event) => (
-            <motion.div
-              key={event.name}
-              variants={fadeInUp}
-              className="bg-gradient-to-b from-purple-900/20 to-black/20 rounded-2xl p-6 border border-purple-900/30 hover:border-purple-500 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/20 transform hover:-translate-y-1 text-center"
-            >
-              {React.createElement(event.icon, {
-                className: "w-8 h-8 text-purple-400 mb-4 mx-auto",
-              })}
-              <h3 className="text-xl font-bold mb-2">{event.name}</h3>
-              <p className="text-purple-400 text-sm">{event.subtitle}</p>
-            </motion.div>
-          ))}
-        </motion.div>
-      </motion.section>
-
-      {/* Additional CSS for animation control */}
-      <style jsx global>{`
-        .animate-section {
-          opacity: 0;
-          transform: translateY(20px);
-          transition: opacity 0.5s ease, transform 0.5s ease;
-        }
-
-        .animate-section.animate {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      `}</style>
     </div>
   );
 }
-// export default function Page() {
-//   return <h1>Hello, Next.js!</h1>
-// }

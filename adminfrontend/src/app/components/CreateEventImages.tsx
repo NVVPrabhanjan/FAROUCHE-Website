@@ -1,15 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useState, FormEvent, ChangeEvent } from "react";
 import axios from "axios";
 import Link from "next/link";
 
 export default function UploadImages() {
   const [eventName, setEventName] = useState("");
-  const [files, setFiles] = useState([]);
+  const [files, setFiles] = useState<File[]>([]);
   const [message, setMessage] = useState("");
 
-  const handleUpload = async (e) => {
+  const handleUpload = async (e: FormEvent) => {
     e.preventDefault();
 
     if (!eventName || files.length === 0) {
@@ -19,12 +19,12 @@ export default function UploadImages() {
 
     const formData = new FormData();
     formData.append("eventName", eventName);
-    for (let i = 0; i < files.length; i++) {
-      formData.append("images", files[i]);
-    }
+    files.forEach((file) => {
+        formData.append("images", file);
+    });
 
     try {
-      const res = await axios.post("https://farouche25.tech/api/v1/gallery/add", formData, {
+      const res = await axios.post("http://localhost:4001/api/v1/gallery/add", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -36,6 +36,12 @@ export default function UploadImages() {
     } catch (error) {
       console.error(error);
       setMessage("Upload failed. Try again.");
+    }
+  };
+
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setFiles(Array.from(e.target.files));
     }
   };
 
@@ -52,21 +58,21 @@ export default function UploadImages() {
         <select
           value={eventName}
           onChange={(e) => setEventName(e.target.value)}
-          className="border p-2 rounded"
+          className="border p-2 rounded text-black"
         >
-          <option className="text-black" value="">Select Event</option>
-          <option className="text-black" value="Inaguration">Inaguration</option>
-          <option className="text-black" value="Chiguru">Chiguru</option>
-          <option className="text-black" value="Hostel Day">Hostel Day</option>
-          <option className="text-black" value="Food Fiesta - 1 & 2nd Year">Food Fiesta 1 & 2nd Year</option>
-          <option className="text-black" value="Food Fiesta - 3rd Year">Food Fiesta 3rd Year</option>
-          <option className="text-black" value="Food Fiesta - IH">Food Fiesta IH</option>
+          <option value="">Select Event</option>
+          <option value="Inaguration">Inaguration</option>
+          <option value="Chiguru">Chiguru</option>
+          <option value="Hostel Day">Hostel Day</option>
+          <option value="Food Fiesta - 1 & 2nd Year">Food Fiesta 1 & 2nd Year</option>
+          <option value="Food Fiesta - 3rd Year">Food Fiesta 3rd Year</option>
+          <option value="Food Fiesta - IH">Food Fiesta IH</option>
         </select>
 
         <input
           type="file"
           multiple
-          onChange={(e) => setFiles(e.target.files)}
+          onChange={handleFileChange}
           className="border p-2 rounded"
         />
         <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">

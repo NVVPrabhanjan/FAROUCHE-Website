@@ -1,393 +1,193 @@
 "use client";
 import { motion } from "framer-motion";
-import Navbar from "../../components/NavBar";
 import ScrollProgressBar from "../../components/ScrollProgressBar";
 import { useState, useEffect } from "react";
 import { RESULTS_END_POINT } from "@/utils/constants";
-import LoadingAnimation from "../../components/LoadingAnimation";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { ArrowLeft, Trophy, Medal, Star } from "lucide-react";
+
+// Types
+interface Match {
+  _id: string;
+  name: string;
+  teams: string;
+  winner: string;
+  runner?: string;
+  matchType: string;
+  hostelType: string;
+  runnerType?: string;
+  ManOftheMatch?: string;
+  imageWinner?: string;
+  imageRunner?: string;
+  category: string;
+}
 
 export default function CategoryResults() {
-  const [matches, setMatches] = useState([]);
+  const [matches, setMatches] = useState<Match[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [activeImageIndex, setActiveImageIndex] = useState({}); // Track active image for each match
+  const [finals, setFinals] = useState<Match | null>(null);
   const params = useParams();
-  const category = params.category ? decodeURIComponent(params.category) : "";
+  const category = params.category ? decodeURIComponent(params.category as string) : "";
 
   useEffect(() => {
     if (!category) return;
-
-    document.title = `${category} Matches`;
+    document.title = `PROTOCOL: ${category.toUpperCase()}`;
 
     async function fetchCategoryMatches() {
       try {
         const res = await fetch(`${RESULTS_END_POINT}/getResults`);
         const data = await res.json();
         
-        // Filter matches by category
-        const categoryMatches = data.data.filter(
-          (match) => (match.category || "Uncategorized") === category
+        const categoryMatches: Match[] = data.data.filter(
+          (match: Match) => (match.category || "Uncategorized") === category
         );
 
         setMatches(categoryMatches);
+        
+        // Isolate Final Match
+        const finalMatch = categoryMatches.find(m => m.matchType === "Finals");
+        if (finalMatch) setFinals(finalMatch);
 
-        // Initialize active image state for each match
-        const initialImageState = {};
-        categoryMatches.forEach((match) => {
-          initialImageState[match._id] = "winner";
-        });
-        setActiveImageIndex(initialImageState);
       } catch (error) {
         console.error("Error fetching category matches:", error);
       } finally {
-        // Set a minimum loading time for a better UX
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 1500);
+        setTimeout(() => setIsLoading(false), 800);
       }
     }
 
     fetchCategoryMatches();
   }, [category]);
 
-  // Function to toggle between winner and runner images
-  const toggleImage = (matchId) => {
-    setActiveImageIndex((prev) => ({
-      ...prev,
-      [matchId]: prev[matchId] === "winner" ? "runner" : "winner",
-    }));
-  };
-
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { duration: 0.6, ease: "easeOut" },
-    },
-  };
-
   return (
-    <div className="min-h-screen bg-black text-white overflow-x-hidden">
+    <div className="min-h-screen bg-black text-white selection:bg-purple-500/30 font-sans">
       <ScrollProgressBar />
-      <Navbar />
 
-      <div className="relative min-h-screen pt-16 md:pt-20">
-        {isLoading ? (
-          <div className="flex items-center justify-center min-h-[60vh]">
-            <LoadingAnimation />
-          </div>
-        ) : (
-          <div className="container mx-auto px-4 py-12 md:py-20 pt-16 md:pt-20">
-            <div className="flex items-center mb-8">
-              <Link
-                href="/results"
-                className="flex items-center text-purple-400 hover:text-purple-300 transition-colors"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 mr-2"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                  />
-                </svg>
-                Back to Categories
-              </Link>
+      {isLoading ? (
+         <div className="h-screen flex items-center justify-center">
+             <div className="flex flex-col items-center gap-4">
+                <div className="w-12 h-12 border-2 border-white/20 border-t-purple-500 rounded-full animate-spin" />
+                <span className="font-mono text-xs uppercase tracking-widest text-neutral-500">Retrieving Protocol...</span>
+             </div>
+         </div>
+      ) : (
+        <main className="pt-36 pb-20 px-4 md:px-6 container mx-auto">
+            
+            {/* Minimal Header */}
+            <div className="mb-12 border-b border-white/10 pb-6">
+                <Link href="/results" className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-neutral-500 hover:text-white transition-colors mb-4 group">
+                    <ArrowLeft size={10} className="group-hover:-translate-x-1 transition-transform" />
+                    <span>Back</span>
+                </Link>
+                <div className="flex justify-between items-end">
+                    <h1 className="text-3xl md:text-4xl font-bold font-cinzel uppercase tracking-tighter leading-none">
+                        {category}
+                    </h1>
+                     <span className="font-mono text-[10px] text-purple-500 uppercase tracking-widest">{matches.length} Records</span>
+                </div>
             </div>
 
-            <motion.section
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="mb-10 md:mb-16"
-            >
-              <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-4 md:mb-6">
-                <span className="bg-gradient-to-r from-purple-400 via-pink-500 to-purple-600 bg-clip-text text-transparent">
-                  {category} Matches
-                </span>
-              </h1>
-              <div className="h-1 w-32 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full mb-6"></div>
-              <p className="text-lg md:text-xl text-gray-300">
-                Explore all matches in the {category} category
-              </p>
-            </motion.section>
-
-            {matches.length > 0 ? (
-              <motion.div
-                variants={containerVariants}
-                initial="hidden"
-                animate="visible"
-                className="grid gap-8 md:grid-cols-2"
-              >
-                {matches.map((match) => (
-                  <motion.div
-                    key={match._id}
-                    variants={itemVariants}
-                    className="rounded-xl md:rounded-2xl overflow-hidden bg-gradient-to-b from-purple-900/30 to-black/90 border border-purple-800/30"
-                  >
-                    {/* Match card content */}
-                    <div className="flex flex-col md:flex-row">
-                      {/* Content section - Full width on mobile, left side on desktop */}
-                      <div className="p-4 sm:p-6 md:w-3/5">
-                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 text-white">
-                          {match.name}
-                        </h2>
-                        <p className="text-base sm:text-lg md:text-xl font-bold text-gray-300 mb-4">
-                          {match.teams
-                            .replace(/[\[\]]/g, "")
-                            .replace(/,/g, " vs ")}
-                        </p>
-
-                        <div className="space-y-3 mt-4">
-                          {/* Winner information */}
-                          <div className="flex items-center gap-3 p-3 bg-purple-900/20 rounded-lg border-l-4 border-purple-500">
-                            <div className="flex-shrink-0">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-5 w-5 md:h-6 md:w-6 text-purple-400"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
-                                />
-                              </svg>
+            {/* Finals - Single Unified Box */}
+            {finals && (
+                <motion.section 
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="mb-16 max-w-4xl mx-auto"
+                >
+                    <div className="bg-neutral-900/30 border border-white/10 rounded-lg overflow-hidden">
+                        {/* Header of Box */}
+                        <div className="bg-white/5 border-b border-white/5 px-6 py-4 flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                                <Trophy size={14} className="text-purple-400" />
+                                <span className="font-mono text-[10px] uppercase tracking-widest text-white">Championship Result</span>
                             </div>
-                            <div>
-                              <span className="block text-xs md:text-sm text-purple-300">
-                                Winner
-                              </span>
-                              <span className="font-semibold">
-                                {match.winner}
-                              </span>
-                            </div>
-                          </div>
-
-                          {/* Runner-up information - Only for Finals */}
-                          {match.matchType === "Finals" && match.runner && (
-                            <div className="flex items-center gap-3 p-3 bg-blue-900/20 rounded-lg border-l-4 border-blue-500">
-                              <div className="flex-shrink-0">
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  className="h-5 w-5 md:h-6 md:w-6 text-blue-400"
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                  stroke="currentColor"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M13 10V3L4 14h7v7l9-11h-7z"
-                                  />
-                                </svg>
-                              </div>
-                              <div>
-                                <span className="block text-xs md:text-sm text-blue-300">
-                                  Runner-up
-                                </span>
-                                <span className="font-semibold">
-                                  {match.runner}
-                                </span>
-                              </div>
-                            </div>
-                          )}
-
-                          {/* Man of the Match information */}
-                          {match.ManOftheMatch && (
-                            <div className="flex items-center gap-3 p-3 bg-pink-900/20 rounded-lg border-l-4 border-pink-500">
-                              <div className="flex-shrink-0">
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  className="h-5 w-5 md:h-6 md:w-6 text-pink-400"
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                  stroke="currentColor"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                                  />
-                                </svg>
-                              </div>
-                              <div>
-                                <span className="block text-xs md:text-sm text-pink-300">
-                                  Man of the Match
-                                </span>
-                                <span className="font-semibold">
-                                  {match.ManOftheMatch}
-                                </span>
-                              </div>
-                            </div>
-                          )}
-                          
-                          {/* Hostel Type Badge */}
-                          <div className="mt-4">
-                            <span
-                              className={`inline-block px-3 py-1 text-xs font-medium rounded-full ${
-                                match.hostelType === "International"
-                                  ? "bg-green-900/30 text-green-300 border border-green-500/30"
-                                  : "bg-amber-900/30 text-amber-300 border border-amber-500/30"
-                              }`}
-                            >
-                              {match.hostelType} Hostel
-                            </span>
-
-                            {match.matchType === "Finals" && (
-                              <span className="inline-block ml-2 px-3 py-1 text-xs font-medium rounded-full bg-purple-900/30 text-purple-300 border border-purple-500/30">
-                                Finals
-                              </span>
-                            )}
-                            
-                            {match.matchType === "Finals" && match.runnerType && (
-                              <span className={`inline-block mt-2 px-3 py-1 text-xs font-medium rounded-full ${
-                                match.runnerType === "International"
-                                  ? "bg-blue-900/30 text-blue-300 border border-blue-500/30"
-                                  : "bg-pink-900/30 text-pink-300 border border-pink-500/30"
-                              }`}>
-                                Runner: {match.runnerType} Hostel
-                              </span>
-                            )}
-                          </div>
+                            <span className="font-cinzel text-xs text-neutral-400">Finals Protocol</span>
                         </div>
-                      </div>
 
-                      {/* Image section */}
-                      <div className="md:w-2/5 order-first md:order-last">
-                        {match.matchType === "Finals" && match.imageRunner ? (
-                          // For Finals matches with both images - Image toggle system
-                          <div
-                            className="w-full h-60 sm:h-72 md:h-full relative cursor-pointer"
-                            onMouseEnter={() => toggleImage(match._id)}
-                            onMouseLeave={() => toggleImage(match._id)}
-                            onClick={() => toggleImage(match._id)} // For mobile support
-                          >
-                            {/* Winner Image */}
-                            <div
-                              className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${
-                                activeImageIndex[match._id] === "winner"
-                                  ? "opacity-100"
-                                  : "opacity-0"
-                              }`}
-                            >
-                              <img
-                                src={match.imageWinner}
-                                alt={`${match.winner} - Winner`}
-                                className="w-full h-full object-cover"
-                              />
-                              <div className="absolute top-0 right-0 bg-purple-600 text-white text-xs px-2 py-1">
-                                Winner
-                              </div>
-                            </div>
-
-                            {/* Runner Image */}
-                            <div
-                              className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${
-                                activeImageIndex[match._id] === "runner"
-                                  ? "opacity-100"
-                                  : "opacity-0"
-                              }`}
-                            >
-                              <img
-                                src={match.imageRunner}
-                                alt={`${match.runner} - Runner-up`}
-                                className="w-full h-full object-cover"
-                              />
-                              <div className="absolute top-0 right-0 bg-blue-600 text-white text-xs px-2 py-1">
-                                Runner-up
-                              </div>
-                            </div>
-
-                            {/* Instruction overlay */}
-                            <div className="absolute bottom-2 left-2 right-2 bg-black/70 text-white text-xs py-1 px-2 rounded text-center">
-                              {activeImageIndex[match._id] === "winner"
-                                ? "Hover/tap to see runner-up"
-                                : "Hover/tap to see winner"}
-                            </div>
-                          </div>
-                        ) : (
-                          // For General matches or Finals without runner image - Show only winner image
-                          <div className="w-full h-60 sm:h-72 md:h-full relative">
-                            {match.imageWinner ? (
-                              <img
-                                src={match.imageWinner}
-                                alt={match.name}
-                                className="w-full h-full object-cover"
-                              />
-                            ) : (
-                              <div className="w-full h-full flex items-center justify-center bg-purple-900/50">
-                                <span className="text-purple-300">
-                                  No image available
+                        {/* Content Grid */}
+                        <div className="grid md:grid-cols-2 gap-px bg-white/5">
+                            {/* Winner Side */}
+                            <div className="bg-black p-6 flex flex-col items-center text-center">
+                                <span className="inline-block px-2 py-0.5 bg-yellow-500/10 border border-yellow-500/20 text-yellow-500 text-[9px] font-mono uppercase tracking-widest mb-4">
+                                    Gold Medalist
                                 </span>
-                              </div>
-                            )}
-                            {match.matchType === "Finals" && (
-                              <div className="absolute top-0 right-0 bg-purple-600 text-white text-xs px-2 py-1">
-                                Winner
-                              </div>
-                            )}
-                          </div>
-                        )}
-                      </div>
+                                <h3 className="text-2xl font-bold font-cinzel text-white mb-1">{finals.winner}</h3>
+                                <p className="font-mono text-[10px] text-neutral-500 uppercase tracking-widest mb-6">{finals.hostelType} Hostel</p>
+                                
+                                {finals.imageWinner && (
+                                    <div className="w-full aspect-[4/3] relative rounded overflow-hidden border border-white/10">
+                                        <img 
+                                            src={finals.imageWinner} 
+                                            alt="Winner" 
+                                            className="w-full h-full object-cover" // User asked for visible fully, but object-contain might be too small if aspect ratio varies. Defaulting to cover but in a controlled aspect ratio box.
+                                        />
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Runner Side */}
+                            <div className="bg-black p-6 flex flex-col items-center text-center">
+                                <span className="inline-block px-2 py-0.5 bg-neutral-500/10 border border-neutral-500/20 text-neutral-400 text-[9px] font-mono uppercase tracking-widest mb-4">
+                                    Silver Medalist
+                                </span>
+                                <h3 className="text-2xl font-bold font-cinzel text-neutral-400 mb-1">{finals.runner}</h3>
+                                <p className="font-mono text-[10px] text-neutral-600 uppercase tracking-widest mb-6">{finals.runnerType} Hostel</p>
+
+                                {finals.imageRunner && (
+                                    <div className="w-full aspect-[4/3] relative rounded overflow-hidden border border-white/10">
+                                        <img 
+                                            src={finals.imageRunner} 
+                                            alt="Runner" 
+                                            className="w-full h-full object-cover grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500" 
+                                        />
+                                    </div>
+                                )}
+                            </div>
+                        </div>
                     </div>
-                  </motion.div>
-                ))}
-              </motion.div>
-            ) : (
-              <div className="text-center py-12 md:py-16 bg-purple-900/20 rounded-xl border border-purple-800/30">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-16 w-16 mx-auto text-purple-400 mb-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                <p className="text-xl text-gray-400">
-                  No matches found in this category
-                </p>
-                <Link
-                  href="/results"
-                  className="inline-block mt-6 px-6 py-2 bg-purple-700 hover:bg-purple-600 rounded-lg text-white transition-colors"
-                >
-                  Return to Categories
-                </Link>
-              </div>
+                </motion.section>
             )}
-          </div>
-        )}
-      </div>
+
+            {/* Match Manifest - Simplified List */}
+            <section className="max-w-4xl mx-auto">
+                 <div className="flex items-center gap-2 mb-4">
+                    <Star size={12} className="text-neutral-600" />
+                    <h2 className="font-mono text-[10px] uppercase tracking-widest text-neutral-500">Match Manifest</h2>
+                </div>
+
+                <div className="flex flex-col gap-px bg-white/5 border border-white/10 rounded-lg overflow-hidden">
+                    {matches.map((match, idx) => (
+                        <div 
+                            key={match._id}
+                            className="bg-black p-4 flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-8 group hover:bg-white/5 transition-colors"
+                        >
+                            <span className="font-mono text-[10px] text-neutral-700 w-8">0{idx + 1}</span>
+                            
+                            <div className="flex-1">
+                                <h4 className="text-sm font-bold text-neutral-300 group-hover:text-purple-400 transition-colors uppercase">{match.name}</h4>
+                                <div className="flex items-center gap-2 mt-1">
+                                    <span className="text-[9px] text-neutral-600 font-mono uppercase border border-white/10 px-1 rounded">{match.matchType}</span>
+                                    <span className="text-[9px] text-neutral-500 font-mono uppercase">{match.teams}</span>
+                                </div>
+                            </div>
+
+                            <div className="text-right pl-4 border-l border-white/10 md:border-none md:pl-0">
+                                <span className="block text-[10px] font-mono text-purple-900 uppercase tracking-widest mb-0.5">Winner</span>
+                                <span className="block text-xs font-bold text-white uppercase">{match.winner}</span>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+
+                {matches.length === 0 && (
+                     <div className="py-12 text-center border border-white/10 border-dashed rounded mt-4">
+                        <p className="font-mono text-[10px] text-neutral-600 uppercase tracking-widest">No Matches Recorded</p>
+                    </div>
+                )}
+            </section>
+
+        </main>
+      )}
     </div>
   );
 }

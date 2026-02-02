@@ -7,6 +7,7 @@ export const addEvent = async (req, res) => {
     return res.status(400).json({ message: "Image file is required." });
   }
   const imagePath = req.file.path;
+  console.log(imagePath);
   const imageUrl = await uploadOnCloudinary(imagePath);
   if (!imageUrl) {
     return res
