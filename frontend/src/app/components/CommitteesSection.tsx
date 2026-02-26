@@ -31,10 +31,10 @@ const CommitteeCard = ({
       onClick={onClick}
       className="group relative w-full h-[300px] border-r border-b border-white/10 bg-black cursor-pointer overflow-hidden flex flex-col justify-between p-8 hover:bg-neutral-900/50 transition-colors duration-500"
     >
-       {/* Hover Accent Line */}
+       
        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-600 to-pink-600 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500" />
 
-       {/* Top: Member Count */}
+       
        <div className="flex justify-between items-start">
           <span className="text-xs font-mono text-neutral-500 group-hover:text-purple-400 transition-colors">
             {String(committee.students).padStart(2, '0')} MEMBERS
@@ -42,7 +42,7 @@ const CommitteeCard = ({
           <ArrowRight className="w-5 h-5 text-neutral-600 -rotate-45 group-hover:rotate-0 group-hover:text-white transition-all duration-500" />
        </div>
 
-       {/* Bottom: Title & Description */}
+       
        <div>
          <h3 className="text-3xl md:text-4xl font-bold text-white mb-4 uppercase tracking-tighter group-hover:translate-x-2 transition-transform duration-500">
             {committee.name}
@@ -55,7 +55,7 @@ const CommitteeCard = ({
   );
 };
 
-// Full Screen Minimal Modal
+
 const CommitteeModal = ({ committee, onClose }: { committee: Committee; onClose: () => void }) => {
     return (
         <motion.div
@@ -64,7 +64,7 @@ const CommitteeModal = ({ committee, onClose }: { committee: Committee; onClose:
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[100] bg-black text-white overflow-y-auto"
         >
-            {/* Header */}
+            
             <div className="sticky top-0 z-50 flex justify-between items-center p-6 md:p-10 mix-blend-difference">
                 <h2 className="text-sm font-mono uppercase tracking-widest opacity-70">
                    Committee / {committee.name}
@@ -79,7 +79,7 @@ const CommitteeModal = ({ committee, onClose }: { committee: Committee; onClose:
             </div>
 
             <div className="container mx-auto px-4 md:px-10 pb-20 pt-10">
-                {/* Hero Title inside Modal */}
+                
                 <motion.div 
                    initial={{ y: 50, opacity: 0 }}
                    animate={{ y: 0, opacity: 1 }}
@@ -99,13 +99,13 @@ const CommitteeModal = ({ committee, onClose }: { committee: Committee; onClose:
                     </div>
                 </motion.div>
 
-                {/* Team Grid */}
+                
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
                     {committee.images.map((image, idx) => (
                         <motion.div
                            key={idx}
                            initial={{ opacity: 0, scale: 0.9 }}
-                           whileInView={{ opacity: 1, scale: 1 }} // Lazy load animation
+                           whileInView={{ opacity: 1, scale: 1 }}
                            viewport={{ once: true }}
                            transition={{ duration: 0.5, delay: idx * 0.05 }}
                            className="group space-y-3"
@@ -135,14 +135,14 @@ const CommitteeModal = ({ committee, onClose }: { committee: Committee; onClose:
 export default function CommitteesSection({ committees }: CommitteesSectionProps) {
   const [selectedCommittee, setSelectedCommittee] = useState<Committee | null>(null);
 
-  // Split committees for masonry-like feel (optional, but a simple grid works well with the variable height cards if we had them. Here we stick to a clean uniform grid for consistency)
+
   
   return (
     <>
       <section className="bg-black py-32" id="committees">
          <div className="container mx-auto px-4">
             
-            {/* Section Header */}
+            
             <div className="mb-20 flex flex-col md:flex-row justify-between items-end border-b border-white/10 pb-8 gap-6">
                 <h2 className="text-6xl md:text-8xl font-bold text-white tracking-tighter uppercase leading-none">
                     The<br/>Teams
@@ -153,7 +153,7 @@ export default function CommitteesSection({ committees }: CommitteesSectionProps
                 </p>
             </div>
 
-            {/* Grid */}
+            
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 border-t border-l border-white/10">
                 {committees.map((committee, idx) => (
                     <CommitteeCard 

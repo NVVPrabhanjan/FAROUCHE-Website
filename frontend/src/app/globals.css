@@ -35,13 +35,13 @@ body {
     --radius: 0.5rem;
   }
   .dark {
-    --background: 0 0% 2%; /* #050505 */
+    --background: 0 0% 2%; 
     --foreground: 0 0% 98%;
     --card: 0 0% 2%;
     --card-foreground: 0 0% 98%;
     --popover: 0 0% 2%;
     --popover-foreground: 0 0% 98%;
-    --primary: 270 95% 65%; /* Purple Accent */
+    --primary: 270 95% 65%; 
     --primary-foreground: 0 0% 9%;
     --secondary: 0 0% 9%;
     --secondary-foreground: 0 0% 98%;

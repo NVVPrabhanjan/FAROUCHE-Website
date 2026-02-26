@@ -25,7 +25,7 @@ export default function MatchDetails() {
         const res = await fetch(`${RESULTS_END_POINT}/getResults`);
         const data = await res.json();
 
-        // Group matches
+
         const groupedMatches: any = {};
         data.data.forEach((match: { category: string; }) => {
           const category = match.category || "Uncategorized";
@@ -38,7 +38,7 @@ export default function MatchDetails() {
         setMatchesByCategory(groupedMatches);
         setCategories(Object.keys(groupedMatches));
 
-        // Medal Calculation
+
         const medals = {
           National: { gold: 0, silver: 0 },
           International: { gold: 0, silver: 0 }
@@ -56,8 +56,7 @@ export default function MatchDetails() {
         });
 
         setMedalCounts(medals);
-      } catch (error) {
-        console.error("Error fetching match details:", error);
+      } catch {
       } finally {
         setTimeout(() => setIsLoading(false), 800);
       }
@@ -66,7 +65,7 @@ export default function MatchDetails() {
     fetchMatchDetails();
   }, []);
 
-  // Filter categories based on search
+
   const filteredCategories = categories.filter(category => 
     category.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -81,7 +80,7 @@ export default function MatchDetails() {
       {!isLoading && (
         <main className="pt-32 pb-20 px-6 container mx-auto">
             
-            {/* Header Section */}
+            
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-10 border-b border-white/10 pb-10">
                 <div>
                     <motion.p 
@@ -89,7 +88,7 @@ export default function MatchDetails() {
                         animate={{ opacity: 1, y: 0 }}
                         className="text-purple-500 font-mono text-xs uppercase tracking-widest mb-4"
                     >
-                        // Live Protocol
+
                     </motion.p>
                     <motion.h1 
                         initial={{ opacity: 0, y: 20 }}
@@ -101,7 +100,7 @@ export default function MatchDetails() {
                     </motion.h1>
                 </div>
 
-                {/* Scoreboard Monoliths */}
+                
                 <motion.div 
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -125,7 +124,7 @@ export default function MatchDetails() {
                 </motion.div>
             </div>
 
-            {/* Architectural Search */}
+            
             <div className="mb-16 max-w-xl">
                  <div className="relative group">
                     <input
@@ -139,7 +138,7 @@ export default function MatchDetails() {
                 </div>
             </div>
 
-            {/* Results Grid / List */}
+            
             {filteredCategories.length > 0 ? (
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-white/10 border border-white/10">
                     {filteredCategories.map((category, index) => (

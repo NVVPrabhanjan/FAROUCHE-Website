@@ -9,7 +9,7 @@ import { Calendar, MapPin, ArrowLeft, Share2, ArrowRight } from 'lucide-react'
 import ScrollProgressBar from '@/app/components/ScrollProgressBar'
 import { EVENT_API_END_POINT } from '@/utils/constants'
 
-// Types
+
 interface EventData {
     eventid: string;
     title: string;
@@ -46,7 +46,7 @@ export default function EventDetails() {
     if (id) fetchEvent()
   }, [id])
   
-  // Loading State - Minimalist Spinner
+
   if (loading) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
@@ -58,7 +58,7 @@ export default function EventDetails() {
     )
   }
   
-  // Error State
+
   if (error || !event) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
@@ -77,7 +77,7 @@ export default function EventDetails() {
     <div className="min-h-screen bg-black text-white selection:bg-purple-500/30 font-sans">
       <ScrollProgressBar />
       
-      {/* Cinematic Background */}
+      
       <div className="fixed inset-0 z-0">
          <div className="absolute inset-0 bg-black/80 z-10" />
          <Image 
@@ -89,10 +89,10 @@ export default function EventDetails() {
          />
       </div>
 
-      {/* Content Container */}
+      
       <div className="relative z-10 min-h-screen flex flex-col justify-between">
           
-          {/* Top Bar */}
+          
           <header className="p-6 md:p-10 flex justify-between items-center border-b border-white/10 bg-black/50 backdrop-blur-md">
              <Link href="/events" className="group flex items-center gap-3 text-sm font-mono uppercase tracking-widest text-neutral-400 hover:text-white transition-colors">
                 <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
@@ -103,7 +103,7 @@ export default function EventDetails() {
              </span>
           </header>
 
-          {/* Main Content */}
+          
           <main className="flex-1 container mx-auto px-6 py-20 flex flex-col justify-center">
               <motion.div 
                  initial={{ opacity: 0, y: 40 }}
@@ -111,7 +111,7 @@ export default function EventDetails() {
                  transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                  className="max-w-5xl"
               >
-                  {/* Meta Tags */}
+                  
                   <div className="flex flex-wrap gap-6 mb-8 font-mono text-xs uppercase tracking-widest text-purple-400">
                       <span className="flex items-center gap-2">
                           <Calendar size={14} />
@@ -124,12 +124,12 @@ export default function EventDetails() {
                       </span>
                   </div>
 
-                  {/* Title */}
+                  
                   <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold font-cinzel uppercase tracking-tighter leading-[0.9] mb-10 text-transparent bg-clip-text bg-gradient-to-b from-white to-neutral-500">
                       {event.title}
                   </h1>
 
-                  {/* Description & Action Grid */}
+                  
                   <div className="grid md:grid-cols-12 gap-12 border-t border-white/10 pt-12">
                       <div className="md:col-span-7">
                           <p className="text-lg md:text-xl text-neutral-300 leading-relaxed max-w-2xl">
@@ -152,7 +152,7 @@ export default function EventDetails() {
                                         navigator.share({ title: event.title, text: event.description, url: window.location.href });
                                     } else {
                                         navigator.clipboard.writeText(window.location.href);
-                                        // Simple alert for now, toast would be better in a larger app
+
                                         alert('Protocol Link Copied');
                                     }
                                 }}
@@ -166,7 +166,7 @@ export default function EventDetails() {
               </motion.div>
           </main>
           
-          {/* Footer Decoration */}
+          
           <footer className="p-6 md:p-10 border-t border-white/10 flex justify-between items-end bg-black/50 backdrop-blur-md">
                 <div className="font-mono text-[10px] uppercase tracking-widest text-neutral-600">
                     Hostel Department

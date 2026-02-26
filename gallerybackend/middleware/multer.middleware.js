@@ -4,13 +4,13 @@ import fsPromises from "fs/promises";
 import path from "path";
 import sharp from "sharp";
 
-// Ensure the upload directory exists
+
 const uploadDir = "./tmp/my-uploads";
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
 
-// Configure multer storage
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, uploadDir);
@@ -22,15 +22,23 @@ const storage = multer.diskStorage({
   },
 });
 
-// Multer upload with 20MB max limit
+
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith("image/")) {
+    cb(null, true);
+  } else {
+    cb(new Error("Only image files are allowed."), false);
+  }
+};
+
+
 export const upload = multer({
   storage,
-  limits: {
-    fileSize: 20 * 1024 * 1024, // 20MB max for multer (we'll compress to <10MB later)
-  },
+  fileFilter,
+  limits: { fileSize: 20 * 1024 * 1024 },
 });
 
-// Compression middleware to keep images under 10MB for Cloudinary
+
 export const compressImages = async (req, res, next) => {
   if (!req.files || req.files.length === 0) return next();
 
@@ -38,20 +46,17 @@ export const compressImages = async (req, res, next) => {
     await Promise.all(
       req.files.map(async (file) => {
         const originalPath = file.path;
-        const tempCompressedPath = originalPath + "-compressed.jpg";
+        const tempPath = originalPath + "-compressed.jpg";
 
-        // Compress to a new file
         await sharp(originalPath)
-          .resize({ width: 1920 }) // Resize max width if needed
-          .jpeg({ quality: 60 })   // Adjust quality to shrink size <10MB
-          .toFile(tempCompressedPath);
+          .resize({ width: 1920, withoutEnlargement: true })
+          .jpeg({ quality: 60 })
+          .toFile(tempPath);
 
-        // Replace original file
         await fsPromises.unlink(originalPath);
-        await fsPromises.rename(tempCompressedPath, originalPath);
+        await fsPromises.rename(tempPath, originalPath);
       })
     );
-
     next();
   } catch (err) {
     console.error("Image compression error:", err);

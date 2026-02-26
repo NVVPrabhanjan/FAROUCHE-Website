@@ -13,21 +13,21 @@ export function RegisterForm() {
     const [venue, setVenue] = useState("");
     const [imageFile, setImageFile] = useState(null);
     const [group, setGroup] = useState(false);
-    const [teamSize, setTeamSize] = useState(2); // Default team size of 2
+    const [teamSize, setTeamSize] = useState(2);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
     
     const handleImageUpload = (event) => {
-        const file = event.target.files?.[0]; // Get the selected file
+        const file = event.target.files?.[0];
     
         if (file) {
-          setImageFile(file); // Update the state with the selected image file
+          setImageFile(file);
         }
     };
 
     const handleGroupChange = (event) => {
         const isChecked = event.target.checked;
-        setGroup(isChecked); // Update the state for the checkbox
+        setGroup(isChecked);
         setTeamSize(2);
     };
     
@@ -65,13 +65,13 @@ export function RegisterForm() {
             const result = await response.json();
             toast("Event created successfully");
             
-            // Show success animation
+
             setShowSuccess(true);
             
-            // Reset form after successful submission
+
             setTimeout(() => {
               setShowSuccess(false);
-              // Reset the form
+
               setTitle("");
               setDescription("");
               setDate("");
@@ -94,7 +94,7 @@ export function RegisterForm() {
 
     return (
         <div className="relative">
-            {/* Success animation overlay */}
+            
             {showSuccess && (
                 <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10 rounded-lg">
                     <div className="flex flex-col items-center justify-center space-y-4 bg-neutral-800 p-8 rounded-lg animate-in fade-in-50 duration-500">
@@ -108,7 +108,7 @@ export function RegisterForm() {
                 onSubmit={handleSubmit}
                 className="space-y-4 max-h-[80vh] overflow-y-auto p-4"
             >
-                {/* Title Input */}
+                
                 <div>
                     <label htmlFor="title" className="block text-sm font-semibold text-white">
                         Event Title
@@ -124,7 +124,7 @@ export function RegisterForm() {
                     />
                 </div>
             
-                {/* Description Input */}
+                
                 <div>
                     <label
                         htmlFor="description"
@@ -143,7 +143,7 @@ export function RegisterForm() {
                     />
                 </div>
             
-                {/* Date and Venue Inputs */}
+                
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label htmlFor="date" className="block text-sm font-semibold text-white">
@@ -175,7 +175,7 @@ export function RegisterForm() {
                     </div>
                 </div>
         
-                {/* Group and Team Size section */}
+                
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
                     <div>
                         <label htmlFor="group" className="flex items-center space-x-2">
@@ -190,7 +190,7 @@ export function RegisterForm() {
                         </label>
                     </div>
                     
-                    {/* Team Size Input - Only visible if group is checked */}
+                    
                     {group && (
                         <div>
                             <label htmlFor="teamSize" className="block text-sm font-semibold text-white">
@@ -200,7 +200,7 @@ export function RegisterForm() {
                                 id="teamSize"
                                 type="number"
                                 min="2"
-                                value={teamSize || 2} // Ensure a fallback value
+                                value={teamSize || 2}
                                 onChange={handleTeamSizeChange}
                                 className="mt-2 p-3 w-full rounded-md border border-neutral-700 bg-neutral-800 text-white placeholder-neutral-400"
                                 required
@@ -209,7 +209,7 @@ export function RegisterForm() {
                     )}
                 </div>
             
-                {/* Image Input */}
+                
                 <div>
                     <label
                         htmlFor="image"
@@ -231,7 +231,7 @@ export function RegisterForm() {
                     )}
                 </div>
             
-                {/* Submit Button */}
+                
                 <DialogFooter className="mt-6">
                     <button
                         type="submit"

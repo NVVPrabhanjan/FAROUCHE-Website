@@ -3,22 +3,20 @@
 import { useState } from "react";
 import { DialogFooter } from "@/components/ui/dialog";
 import { toast } from "sonner";
+import { useAPIConfig } from "@/context/APIConfigContext";
 
 export function RegisterationForm() {
-  const [names, setNames] = useState(""); // For storing the user's name
-  const [phoneNumber, setPhoneNumber] = useState(""); // For storing the phone number
-  const [email, setEmail] = useState(""); // For storing the email
-  const [hostelName, setHostelName] = useState(""); // For storing the hostel name
-  const [eventTitle, setEventTitle] = useState(""); // For storing the event title
-  
+  const { REGISTRATION_API_END_POINT } = useAPIConfig();
+  const [names, setNames] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [email, setEmail] = useState("");
+  const [hostelName, setHostelName] = useState("");
+  const [eventTitle, setEventTitle] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Create a new FormData object
     const formData = new FormData();
-
-    // Append form data
     formData.append("names", names);
     formData.append("phoneNumber", phoneNumber);
     formData.append("email", email);
@@ -26,33 +24,21 @@ export function RegisterationForm() {
     formData.append("eventTitle", eventTitle);
 
     try {
-      const response = await fetch(
-        "http://127.0.0.1:4000/api/v1/results/addResults",
-        {
-          method: "POST",
-          body: formData, // Send FormData as the body
-        }
-      );
+      const response = await fetch(`${REGISTRATION_API_END_POINT}/addResults`, {
+        method: "POST",
+        body: formData,
+      });
 
       if (response.ok) {
-        // Handle successful form submission
-        toast.success("Result created successfully");
-        alert("Result created successfully");
-        const result = await response.json();
-        console.log("Event created:", result);
-      } else {
-        // Handle error response
-        console.error("Error submitting form", response.status);
+        toast.success("Registration successful");
+        alert("Registration successful");
       }
-    } catch (error) {
-      // Handle any other errors
-      console.error("Error:", error);
+    } catch {
     }
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      {/* Name Input */}
       <div>
         <label htmlFor="names" className="block text-sm font-semibold text-white">
           Full Name
@@ -68,7 +54,6 @@ export function RegisterationForm() {
         />
       </div>
 
-      {/* Phone Number Input */}
       <div>
         <label htmlFor="phoneNumber" className="block text-sm font-semibold text-white">
           Phone Number
@@ -84,7 +69,6 @@ export function RegisterationForm() {
         />
       </div>
 
-      {/* Email Input */}
       <div>
         <label htmlFor="email" className="block text-sm font-semibold text-white">
           Email Address
@@ -100,7 +84,6 @@ export function RegisterationForm() {
         />
       </div>
 
-      {/* Hostel Name Input */}
       <div>
         <label htmlFor="hostelName" className="block text-sm font-semibold text-white">
           Hostel Name
@@ -116,7 +99,6 @@ export function RegisterationForm() {
         />
       </div>
 
-      {/* Event Title Input */}
       <div>
         <label htmlFor="eventTitle" className="block text-sm font-semibold text-white">
           Event Title
@@ -132,7 +114,6 @@ export function RegisterationForm() {
         />
       </div>
 
-      {/* Submit Button */}
       <DialogFooter>
         <button
           type="submit"

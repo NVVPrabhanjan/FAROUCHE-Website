@@ -9,7 +9,7 @@ export default function Footer() {
 
   const quickLinks = [
     { name: 'Dashboard', href: '/dashboard' },
-    // { name: 'Home', href: '/' },
+
   ]
 
   const contactInfo = [
@@ -21,7 +21,7 @@ export default function Footer() {
   return (
     <footer className="bg-black border-t border-white/10 relative overflow-hidden mt-20">
       
-      {/* Massive Watermark */}
+      
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center pointer-events-none select-none opacity-[0.03]">
          <h1 className="text-[20vw] font-bold font-cinzel tracking-tighter text-white leading-none">ADMIN</h1>
       </div>
@@ -29,7 +29,7 @@ export default function Footer() {
       <div className="container mx-auto px-6 pt-20 pb-10 relative z-10">
          
          <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8 border-b border-white/10 pb-16">
-            {/* Brand Column */}
+            
             <div className="md:col-span-5 space-y-8">
                 <div>
                     <h2 className="text-3xl font-bold font-cinzel text-white tracking-wider mb-2">FAROUCHE<span className="text-purple-500">.</span></h2>
@@ -39,7 +39,7 @@ export default function Footer() {
                 </div>
             </div>
 
-            {/* Links Column */}
+            
             <div className="md:col-span-3">
                 <h3 className="text-sm font-mono uppercase tracking-widest text-neutral-500 mb-6">Quick Actions</h3>
                 <ul className="space-y-4">
@@ -54,7 +54,7 @@ export default function Footer() {
                 </ul>
             </div>
 
-             {/* Contact Column */}
+             
              <div className="md:col-span-4">
                 <h3 className="text-sm font-mono uppercase tracking-widest text-neutral-500 mb-6">Support</h3>
                 <ul className="space-y-6">
@@ -68,7 +68,7 @@ export default function Footer() {
             </div>
          </div>
 
-         {/* Bottom Bar */}
+         
          <div className="pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-mono text-neutral-600 uppercase tracking-widest">
             <p>&copy; {currentYear} Farouche. All rights reserved.</p>
          </div>

@@ -10,7 +10,7 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
 
-  // Scroll effect for navbar background
+
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50)
@@ -22,7 +22,7 @@ export default function Navbar() {
   const navItems = [
     { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
     { name: 'Home', href: '/', icon: Home },
-    // { name: 'Create Event', href: '/create-event', icon: PlusCircle }, // Example future route
+
   ]
 
   return (
@@ -33,25 +33,16 @@ export default function Navbar() {
             }`}
         >
           <div className="container mx-auto px-6 flex items-center justify-between">
-             {/* Logo Section */}
+             
              <Link href="/" className="flex items-center gap-4 group">
-                {/* 
-                <div className="relative h-10 w-10 md:h-12 md:w-12 overflow-hidden rounded-full border border-white/20 group-hover:border-purple-500 transition-colors">
-                     <Image
-                        src="/logo1.png"
-                        alt="Farouche Logo"
-                        fill
-                        className="object-cover"
-                     />
-                </div>
-                */}
+                
                 <div className="flex flex-col">
                     <span className="text-xl md:text-2xl font-bold tracking-[0.2em] font-cinzel leading-none text-white">FAROUCHE</span>
                     <span className="text-[10px] uppercase tracking-[0.5em] text-purple-400">ADMIN</span>
                 </div>
              </Link>
 
-             {/* Desktop Navigation */}
+             
              <nav className="hidden md:flex items-center gap-1 bg-white/5 backdrop-blur-md rounded-full px-2 py-1.5 border border-white/10">
                 {navItems.map((item) => (
                     <Link 
@@ -64,7 +55,7 @@ export default function Navbar() {
                 ))}
              </nav>
 
-             {/* Mobile Menu Trigger */}
+             
              <button
                onClick={() => setMobileMenuOpen(true)}
                className="md:hidden p-2 text-white hover:text-purple-400 transition-colors"
@@ -74,7 +65,7 @@ export default function Navbar() {
           </div>
         </header>
 
-        {/* Full Screen Mobile Menu */}
+        
         <AnimatePresence>
             {mobileMenuOpen && (
                 <motion.div 

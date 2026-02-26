@@ -37,6 +37,10 @@ const eventSchema = new mongoose.Schema(
       type: Boolean,
       required: true,
     },
+    createdBy: {
+      adminId:   { type: mongoose.Schema.Types.ObjectId, ref: "Admin" },
+      adminName: { type: String, default: "Unknown" },
+    },
   },
   {
     timestamps: true,

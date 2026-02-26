@@ -2,7 +2,7 @@ import { google } from "googleapis";
 import fs from "fs";
 import path from "path";
 
-// Load credentials safely
+
 const credentialsPath = path.resolve("./credentials.json");
 let serviceAccount;
 

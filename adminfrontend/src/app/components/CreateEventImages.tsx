@@ -3,8 +3,10 @@
 import { useState, FormEvent, ChangeEvent } from "react";
 import axios from "axios";
 import Link from "next/link";
+import { useAPIConfig } from "@/context/APIConfigContext";
 
 export default function UploadImages() {
+  const { GALLERY_ADD_END_POINT } = useAPIConfig();
   const [eventName, setEventName] = useState("");
   const [files, setFiles] = useState<File[]>([]);
   const [message, setMessage] = useState("");
@@ -24,7 +26,7 @@ export default function UploadImages() {
     });
 
     try {
-      const res = await axios.post("http://localhost:4001/api/v1/gallery/add", formData, {
+      const res = await axios.post(GALLERY_ADD_END_POINT, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

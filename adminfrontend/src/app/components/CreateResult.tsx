@@ -9,7 +9,7 @@ export function ResultForm() {
     matchType: "General",
     winner: "",
     runner: "",
-    manofthematch: "", // Changed to match the backend controller parameter
+    manofthematch: "",
     category: "",
     hostelType: "National",
     runnerType: "National" 
@@ -20,7 +20,7 @@ export function ResultForm() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  // List of sports categories
+
   const categories = [
     "Badminton",
     "Table Tennis",
@@ -63,7 +63,7 @@ export function ResultForm() {
     setError("");
     setSuccess("");
 
-    // Validate form based on match type
+
     if (!formData.name || !formData.teams || !formData.winner || !formData.category || !formData.hostelType || !winnerImage) {
       setError("Please fill all required fields and upload winner image.");
       setLoading(false);
@@ -79,17 +79,16 @@ export function ResultForm() {
     try {
       const resultFormData = new FormData();
       
-      // Match parameter names with backend controller
+
       resultFormData.append("name", formData.name);
       resultFormData.append("teams", formData.teams);
       resultFormData.append("matchType", formData.matchType);
       resultFormData.append("winner", formData.winner);
       resultFormData.append("category", formData.category);
       resultFormData.append("hostelType", formData.hostelType);
-      resultFormData.append("manofthematch", formData.manofthematch); // Match the backend parameter
+      resultFormData.append("manofthematch", formData.manofthematch);
       
-      // For the file uploads, we need to use winner and runner as keys
-      // These field names must match what multer expects in the backend
+
       if (winnerImage) {
         resultFormData.append("winner", winnerImage);
       }
@@ -112,14 +111,14 @@ export function ResultForm() {
 
       if (response.ok) {
         setSuccess("Result added successfully!");
-        // Reset form
+
         setFormData({
           name: "",
           teams: "",
           matchType: "General",
           winner: "",
           runner: "",
-          manofthematch: "", // Reset with the correct field name
+          manofthematch: "",
           category: "",
           hostelType: "National",
           runnerType: "National"
@@ -139,7 +138,7 @@ export function ResultForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 max-h-[70vh] md:max-h-[80vh] overflow-y-auto px-1 py-2">
-      {/* Form heading with instructions */}
+      
       <div className="bg-gray-800/50 p-3 rounded-md mb-4 border-l-4 border-blue-500 flex items-start gap-2">
         <Info size={20} className="text-blue-400 flex-shrink-0 mt-0.5" />
         <p className="text-sm text-gray-300">
@@ -147,7 +146,7 @@ export function ResultForm() {
         </p>
       </div>
 
-      {/* Form Grid - 2 columns on desktop, 1 on mobile */}
+      
       <div className="grid md:grid-cols-2 gap-x-4 gap-y-3">
         <div className="md:col-span-2">
           <label className="block text-sm font-medium text-gray-300 mb-1">
@@ -215,7 +214,7 @@ export function ResultForm() {
           </select>
         </div>
 
-        {/* Winner Section */}
+        
         <div className="md:col-span-2 pt-2 border-t border-gray-700">
           <h3 className="font-medium text-blue-400 mb-2">Winner Details</h3>
         </div>
@@ -266,7 +265,7 @@ export function ResultForm() {
           />
         </div>
 
-        {/* Runner-up Section - Only visible for Finals */}
+        
         {formData.matchType === "Finals" && (
           <>
             <div className="md:col-span-2 pt-2 border-t border-gray-700">
@@ -321,7 +320,7 @@ export function ResultForm() {
           </>
         )}
 
-        {/* Additional Details */}
+        
         <div className="md:col-span-2 pt-2 border-t border-gray-700">
           <h3 className="font-medium text-purple-400 mb-2">Additional Details</h3>
         </div>
@@ -332,7 +331,7 @@ export function ResultForm() {
           </label>
           <input
             type="text"
-            name="manofthematch" // Changed to match backend controller parameter
+            name="manofthematch"
             value={formData.manofthematch}
             onChange={handleChange}
             className="w-full p-2 border border-gray-600 rounded-md bg-gray-800 text-white"
@@ -341,7 +340,7 @@ export function ResultForm() {
         </div>
       </div>
 
-      {/* Status Messages */}
+      
       {error && (
         <div className="p-3 bg-red-900/50 border border-red-700 rounded-md text-red-200 text-sm mt-4">
           {error}
@@ -354,7 +353,7 @@ export function ResultForm() {
         </div>
       )}
 
-      {/* Submit Button */}
+      
       <div className="flex justify-end pt-2 mt-4 border-t border-gray-700">
         <button
           type="submit"

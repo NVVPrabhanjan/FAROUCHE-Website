@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
-// import { Poppins } from "next/font/google"; // Using Geist for now to minimize breakage, or I can switch to Poppins
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "./components/NavBar";
 import ScrollProgressBar from "./components/ScrollProgressBar";
-import Footer from "./components/Footer";
+import ClientLayoutWrapper from "./components/ClientLayoutWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,11 +30,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
       >
         <ScrollProgressBar />
-        <Navbar />
-        <main className="min-h-screen pt-24 pb-10 px-4 md:px-6">
+        <ClientLayoutWrapper>
             {children}
-        </main>
-        <Footer />
+        </ClientLayoutWrapper>
       </body>
     </html>
   );

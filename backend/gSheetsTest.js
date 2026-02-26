@@ -25,8 +25,8 @@ const auth = new google.auth.GoogleAuth({
 const sheets = google.sheets({ version: "v4", auth });
 
 export async function appendToSheet(values) {
-  const spreadsheetId = "1FMin3wicuOVHhMtC0DzNo8PnSBHsHHQCEMgvIul4I_k"; // Replace with actual Google Sheet ID
-  const range = "Sheet1!A:F"; // Adjust as needed
+  const spreadsheetId = "1FMin3wicuOVHhMtC0DzNo8PnSBHsHHQCEMgvIul4I_k";
+  const range = "Sheet1!A:F";
 
   try {
     const data = await sheets.spreadsheets.values.append({

@@ -1,52 +1,8 @@
-// "use client";
 
-// import { useEffect, useState } from "react";
-// import axios from "axios";
-// import ScrollProgressBar from "@/app/components/ScrollProgressBar";
-// import Navbar from "@/app/components/NavBar";
-// import { useParams } from "next/navigation";
 
-// export default function Gallery() {
-//   const [images, setImages] = useState<any[]>([]);
-//   const [message,setMessage] = useState<string>();
-//   const e = useParams();
-//   console.log(e);
-//   async function filterEvent(eventName: any) {
-//     try{
-//         const result = await axios.get(
-//             `http://localhost:4001/api/v1/gallery/${eventName}`
-//           );
-//           console.log(result);
-//           setImages(result.data.images);
-//     }catch(err){
-//         setMessage("no images added for this event")
-//     }
-//   }
-//   useEffect(() => {
-//     filterEvent(e.filter);
-//   }, [e]);
-//   return (
-//     <div className="min-h-screen bg-black text-white overflow-x-hidden">
-//       <ScrollProgressBar />
-//       <Navbar />
-//       <div className="relative min-h-[45vh] pt-16 md:pt-20 flex items-center justify-center bg-gradient-to-b from-purple-900/60 to-black text-white">
-//         <div className="p-6 max-w-5xl mx-auto">
-//           {message && <p className="text-red-500">{message}</p>}
-//           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-//             {images.map((img, idx) => (
-//               <img
-//                 key={idx}
-//                 src={img}
-//                 alt="Event"
-//                 className="w-full h-48 object-cover rounded shadow-md"
-//               />
-//             ))}
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
+
+
+
 
 
 "use client";
@@ -57,23 +13,38 @@ import ScrollProgressBar from "@/app/components/ScrollProgressBar";
 import Navbar from "@/app/components/NavBar";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import { useAPIConfig } from "@/context/APIConfigContext";
 
 export default function FilteredGallery() {
+  const { GALLERY_API_END_POINT } = useAPIConfig();
   const [images, setImages] = useState<any[]>([]);
   const [message, setMessage] = useState<string>();
   const [loading, setLoading] = useState(true);
   const params = useParams();
   const router = useRouter();
-  const events = ["Inaguration", "Food Fiesta - 3rd Year","Chiguru", "Food Fiesta - IH", "Food Fiesta - 1 & 2nd Year"];
-  const currentEvent = params.filter?.toString() || "";
+  const [events, setEvents] = useState<string[]>([]);
+  const currentEvent = decodeURIComponent(params.filter?.toString() || "");
+
+
+  useEffect(() => {
+    async function loadEventNames() {
+      try {
+        const res = await fetch(`${GALLERY_API_END_POINT}/`);
+        const data = await res.json();
+        const imgs: { eventName?: string }[] = data.images || [];
+        const unique = Array.from(new Set(imgs.map(i => i.eventName).filter(Boolean))) as string[];
+        setEvents(unique);
+      } catch {  }
+    }
+    loadEventNames();
+  }, []);
 
   async function filterEvent(eventName: any) {
     setLoading(true);
     try {
       const result = await axios.get(
-        `https://farouche25.tech/api/v1/gallery/${eventName}`
+        `${GALLERY_API_END_POINT}/${eventName}`
       );
-      console.log(result);
       setImages(result.data.images);
       setMessage("");
     } catch (err) {
@@ -95,10 +66,10 @@ export default function FilteredGallery() {
       <ScrollProgressBar />
       <Navbar />
 
-      {/* Hero section with gradient */}
+      
       <div className="relative min-h-screen pt-20 pb-10 bg-gradient-to-b from-purple-900/60 via-purple-900/30 to-black">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Page Title */}
+          
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500 mb-4">
               {currentEvent.charAt(0).toUpperCase() + currentEvent.slice(1)} Gallery
@@ -108,7 +79,7 @@ export default function FilteredGallery() {
             </p>
           </div>
 
-          {/* Event filters in oval shape */}
+          
           <div className="flex justify-center flex-wrap gap-4 mb-12">
             <Link
               href="/gallery"
@@ -133,14 +104,14 @@ export default function FilteredGallery() {
             ))}
           </div>
 
-          {/* Error message */}
+          
           {message && (
             <div className="bg-red-900/40 border border-red-500 text-red-300 px-4 py-3 rounded mb-8 text-center">
               {message}
             </div>
           )}
 
-          {/* Gallery Grid */}
+          
           {!loading && images.length > 0 && (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {images.map((img, idx) => (
@@ -154,7 +125,7 @@ export default function FilteredGallery() {
             </div>
           )}
 
-          {/* Loading state */}
+          
           {loading && (
             <div className="text-center py-20">
               <p className="text-xl text-purple-300">Loading gallery images...</p>
@@ -162,7 +133,7 @@ export default function FilteredGallery() {
             </div>
           )}
 
-          {/* No images state */}
+          
           {!loading && images.length === 0 && !message && (
             <div className="text-center py-20">
               <p className="text-xl text-purple-300">No images available for {currentEvent}</p>

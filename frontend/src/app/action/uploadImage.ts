@@ -15,7 +15,7 @@ export async function uploadImage(data: FormData) {
     throw new Error('File type not allowed. Please upload a JPEG, PNG, or GIF image.')
   }
 
-  const maxSize = 5 * 1024 * 1024 // 5MB
+  const maxSize = 5 * 1024 * 1024
   if (file.size > maxSize) {
     throw new Error('File size exceeds 5MB limit.')
   }

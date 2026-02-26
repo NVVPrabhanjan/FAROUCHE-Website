@@ -1,13 +1,18 @@
-import express from "express"
-import { addEvent ,getEvents,updateEventDate,deleteEvent,getEventPag,getEventById} from "../controller/event.controller.js";
-import { upload } from "../middlewares/multer.middleware.js"
+import express from "express";
+import { addEvent, getEvents, updateEvent, deleteEvent, getEventPag, getEventById } from "../controller/event.controller.js";
+import { upload } from "../middlewares/multer.middleware.js";
+import { isAdmin, requireRole } from "../middlewares/admin.middleware.js";
+
 const router = express.Router();
 
-router.route("/addEvent").post(upload.single('image'),addEvent);
-router.route("/getEvents").get(getEvents);
-router.route("/updateEventDate").put(updateEventDate);
-router.route("/deleteEvent").delete(deleteEvent);
-router.route("/getEventPag").get(getEventPag);
-router.route("/getEventID").get(getEventById);
 
-export default router
+router.get("/getEvents",  getEvents);
+router.get("/getEventPag", getEventPag);
+router.get("/getEventID",  getEventById);
+
+
+router.post(  "/addEvent",    isAdmin, requireRole("super_admin", "admin"), upload.single("image"), addEvent);
+router.put(   "/updateEvent", isAdmin, requireRole("super_admin", "admin"), upload.single("image"), updateEvent);
+router.delete("/deleteEvent", isAdmin, requireRole("super_admin", "admin"), deleteEvent);
+
+export default router;

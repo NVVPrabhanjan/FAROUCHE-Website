@@ -46,7 +46,7 @@ export default function EventRegistration() {
     setError("");
 
     try {
-      // Basic Validation
+
       if (!/^\d{10}$/.test(formData.phone)) throw new Error("Phone must be 10 digits");
       if (!/^[a-zA-Z0-9._%+-]+@(bmsce\.ac\.in|bmsca\.org|bmccl\.ac\.in)$/.test(formData.email)) {
          throw new Error("Use official college email (@bmsce.ac.in)");
@@ -82,7 +82,7 @@ export default function EventRegistration() {
   return (
     <div className="min-h-screen bg-black text-white font-sans selection:bg-purple-500/30 flex flex-col">
       
-      {/* Minimal Header */}
+      
       <header className="px-6 py-8 border-b border-white/10 flex justify-between items-center">
          <Link href={`/events/${id}/${teamSize}`} className="flex items-center gap-3 text-xs font-mono uppercase tracking-widest text-neutral-500 hover:text-white transition-colors">
             <ArrowLeft size={14} />
@@ -91,10 +91,10 @@ export default function EventRegistration() {
          <span className="font-cinzel font-bold text-xl tracking-wider">REGISTRY</span>
       </header>
 
-      {/* Main Form Area */}
+      
       <main className="flex-1 flex flex-col items-center justify-center p-6 md:p-12 relative overflow-hidden">
          
-         {/* Background Decoration */}
+         
          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-purple-900/10 rounded-full blur-[100px] pointer-events-none" />
          
          <div className="w-full max-w-2xl relative z-10">
@@ -108,7 +108,7 @@ export default function EventRegistration() {
 
             <form onSubmit={handleSubmit} className="space-y-12">
                 
-                {/* Section: Leader Info */}
+                
                 <div className="space-y-8">
                     <div className="grid md:grid-cols-2 gap-8 md:gap-12">
                         <div className="group">
@@ -176,12 +176,13 @@ export default function EventRegistration() {
                                 <option value="2">2nd Year</option>
                                 <option value="3">3rd Year</option>
                                 <option value="4">4th Year</option>
+                                <option value="5">5th Year</option>
                             </select>
                         </div>
                     </div>
                 </div>
 
-                {/* Section: Team Members */}
+                
                 {parsedTeamSize > 1 && (
                     <div className="pt-8 border-t border-white/10">
                         <h3 className="font-cinzel text-2xl mb-8 text-neutral-300">Team Manifest</h3>
@@ -205,7 +206,7 @@ export default function EventRegistration() {
                     </div>
                 )}
 
-                {/* Error Message */}
+                
                 <AnimatePresence>
                     {error && (
                         <motion.div 
@@ -220,7 +221,7 @@ export default function EventRegistration() {
                     )}
                 </AnimatePresence>
 
-                {/* Submit Action */}
+                
                 <div className="pt-8">
                     <button 
                         type="submit" 
@@ -235,7 +236,7 @@ export default function EventRegistration() {
          </div>
       </main>
 
-      {/* Success Overlay */}
+      
       <AnimatePresence>
         {isSuccess && (
             <motion.div 

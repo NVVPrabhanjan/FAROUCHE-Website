@@ -1,3 +1,9 @@
-./node_modules
-./env
+node_modules/
+.env
+.env.local
+.env*.local
 credentials.json
+uploads/
+dist/
+npm-debug.log*
+*.log

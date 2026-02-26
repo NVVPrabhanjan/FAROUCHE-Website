@@ -36,7 +36,8 @@ const resultSchema = new Schema(
         return this.matchType === "Finals";
       },
     },
-    ManOftheMatch: {type: String, required: false}
+    ManOftheMatch: { type: String, required: false },
+    ManOftheMatchImage: { type: String, required: false },
   },
   { timestamps: true }
 );

@@ -10,7 +10,7 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
 
-  // Scroll effect for navbar background
+
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50)
@@ -35,7 +35,7 @@ export default function Navbar() {
             }`}
         >
           <div className="container mx-auto px-6 flex items-center justify-between">
-             {/* Logo Section */}
+             
              <Link href="/" className="flex items-center gap-4 group">
                 <div className="relative h-10 w-10 md:h-12 md:w-12 overflow-hidden rounded-full border border-white/20 group-hover:border-purple-500 transition-colors">
                      <Image
@@ -51,7 +51,7 @@ export default function Navbar() {
                 </div>
              </Link>
 
-             {/* Desktop Navigation */}
+             
              <nav className="hidden md:flex items-center gap-1 bg-white/5 backdrop-blur-md rounded-full px-2 py-1.5 border border-white/10">
                 {navItems.map((item) => (
                     <Link 
@@ -64,7 +64,7 @@ export default function Navbar() {
                 ))}
              </nav>
 
-             {/* Mobile Menu Trigger */}
+             
              <button
                onClick={() => setMobileMenuOpen(true)}
                className="md:hidden p-2 text-white hover:text-purple-400 transition-colors"
@@ -74,7 +74,7 @@ export default function Navbar() {
           </div>
         </header>
 
-        {/* Full Screen Mobile Menu */}
+        
         <AnimatePresence>
             {mobileMenuOpen && (
                 <motion.div 

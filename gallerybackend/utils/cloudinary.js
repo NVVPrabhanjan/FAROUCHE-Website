@@ -1,7 +1,7 @@
 import { v2 as cloudinary } from 'cloudinary';
-import fs from "fs/promises"; // ✅ asynchronous version
+import fs from "fs/promises";
 
-// Cloudinary Config
+
 cloudinary.config({
   cloud_name: "dra16krtc",
   api_key: "438132666533594",
@@ -24,7 +24,7 @@ const uploadOnCloudinary = async (localFilePath) => {
     return null;
   } finally {
     try {
-      await fs.unlink(localFilePath); // ✅ delete safely
+      await fs.unlink(localFilePath);
     } catch (err) {
       console.warn("Could not delete local file:", err.message);
     }

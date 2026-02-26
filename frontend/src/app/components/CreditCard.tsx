@@ -15,7 +15,7 @@ interface Person {
 }
 
 const CreditCard = ({ person }: { person: Person }) => {
-  // Function to render the correct social icon based on type
+
   const getSocialIcon = (type: string) => {
     const iconProps = { size: 14, className: "group-hover:scale-110 transition-transform" };
     switch (type.toLowerCase()) {
@@ -35,12 +35,12 @@ const CreditCard = ({ person }: { person: Person }) => {
 
   return (
     <div className="group relative bg-black border border-white/10 hover:border-purple-500/50 transition-colors duration-500 overflow-hidden flex flex-col">
-      {/* Decorative Corner */}
+      
       <div className="absolute top-0 right-0 p-2 md:p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
         <div className="w-2 h-2 bg-purple-500 rounded-full" />
       </div>
 
-      {/* Photo Section */}
+      
       <div className="relative aspect-[4/5] overflow-hidden transition-all duration-700 opacity-80 group-hover:opacity-100">
         <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10 opacity-60" />
         <img
@@ -55,7 +55,7 @@ const CreditCard = ({ person }: { person: Person }) => {
         />
       </div>
 
-      {/* Info Section */}
+      
       <div className="p-6 relative z-20 -mt-20">
         <h3 className="text-xl font-bold font-cinzel text-white uppercase tracking-tight mb-1 group-hover:text-purple-400 transition-colors">
           {person.name}
@@ -64,7 +64,7 @@ const CreditCard = ({ person }: { person: Person }) => {
           {person.role}
         </p>
 
-        {/* Social Links */}
+        
         <div className="flex gap-4 border-t border-white/10 pt-4">
           {person.socials.map((social, index) => (
             <a
@@ -85,7 +85,7 @@ const CreditCard = ({ person }: { person: Person }) => {
 };
 
 const CreditCardGrid = () => {
-  // Sample data for multiple people
+
   const people = [
     {
       name: "Prabhanjan",
@@ -133,10 +133,10 @@ const CreditCardGrid = () => {
 
   return (
     <section className="container mx-auto px-6 py-20 relative">
-       {/* Section Header */}
+       
        <div className="flex flex-col items-center mb-16 text-center">
           <p className="text-purple-500 font-mono text-xs uppercase tracking-widest mb-4">
-              // Architects of the Protocol
+
           </p>
           <h2 className="text-4xl md:text-5xl font-bold font-cinzel uppercase tracking-tighter text-white">
               Development Team

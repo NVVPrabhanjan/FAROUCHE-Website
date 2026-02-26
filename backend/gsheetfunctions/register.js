@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import fs from 'fs';
 const serviceAccount = JSON.parse(fs.readFileSync("./credentials.json"));
-// console.log(serviceAccount)
+
 
 async function getSheetData() {
   const auth = new google.auth.GoogleAuth({
@@ -15,7 +15,7 @@ async function getSheetData() {
   const data = await auth.getClient();
   const Sheets = google.sheets({ version: 'v4', auth: data });
   return {data, Sheets};
-  // You can now proceed to interact with the Sheets API
+
 }
 
 getSheetData().catch(console.error);
@@ -31,8 +31,8 @@ const auth = new google.auth.GoogleAuth({
 const sheets = google.sheets({ version: 'v4', auth });
 
 export async function appendToSheet(values,shetName) {
-  const spreadsheetId = '1k79qmJavaabX80r7G9ImITVFluf2ZEr7Ua0uRxY28wU'; // Replace with actual Google Sheet ID
-  const range = `${shetName}!A:F`; // Adjust as needed
+  const spreadsheetId = '1k79qmJavaabX80r7G9ImITVFluf2ZEr7Ua0uRxY28wU';
+  const range = `${shetName}!A:F`;
   await ensureSheetExists(auth, spreadsheetId, shetName);
 
 
@@ -48,7 +48,7 @@ export async function appendToSheet(values,shetName) {
       }
     });
 
-    // console.log(data)
+
     return { success: true };
   } catch (error) {
     console.error('Error appending to Google Sheets:', error);
@@ -60,16 +60,16 @@ async function ensureSheetExists(auth, spreadsheetId, sheetName) {
   const sheets = google.sheets({ version: 'v4', auth });
 
   try {
-    // Get all sheets
+
     const spreadsheet = await sheets.spreadsheets.get({ spreadsheetId });
     const sheetExists = spreadsheet.data.sheets.some(
       (s) => s.properties.title === sheetName
     );
 
-    // If sheet exists, return
+
     if (sheetExists) return;
 
-    // Otherwise, create the sheet
+
     await sheets.spreadsheets.batchUpdate({
       spreadsheetId,
       resource: {

@@ -3,188 +3,226 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ScrollProgressBar from "../components/ScrollProgressBar";
-import { X, ZoomIn } from "lucide-react";
-import Image from "next/image";
+import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import LoadingAnimation from "../components/LoadingAnimation";
+import { useAPIConfig } from "@/context/APIConfigContext";
 
-// Define Types
 interface GalleryImage {
   imageUrl: string;
-  event?: string;
+  eventName?: string;
 }
 
 export default function Gallery() {
+  const { GALLERY_API_END_POINT } = useAPIConfig();
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedEvent, setSelectedEvent] = useState("All");
-  const [lightboxImage, setLightboxImage] = useState<GalleryImage | null>(null);
-
-  // Hardcoded events list for filter - keeping original list
-  const events = ["All", "Inaguration", "Food Fiesta - 3rd Year","Chiguru", "Food Fiesta - IH", "Food Fiesta - 1 & 2nd Year"];
+  const [events, setEvents] = useState<string[]>(["All"]);
+  const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
 
   useEffect(() => {
-    document.title = "FAROUCHE - Visual Archive";
-
-    const fetchImages = async () => {
-      try {
-        const res = await fetch("https://farouche25.tech/api/v1/gallery/"); // Using direct URL as in previous file
-        const data = await res.json();
-        setImages(data.images || []);
-      } catch (error) {
-        console.error("Failed to load archive:", error);
-      } finally {
-        setTimeout(() => setLoading(false), 1000);
-      }
-    };
-
-    fetchImages();
+    document.title = "FAROUCHE – Gallery";
+    fetch(`${GALLERY_API_END_POINT}/`)
+      .then(r => r.json())
+      .then(data => {
+        const imgs: GalleryImage[] = data.images || [];
+        setImages(imgs);
+        const unique = ["All", ...Array.from(new Set(imgs.map(i => i.eventName).filter(Boolean)))] as string[];
+        setEvents(unique);
+      })
+      .catch(console.error)
+      .finally(() => setTimeout(() => setLoading(false), 700));
   }, []);
 
-  // Filter Logic
-  const filteredImages = selectedEvent === "All" 
-    ? images 
-    : images.filter(img => img.event === selectedEvent);
+  const filtered = selectedEvent === "All"
+    ? images
+    : images.filter(img => img.eventName === selectedEvent);
+
+  const prev = () => setLightboxIdx(i => i != null ? (i - 1 + filtered.length) % filtered.length : 0);
+  const next = () => setLightboxIdx(i => i != null ? (i + 1) % filtered.length : 0);
+  const current = lightboxIdx != null ? filtered[lightboxIdx] : null;
+
+
+  const hero = filtered[0];
+  const sidebarImgs = filtered.slice(1, 5);
+  const restImgs = filtered.slice(5);
 
   return (
-    <div className="min-h-screen bg-black text-white selection:bg-purple-500/30 font-sans">
+    <div className="min-h-screen bg-[#0c0c0c] text-white">
       <ScrollProgressBar />
-
-      {/* Loading State */}
-      <AnimatePresence>
-        {loading && <LoadingAnimation />}
-      </AnimatePresence>
+      <AnimatePresence>{loading && <LoadingAnimation />}</AnimatePresence>
 
       {!loading && (
-        <main className="pt-32 pb-20 px-6 container mx-auto">
-            
-             {/* Header Section */}
-             <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-10 border-b border-white/10 pb-10">
-                <div>
-                    <motion.p 
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="text-purple-500 font-mono text-xs uppercase tracking-widest mb-4"
-                    >
-                        // Captured Moments
-                    </motion.p>
-                    <motion.h1 
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.1 }}
-                        className="text-5xl md:text-8xl font-bold font-cinzel uppercase tracking-tighter leading-none"
-                    >
-                        Visual<br/><span className="text-neutral-700">Archive</span>
-                    </motion.h1>
-                </div>
+        <>
+          
+          <header className="pt-28 pb-10 px-8 md:px-16 border-b border-white/[0.06]">
+            <div className="flex items-end justify-between gap-6 flex-wrap">
 
-                {/* Filter System */}
-                <motion.div 
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.3 }}
-                    className="flex flex-wrap gap-2 md:gap-4 max-w-xl justify-start md:justify-end"
+              
+              <div>
+                <p className="font-mono text-[10px] text-purple-400/70 uppercase tracking-[0.4em] mb-3">
+                  ✦ Farouche 2026 &nbsp;·&nbsp; Visual Archive
+                </p>
+                <h1
+                  className="text-5xl md:text-7xl font-black uppercase font-cinzel tracking-tight leading-none"
+                  style={{
+                    background: "linear-gradient(120deg,#fff 30%,#c084fc 70%,#f472b6 100%)",
+                    WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent"
+                  }}
                 >
-                    {events.map((event) => (
-                        <button
-                            key={event}
-                            onClick={() => setSelectedEvent(event)}
-                            className={`px-4 py-2 border text-[10px] md:text-xs font-mono uppercase tracking-widest transition-all duration-300 ${
-                                selectedEvent === event 
-                                    ? "bg-white text-black border-white" 
-                                    : "bg-transparent text-neutral-500 border-white/10 hover:border-purple-500 hover:text-purple-500"
-                            }`}
-                        >
-                            {event}
-                        </button>
-                    ))}
-                </motion.div>
-            </div>
+                  Gallery
+                </h1>
+                <p className="mt-3 font-mono text-[11px] text-white/20">
+                  {filtered.length} photos &nbsp;·&nbsp; {events.length - 1} event{events.length - 1 !== 1 ? "s" : ""}
+                </p>
+              </div>
 
-            {/* Gallery Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredImages.length > 0 ? (
-                    filteredImages.map((img, idx) => (
+              
+              <div className="flex flex-wrap gap-2 pb-1">
+                {events.map(ev => (
+                  <button
+                    key={ev}
+                    onClick={() => setSelectedEvent(ev)}
+                    className={`px-4 py-1.5 text-[11px] font-mono uppercase tracking-wider border transition-all duration-200 ${
+                      selectedEvent === ev
+                        ? "bg-white text-black border-white"
+                        : "bg-transparent text-white/35 border-white/10 hover:border-purple-400/50 hover:text-purple-300"
+                    }`}
+                  >
+                    {ev}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </header>
+
+          
+          <main className="px-8 md:px-16 py-10 pb-24 space-y-2">
+
+            {filtered.length === 0 ? (
+              <div className="py-40 text-center border border-dashed border-white/10">
+                <p className="text-white/20 font-mono text-sm uppercase tracking-widest">No photos yet</p>
+              </div>
+            ) : (
+              <>
+                
+                {hero && (
+                  <div className="grid grid-cols-3 gap-2">
+                    
+                    <motion.div
+                      initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}
+                      className="col-span-2 relative h-[520px] overflow-hidden cursor-zoom-in"
+                      onClick={() => setLightboxIdx(0)}
+                    >
+                      <img
+                        src={hero.imageUrl}
+                        alt={hero.eventName}
+                        className="w-full h-full object-cover hover:scale-[1.03] transition-transform duration-700"
+                        loading="lazy"
+                      />
+                      
+                      <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-black/60 to-transparent" />
+                      <span className="absolute bottom-4 left-4 font-mono text-[10px] text-white/70 uppercase tracking-widest">
+                        {hero.eventName}
+                      </span>
+                    </motion.div>
+
+                    
+                    <div className="grid grid-cols-2 gap-2">
+                      {sidebarImgs.map((img, i) => (
                         <motion.div
-                            key={idx}
-                            layoutId={`image-${idx}`}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: idx * 0.05 }}
-                            onClick={() => setLightboxImage(img)}
-                            className="group relative aspect-[4/5] cursor-pointer overflow-hidden bg-white/5 border border-white/10"
+                          key={img.imageUrl + i}
+                          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4, delay: i * 0.05 }}
+                          className="relative h-[254px] overflow-hidden cursor-zoom-in"
+                          onClick={() => setLightboxIdx(i + 1)}
                         >
-                            <Image 
-                                src={img.imageUrl} 
-                                alt={img.event || "Event Image"}
-                                fill
-                                className="object-cover transition-all duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0"
-                            />
-                            
-                            {/* Overlay */}
-                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                                <div className="p-4 border border-white/20 rounded-full bg-black/50 backdrop-blur-sm">
-                                    <ZoomIn className="text-white" size={24} />
-                                </div>
-                            </div>
-
-                            {/* Caption Tag */}
-                            <div className="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black to-transparent translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                                <span className="text-xs font-mono uppercase tracking-widest text-white">
-                                    {img.event || "Farouche 2025"}
-                                </span>
-                            </div>
+                          <img
+                            src={img.imageUrl}
+                            alt={img.eventName}
+                            className="w-full h-full object-cover hover:scale-[1.05] transition-transform duration-500"
+                            loading="lazy"
+                          />
                         </motion.div>
-                    ))
-                ) : (
-                    <div className="col-span-full py-20 text-center border border-white/10 border-dashed">
-                        <p className="font-mono text-neutral-500 uppercase tracking-widest">No Visuals Found</p>
+                      ))}
                     </div>
+                  </div>
                 )}
+
+                
+                {restImgs.length > 0 && (
+                  <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2">
+                    {restImgs.map((img, i) => (
+                      <motion.div
+                        key={img.imageUrl + i}
+                        initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                        transition={{ duration: 0.3, delay: (i % 15) * 0.03 }}
+                        className="aspect-square overflow-hidden cursor-zoom-in"
+                        onClick={() => setLightboxIdx(i + 5)}
+                      >
+                        <img
+                          src={img.imageUrl}
+                          alt={img.eventName}
+                          className="w-full h-full object-cover hover:scale-[1.06] transition-transform duration-500"
+                          loading="lazy"
+                        />
+                      </motion.div>
+                    ))}
+                  </div>
+                )}
+              </>
+            )}
+
+            
+            <div className="flex items-center gap-4 pt-8">
+              <div className="h-px flex-1 bg-white/[0.04]" />
+              <p className="font-mono text-[9px] text-white/10 uppercase tracking-[0.4em]">Farouche 2026</p>
+              <div className="h-px flex-1 bg-white/[0.04]" />
             </div>
+          </main>
 
-        </main>
-      )}
+          
+          <AnimatePresence>
+            {current && lightboxIdx != null && (
+              <motion.div
+                initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                className="fixed inset-0 z-[100] flex items-center justify-center bg-black/97"
+                onClick={() => setLightboxIdx(null)}
+              >
+                <span className="absolute top-7 left-1/2 -translate-x-1/2 font-mono text-[10px] text-white/25 tracking-widest uppercase">
+                  {lightboxIdx + 1} / {filtered.length}
+                  {current.eventName && <>&nbsp;&nbsp;·&nbsp;&nbsp;{current.eventName}</>}
+                </span>
 
-      {/* Lightbox Modal */}
-      <AnimatePresence>
-        {lightboxImage && (
-            <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex items-center justify-center p-4 md:p-10"
-                onClick={() => setLightboxImage(null)}
-            >
-                {/* Close Button */}
-                <button 
-                    className="absolute top-6 right-6 p-2 text-white/50 hover:text-white transition-colors"
-                >
-                    <X size={32} />
+                <button onClick={() => setLightboxIdx(null)}
+                  className="absolute top-7 right-8 text-white/30 hover:text-white transition-colors font-mono text-xs tracking-widest">
+                  ESC
+                </button>
+                <button onClick={e => { e.stopPropagation(); prev(); }}
+                  className="absolute left-6 text-white/20 hover:text-purple-400 transition-colors">
+                  <ChevronLeft size={28} />
                 </button>
 
-                {/* Content */}
-                <div 
-                    className="relative w-full max-w-5xl max-h-[90vh] flex flex-col items-center" 
-                    onClick={(e) => e.stopPropagation()}
-                >
-                    <div className="relative w-full h-[70vh] md:h-[80vh]">
-                        <Image 
-                            src={lightboxImage.imageUrl} 
-                            alt={lightboxImage.event || "Gallery Content"}
-                            fill
-                            className="object-contain"
-                        />
-                    </div>
-                    <div className="mt-4 text-center">
-                        <p className="font-cinzel text-xl text-white uppercase tracking-wider">
-                            {lightboxImage.event || "Farouche Archive"}
-                        </p>
-                    </div>
-                </div>
-            </motion.div>
-        )}
-      </AnimatePresence>
+                <motion.img
+                  key={lightboxIdx}
+                  src={current.imageUrl}
+                  alt={current.eventName || ""}
+                  initial={{ opacity: 0, scale: 0.97 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.15 }}
+                  className="max-h-[86vh] max-w-[86vw] object-contain"
+                  onClick={e => e.stopPropagation()}
+                />
 
+                <button onClick={e => { e.stopPropagation(); next(); }}
+                  className="absolute right-6 text-white/20 hover:text-purple-400 transition-colors">
+                  <ChevronRight size={28} />
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </>
+      )}
     </div>
   );
 }

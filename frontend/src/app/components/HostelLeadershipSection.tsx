@@ -30,7 +30,7 @@ const LeadershipCard = ({
       onClick={onClick}
       className="group relative w-full h-[250px] rounded-xl border border-white/10 bg-neutral-900 cursor-pointer overflow-hidden hover:border-purple-500/50 transition-colors duration-500"
     >
-      {/* Background Image */}
+      
       <div className="absolute inset-0">
          {leader.image ? (
             <Image
@@ -46,12 +46,12 @@ const LeadershipCard = ({
          )}
       </div>
 
-       {/* Gradient Overlay for text readability */}
+       
       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-90" />
 
-      {/* Content Container */}
+      
       <div className="absolute inset-0 p-5 flex flex-col justify-between z-10">
-          {/* Top: Role */}
+          
           <div className="flex justify-between items-start">
             <span className="text-[10px] font-mono text-neutral-300 uppercase tracking-widest bg-black/60 backdrop-blur-md px-2 py-0.5 rounded border border-white/10">
               {leader.role}
@@ -61,7 +61,7 @@ const LeadershipCard = ({
              </div>
           </div>
 
-          {/* Bottom: Name */}
+          
           <div>
             <h3 className="text-xl md:text-2xl font-bold text-white mb-1 uppercase tracking-tighter leading-none">
               {leader.name}
@@ -91,7 +91,7 @@ const MemberModal = ({
       exit={{ opacity: 0 }}
       className="fixed inset-0 z-[100] bg-black text-white overflow-y-auto"
     >
-      {/* Header */}
+      
       <div className="sticky top-0 z-50 flex justify-between items-center p-6 md:p-10 mix-blend-difference bg-black/50 backdrop-blur-md">
         <h2 className="text-sm font-mono uppercase tracking-widest opacity-70">
           Profile / {leader.role}
@@ -106,7 +106,7 @@ const MemberModal = ({
       </div>
 
       <div className="container mx-auto px-4 md:px-10 pb-20 pt-10 flex flex-col md:flex-row gap-12 items-center md:items-start">
-        {/* Image Section */}
+        
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -127,7 +127,7 @@ const MemberModal = ({
             )}
         </motion.div>
 
-        {/* Info Section */}
+        
         <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -185,7 +185,7 @@ export default function HostelLeadershipSection({
       <section className="bg-black py-32" id="leadership">
         <div className="container mx-auto px-4">
             
-          {/* Header */}
+          
           <div className="mb-24 text-center">
              <h2 className="text-6xl md:text-8xl font-bold text-white tracking-tighter uppercase mb-6">
                 Leadership
@@ -198,17 +198,17 @@ export default function HostelLeadershipSection({
           <div className="space-y-32">
             {hostelLeadership.map((group, groupIdx) => (
               <div key={group.title}>
-                {/* Group Title */}
+                
                 <div className="flex items-end gap-4 mb-8 border-b border-white/10 pb-4">
                     <h3 className="text-3xl md:text-4xl font-bold text-white uppercase tracking-tight">
                         {group.title}
                     </h3>
                     <p className="text-neutral-500 text-sm font-mono uppercase tracking-widest mb-1.5 hidden md:block">
-                        // {group.description}
+
                     </p>
                 </div>
 
-                {/* Grid */}
+                
                 <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
                   {group.members.map((member, idx) => (
                     <LeadershipCard

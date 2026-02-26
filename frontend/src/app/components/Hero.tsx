@@ -2,7 +2,7 @@
 import React from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import Link from "next/link"; // Added missing import
+import Link from "next/link";
 
 export default function Hero() {
   const { scrollY } = useScroll();
@@ -11,7 +11,7 @@ export default function Hero() {
 
   return (
     <div className="relative h-screen w-full overflow-hidden bg-black text-white">
-      {/* Dynamic Background */}
+      
       <motion.div 
         style={{ y }} 
         className="absolute inset-0 z-0 select-none"
@@ -27,15 +27,15 @@ export default function Hero() {
         <div className="absolute inset-0 bg-black/40" />
       </motion.div>
 
-      {/* Dispersed Layout Grid */}
+      
       <div className="absolute inset-0 z-10 p-6 md:p-12 flex flex-col justify-end">
         
-        {/* Center Section: Massive Title */}
+        
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center mix-blend-difference">
           <motion.h1 
             initial={{ opacity: 0, scale: 0.95, letterSpacing: "-0.05em" }}
             animate={{ opacity: 1, scale: 1, letterSpacing: "-0.02em" }}
-            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }} // Custom bezier for "luxurious" feel
+            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
             className="text-[12vw] leading-none font-bold tracking-tighter text-white"
           >
             FAROUCHE
@@ -50,7 +50,7 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        {/* Bottom Section */}
+        
         <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -58,14 +58,14 @@ export default function Hero() {
             style={{ opacity }}
             className="flex flex-col md:flex-row justify-between items-end gap-8"
         >
-          {/* Date & Time */}
+          
           <div className="flex flex-col gap-2 font-mono text-xs md:text-sm text-neutral-400">
              <div className="w-20 h-[1px] bg-white/20 mb-2" />
              <p><span className="text-white">April 24</span> — Kickoff</p>
              <p><span className="text-white">June 02</span> — Finale</p>
           </div>
 
-          {/* CTA */}
+          
           <Link href="/events" className="group flex items-center gap-4 cursor-pointer">
              <span className="text-sm font-medium uppercase tracking-widest group-hover:text-neutral-400 transition-colors">
                Enter Experience

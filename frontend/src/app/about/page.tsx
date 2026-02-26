@@ -17,7 +17,7 @@ import {
   ArrowRight
 } from "lucide-react";
 
-// Animation Variants
+
 const fadeInUp = {
   initial: { opacity: 0, y: 30 },
   animate: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
@@ -27,7 +27,7 @@ const staggerContainer = {
   animate: { transition: { staggerChildren: 0.1 } },
 };
 
-// Data
+
 const events = [
   {
     title: "Rafaga",
@@ -76,7 +76,7 @@ const activities = [
 
 const sports = [
   { name: "OUTDOOR", icon: Gamepad },
-  { name: "INDOOR", icon: Mic }, // Mic icon seemed wrong in original for indoor, but keeping for now or swapping to something generic if needed. Swapping to Gamepad generic for consistency in "Sports" context if vague, but keeping original mapping intent.
+  { name: "INDOOR", icon: Mic },
   { name: "E-SPORTS", icon: Sparkles },
 ];
 
@@ -95,7 +95,7 @@ export default function About() {
   return (
     <div className="min-h-screen bg-black text-white selection:bg-purple-500/30">
         
-      {/* Hero Header */}
+      
       <section className="relative pt-40 pb-20 border-b border-white/10">
         <div className="container mx-auto px-6">
             <motion.div 
@@ -105,7 +105,7 @@ export default function About() {
                 className="max-w-4xl"
             >
                 <motion.span variants={fadeInUp} className="block text-purple-500 font-mono text-sm uppercase tracking-widest mb-4">
-                    // Est. 2025
+
                 </motion.span>
                 <motion.h1 variants={fadeInUp} className="text-6xl md:text-9xl font-bold font-cinzel tracking-tighter uppercase leading-none mb-8">
                     About<br/><span className="text-neutral-700">Farouche</span>
@@ -117,7 +117,7 @@ export default function About() {
         </div>
       </section>
 
-      {/* Main Events Grid */}
+      
       <section className="py-24 border-b border-white/10">
          <div className="container mx-auto px-6">
             <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
@@ -157,9 +157,9 @@ export default function About() {
          </div>
       </section>
 
-      {/* Activities & Sports split */}
+      
       <section className="grid md:grid-cols-2 border-b border-white/10">
-          {/* Activities */}
+          
           <div className="p-12 md:p-20 border-b md:border-b-0 md:border-r border-white/10">
                <h3 className="text-3xl font-cinzel uppercase tracking-wider mb-10 text-center md:text-left">Special Activities</h3>
                <div className="space-y-8">
@@ -175,7 +175,7 @@ export default function About() {
                </div>
           </div>
 
-          {/* Sports */}
+          
           <div className="p-12 md:p-20 bg-neutral-900/20">
               <h3 className="text-3xl font-cinzel uppercase tracking-wider mb-10 text-center md:text-left">Sports Categories</h3>
               <div className="grid gap-4">
@@ -192,7 +192,7 @@ export default function About() {
           </div>
       </section>
 
-      {/* Cultural Events - Dense Grid */}
+      
       <section className="py-24">
          <div className="container mx-auto px-6">
              <div className="flex flex-col items-center mb-16 text-center">

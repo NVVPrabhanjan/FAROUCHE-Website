@@ -8,14 +8,14 @@ import { useEffect, useState } from 'react'
 import { EVENT_API_END_POINT } from '@/utils/constants'
 import LoadingAnimation from "../components/LoadingAnimation";
 
-// Define Event Interface
+
 interface Event {
     eventid: string;
     title: string;
     description: string;
     date: string;
     teamSize: number;
-    image?: string; // Assuming API returns image, if not we handle it
+    image?: string;
 }
 
 export default function Events() {
@@ -30,17 +30,14 @@ export default function Events() {
       try {
         const res = await fetch(`${EVENT_API_END_POINT}/getEvents`);
         const result = await res.json()
-        // Ensure we are setting an array
         if (Array.isArray(result.data)) {
-            setData(result.data)
+          setData(result.data)
         } else if (Array.isArray(result)) {
-            setData(result)
+          setData(result)
         } else {
-             console.error("Unexpected API response format:", result)
-             setData([])
+          setData([])
         }
-      } catch (error) {
-        console.error("Failed to fetch events:", error)
+      } catch {
         setData([])
       } finally {
         setTimeout(() => setLoading(false), 1200)
@@ -49,7 +46,7 @@ export default function Events() {
     fetchData()
   }, [])
   
-  // Filter by search term and sort by date in descending order
+
   const sortedEvents = data
     .filter(event => 
       event.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -58,7 +55,7 @@ export default function Events() {
     .sort((a, b) => {
       const dateA = new Date(a.date)
       const dateB = new Date(b.date)
-      return dateB.getTime() - dateA.getTime() // Descending order
+      return dateB.getTime() - dateA.getTime()
     })
 
   return (
@@ -73,7 +70,7 @@ export default function Events() {
           
           <main className="pt-32 pb-20 px-6 container mx-auto">
             
-            {/* Header Section */}
+            
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-10 border-b border-white/10 pb-10">
                 <div>
                     <motion.p 
@@ -81,7 +78,7 @@ export default function Events() {
                         animate={{ opacity: 1, y: 0 }}
                         className="text-purple-500 font-mono text-xs uppercase tracking-widest mb-4"
                     >
-                        // Official Schedule
+
                     </motion.p>
                     <motion.h1 
                         initial={{ opacity: 0, y: 20 }}
@@ -93,7 +90,7 @@ export default function Events() {
                     </motion.h1>
                 </div>
 
-                {/* Architectural Search */}
+                
                 <motion.div 
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -113,7 +110,7 @@ export default function Events() {
                 </motion.div>
             </div>
 
-            {/* Event List - Architectural/Brutalist Style */}
+            
             <div className="space-y-4">
                 {sortedEvents.length > 0 ? (
                     sortedEvents.map((event, index) => (
@@ -126,10 +123,10 @@ export default function Events() {
                             <Link href={`/events/${event.eventid}/${event.teamSize}`} className="block group">
                                 <article className="relative border border-white/10 p-8 md:p-12 transition-all duration-500 hover:border-purple-500/50 hover:bg-white/[0.02] flex flex-col md:flex-row gap-8 justify-between items-start md:items-center overflow-hidden">
                                     
-                                    {/* Hover Background Accent */}
+                                    
                                     <div className="absolute top-0 left-0 w-1 h-full bg-purple-500 transform -translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
 
-                                    {/* Event Info */}
+                                    
                                     <div className="flex-1 z-10">
                                         <div className="flex items-center gap-4 mb-4 text-xs font-mono text-neutral-500 uppercase tracking-widest">
                                             <span className="flex items-center gap-2">
@@ -147,7 +144,7 @@ export default function Events() {
                                         </p>
                                     </div>
 
-                                    {/* Action Arrow */}
+                                    
                                     <div className="z-10 bg-white/5 p-4 rounded-full border border-white/10 group-hover:bg-purple-500 group-hover:text-black group-hover:border-purple-500 transition-all duration-300">
                                         <ArrowRight className="transform group-hover:-rotate-45 transition-transform duration-500" size={24} />
                                     </div>

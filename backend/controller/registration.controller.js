@@ -1,8 +1,7 @@
 import Registration from "../models/registration.model.js";
 import Event from "../models/event.model.js";
-import { appendToSheet } from "../gsheetfunctions/register.js";
-import axios from "axios";
-import { uploadOnCloudinary } from "../utils/cloudinary.js"; // adjust path as needed
+import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import { publishEmailJob } from "../email-producer/kafka.producer.js";
 
 export const createRegistration = async (req, res) => {
   try {
@@ -18,16 +17,7 @@ export const createRegistration = async (req, res) => {
       return res.status(404).json({ message: "Event not found." });
     }
 
-    const existingRegistration = await Registration.findOne({
-      email,
-      eventId: event.id,
-    });
 
-    if (existingRegistration) {
-      return res.status(400).json({
-        message: "You are already registered for this event.",
-      });
-    }
 
     const eventTitle = event.title;
     const teamSize = event.teamSize;
@@ -35,12 +25,16 @@ export const createRegistration = async (req, res) => {
     let imageUrl = "";
     if (eventTitle.toLowerCase() === "mh cricket") {
       if (!req.file || !req.file.path) {
-        return res.status(400).json({ message: "Image is required for MH Cricket registration." });
+        return res
+          .status(400)
+          .json({ message: "Image is required for MH Cricket registration." });
       }
 
       const cloudinaryResult = await uploadOnCloudinary(req.file.path);
       if (!cloudinaryResult || !cloudinaryResult.url) {
-        return res.status(500).json({ message: "Failed to upload image to Cloudinary." });
+        return res
+          .status(500)
+          .json({ message: "Failed to upload image to Cloudinary." });
       }
 
       imageUrl = cloudinaryResult.url;
@@ -51,6 +45,7 @@ export const createRegistration = async (req, res) => {
       phoneNumber,
       email,
       hostelName,
+      year,
       eventId: event.id,
       teamMembers,
       image: imageUrl || undefined,
@@ -58,29 +53,17 @@ export const createRegistration = async (req, res) => {
 
     const savedRegistration = await newRegistration.save();
 
-    const sheetData = [
-      name,
-      year,
-      phoneNumber,
-      email,
-      hostelName,
-      eventTitle,
-      ...(teamSize > 0 ? teamMembers : []),
-      imageUrl
-    ];
 
-    try {
-      await appendToSheet(sheetData, eventTitle);
-
-      axios.post("http://3.92.134.227:3000/sendMail", {
+    await publishEmailJob({
+      type: "registration_confirmation",
+      payload: {
+        to: email,
         name,
         eventTitle,
         venue: event.venue,
-        email,
-      });
-    } catch (error) {
-      console.log("Post-registration hook error:", error.message);
-    }
+        teamMembers: teamMembers ?? [],
+      },
+    });
 
     res.status(201).json({
       message: "Registration successful.",
