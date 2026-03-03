@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import ScrollProgressBar from "../components/ScrollProgressBar";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import LoadingAnimation from "../components/LoadingAnimation";
 import { useAPIConfig } from "@/context/APIConfigContext";
@@ -49,7 +48,6 @@ export default function Gallery() {
 
   return (
     <div className="min-h-screen bg-[#0c0c0c] text-white">
-      <ScrollProgressBar />
       <AnimatePresence>{loading && <LoadingAnimation />}</AnimatePresence>
 
       {!loading && (

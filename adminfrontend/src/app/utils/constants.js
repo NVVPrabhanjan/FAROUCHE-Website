@@ -11,3 +11,4 @@ export const EVENT_API_END_POINT        = `${BACKEND_URL}/api/v1/event`;
 export const REGISTRATION_API_END_POINT = `${BACKEND_URL}/api/v1/registration`;
 export const GALLERY_API_END_POINT      = `${GALLERY_URL}/api/v1/gallery`;
 export const GALLERY_ADD_END_POINT      = `${GALLERY_URL}/api/v1/gallery/add`;
+export const GALLERY_EVENTS_END_POINT   = `${GALLERY_URL}/api/v1/gallery/events`;

@@ -1,16 +1,17 @@
 {
   "name": "email-service",
   "version": "1.0.0",
-  "description": "Standalone Kafka-based email microservice for Farouche 2026",
-  "main": "index.js",
+  "description": "Standalone Express-based email microservice for Farouche 2026",
+  "main": "src/index.js",
   "type": "module",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js"
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
   },
   "dependencies": {
+    "cors": "^2.8.6",
     "dotenv": "^16.5.0",
-    "kafkajs": "^2.2.4",
+    "express": "^5.2.1",
     "nodemailer": "^6.10.0"
   },
   "devDependencies": {

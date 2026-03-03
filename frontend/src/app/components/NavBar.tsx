@@ -47,7 +47,7 @@ export default function Navbar() {
                 </div>
                 <div className="flex flex-col">
                     <span className="text-xl md:text-2xl font-bold tracking-[0.2em] font-cinzel leading-none text-white">FAROUCHE</span>
-                    <span className="text-[10px] uppercase tracking-[0.5em] text-neutral-400 group-hover:text-purple-400 transition-colors">EST. 2025</span>
+                    <span className="text-[10px] uppercase tracking-[0.5em] text-neutral-400 group-hover:text-purple-400 transition-colors">EST. 1977</span>
                 </div>
              </Link>
 
@@ -111,7 +111,7 @@ export default function Navbar() {
                     </div>
 
                     <div className="absolute bottom-10 left-0 w-full text-center">
-                        <p className="text-xs font-mono text-neutral-600 uppercase tracking-[0.3em]">Farouche 2025</p>
+                        <p className="text-xs font-mono text-neutral-600 uppercase tracking-[0.3em]">Farouche 2026</p>
                     </div>
                 </motion.div>
             )}

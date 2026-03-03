@@ -1,56 +1,25 @@
+import axios from "axios";
 
-
-import { Kafka } from "kafkajs";
-
-const BROKER = process.env.KAFKA_BROKER || "localhost:9092";
-const TOPIC  = process.env.KAFKA_TOPIC  || "email-jobs";
-
-const kafka = new Kafka({
-  clientId: "farouche-backend",
-  brokers: [BROKER],
-  retry: { retries: 3 },
-});
-
-const producer = kafka.producer();
-let _connected = false;
-
-
-async function ensureConnected() {
-  if (!_connected) {
-    await producer.connect();
-    _connected = true;
-    console.log("✅ Kafka producer connected.");
-  }
-}
-
-
+const EMAIL_SERVICE_URL = process.env.EMAIL_SERVICE_URL || "http://localhost:5001/api/send-email";
 
 export async function publishEmailJob({ type, payload }) {
   try {
-    await ensureConnected();
-
-    await producer.send({
-      topic: TOPIC,
-      messages: [
-        {
-          key: type,
-          value: JSON.stringify({ type, payload }),
-        },
-      ],
+    const response = await axios.post(EMAIL_SERVICE_URL, {
+      type,
+      payload
     });
-
-    console.log(`📤 Email job published to Kafka [${type}] → ${payload?.to}`);
+    
+    console.log(`📤 Email job sent to HTTP service [${type}] → ${payload?.to}`);
+    return response.data;
   } catch (err) {
-
-    console.error(`❌ Kafka publish failed [${type}]:`, err.message);
+    console.error(`❌ HTTP Email publish failed [${type}]:`, err.message);
+    if (err.response) {
+      console.error("Response data:", err.response.data);
+    }
   }
 }
 
-
+// Keeping this exported for backward compatibility if any file calls it, though it does nothing now.
 export async function disconnectProducer() {
-  if (_connected) {
-    await producer.disconnect();
-    _connected = false;
-    console.log("🛑 Kafka producer disconnected.");
-  }
+  console.log("🛑 disconnectProducer called (No-op: Kafka removed, using HTTP).");
 }

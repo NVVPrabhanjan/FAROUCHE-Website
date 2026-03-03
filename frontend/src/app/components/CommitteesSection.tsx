@@ -149,7 +149,7 @@ export default function CommitteesSection({ committees }: CommitteesSectionProps
                 </h2>
                 <p className="text-neutral-400 max-w-md text-sm md:text-base leading-relaxed text-right md:text-left">
                     Behind every great event is a relentless team. 
-                    Explore the groups powering Farouche 2025.
+                    Explore the groups powering Farouche 2026.
                 </p>
             </div>
 

@@ -1,6 +1,5 @@
 "use client";
 import { motion } from "framer-motion";
-import ScrollProgressBar from "../../components/ScrollProgressBar";
 import { useState, useEffect } from "react";
 import { RESULTS_END_POINT } from "@/utils/constants";
 import Link from "next/link";
@@ -55,7 +54,6 @@ export default function CategoryResults() {
 
   return (
     <div className="min-h-screen bg-black text-white selection:bg-purple-500/30 font-sans">
-      <ScrollProgressBar />
 
       {isLoading ? (
         <div className="h-screen flex items-center justify-center">

@@ -101,3 +101,109 @@ export const getAllImages = async (req, res) => {
     });
   }
 };
+
+// Fetch raw events with their arrays intact
+export const getGalleryEvents = async (req, res) => {
+  try {
+    const events = await galleryModel.find({}).sort({ _id: -1 });
+    res.status(200).json({
+      message: "Gallery events fetched successfully.",
+      events,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to fetch gallery events.",
+      error: error.message,
+    });
+  }
+};
+
+// Delete an entire gallery event
+export const deleteGallery = async (req, res) => {
+  try {
+    const { eventName } = req.params;
+    const deletedEvent = await galleryModel.findOneAndDelete({ eventName });
+    
+    if (!deletedEvent) {
+      return res.status(404).json({ message: "Event not found." });
+    }
+
+    res.status(200).json({
+      message: `Gallery '${eventName}' deleted successfully.`,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to delete gallery.",
+      error: error.message,
+    });
+  }
+};
+
+// Delete a single image from a gallery
+export const deleteImageFromGallery = async (req, res) => {
+  try {
+    const { eventName } = req.params;
+    const { imageUrl } = req.body;
+
+    if (!imageUrl) {
+      return res.status(400).json({ message: "Image URL is required." });
+    }
+
+    const updatedEvent = await galleryModel.findOneAndUpdate(
+      { eventName },
+      { $pull: { eventImages: imageUrl } },
+      { new: true }
+    );
+
+    if (!updatedEvent) {
+      return res.status(404).json({ message: "Event not found." });
+    }
+
+    res.status(200).json({
+      message: "Image deleted successfully from gallery.",
+      event: updatedEvent,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to delete image.",
+      error: error.message,
+    });
+  }
+};
+
+// Edit gallery name
+export const editGalleryName = async (req, res) => {
+  try {
+    const { eventName } = req.params;
+    const { newEventName } = req.body;
+
+    if (!newEventName || newEventName.trim() === "") {
+      return res.status(400).json({ message: "New event name is required." });
+    }
+
+    const existingNameCheck = await galleryModel.findOne({ eventName: newEventName.trim() });
+    if (existingNameCheck) {
+      return res.status(400).json({ message: "An event with this new name already exists." });
+    }
+
+    const updatedEvent = await galleryModel.findOneAndUpdate(
+      { eventName },
+      { $set: { eventName: newEventName.trim() } },
+      { new: true }
+    );
+
+    if (!updatedEvent) {
+      return res.status(404).json({ message: "Event not found." });
+    }
+
+    res.status(200).json({
+      message: `Gallery renamed to '${newEventName.trim()}'.`,
+      event: updatedEvent,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to edit gallery name.",
+      error: error.message,
+    });
+  }
+};

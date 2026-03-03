@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Search, ArrowRight, Calendar, MapPin } from 'lucide-react'
-import ScrollProgressBar from '../components/ScrollProgressBar'
 import { useEffect, useState } from 'react'
 import { EVENT_API_END_POINT } from '@/utils/constants'
 import LoadingAnimation from "../components/LoadingAnimation";
@@ -66,7 +65,6 @@ export default function Events() {
 
       {!loading && (
         <>
-          <ScrollProgressBar />
           
           <main className="pt-32 pb-20 px-6 container mx-auto">
             

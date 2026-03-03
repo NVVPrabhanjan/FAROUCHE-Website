@@ -6,7 +6,6 @@ import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Calendar, MapPin, ArrowLeft, Share2, ArrowRight } from 'lucide-react'
-import ScrollProgressBar from '@/app/components/ScrollProgressBar'
 import { EVENT_API_END_POINT } from '@/utils/constants'
 
 
@@ -75,7 +74,6 @@ export default function EventDetails() {
 
   return (
     <div className="min-h-screen bg-black text-white selection:bg-purple-500/30 font-sans">
-      <ScrollProgressBar />
       
       
       <div className="fixed inset-0 z-0">

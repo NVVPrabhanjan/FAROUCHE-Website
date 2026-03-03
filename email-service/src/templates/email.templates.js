@@ -1,4 +1,4 @@
-import { EMAIL_USER } from "../mailer.js";
+import { EMAIL_USER } from "../services/email.service.js";
 
 export function registrationConfirmationTemplate({
   name,

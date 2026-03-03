@@ -1,5 +1,3 @@
-
-
 import nodemailer from "nodemailer";
 
 const EMAIL_USER = process.env.EMAIL_USER?.trim();

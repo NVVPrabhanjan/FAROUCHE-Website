@@ -1,6 +1,5 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
-import ScrollProgressBar from "../components/ScrollProgressBar";
 import { useState, useEffect } from "react";
 import { RESULTS_END_POINT } from "@/utils/constants";
 import LoadingAnimation from "../components/LoadingAnimation";
@@ -72,7 +71,6 @@ export default function MatchDetails() {
 
   return (
     <div className="min-h-screen bg-black text-white selection:bg-purple-500/30 font-sans">
-      <ScrollProgressBar />
       <AnimatePresence>
          {isLoading && <LoadingAnimation />}
       </AnimatePresence>

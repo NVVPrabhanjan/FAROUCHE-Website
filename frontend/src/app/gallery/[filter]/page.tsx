@@ -1,15 +1,7 @@
-
-
-
-
-
-
-
 "use client";
 
 import { useEffect, useState } from "react";
 import axios from "axios";
-import ScrollProgressBar from "@/app/components/ScrollProgressBar";
 import Navbar from "@/app/components/NavBar";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
@@ -63,7 +55,6 @@ export default function FilteredGallery() {
 
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden pt-12">
-      <ScrollProgressBar />
       <Navbar />
 
       

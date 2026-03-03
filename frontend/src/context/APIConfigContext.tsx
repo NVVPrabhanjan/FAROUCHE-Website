@@ -2,8 +2,8 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
-const PROD_BACKEND_URL = "https://your-production-backend.com";
-const PROD_GALLERY_URL = "https://your-production-gallery.com";
+const PROD_BACKEND_URL = "https://farouche-backend.onrender.com";
+const PROD_GALLERY_URL = "https://farouche-gallery.onrender.com";
 const LOCAL_BACKEND_URL = "http://localhost:4000";
 const LOCAL_GALLERY_URL = "http://localhost:4001";
 
@@ -25,22 +25,16 @@ function buildConfig(backendUrl: string, galleryUrl: string): APIConfig {
   };
 }
 
-const defaultConfig = buildConfig(PROD_BACKEND_URL, PROD_GALLERY_URL);
+// Automatically switch based on environment
+const isLocal = process.env.NODE_ENV === "development";
+const defaultConfig = isLocal
+  ? buildConfig(LOCAL_BACKEND_URL, LOCAL_GALLERY_URL)
+  : buildConfig(PROD_BACKEND_URL, PROD_GALLERY_URL);
 
 const APIConfigContext = createContext<APIConfig>(defaultConfig);
 
 export function APIConfigProvider({ children }: { children: ReactNode }) {
-  const [config, setConfig] = useState<APIConfig>(defaultConfig);
-
-  useEffect(() => {
-    const isLocal =
-      window.location.hostname === "localhost" ||
-      window.location.hostname === "127.0.0.1";
-
-    if (isLocal) {
-      setConfig(buildConfig(LOCAL_BACKEND_URL, LOCAL_GALLERY_URL));
-    }
-  }, []);
+  const [config] = useState<APIConfig>(defaultConfig);
 
   return (
     <APIConfigContext.Provider value={config}>
