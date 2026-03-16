@@ -18,14 +18,14 @@ export default function AdminLogin() {
     e.preventDefault();
     setError("");
 
-    if (isSignup && !email.endsWith("@bmsce.ac.in")) {
-        setError("Only @bmsce.ac.in emails are allowed for signup.");
-        return;
+    if (isSignup && !email.endsWith("22@bmsce.ac.in")) {
+      setError("Only @bmsce.ac.in emails are allowed for signup.");
+      return;
     }
 
     try {
       const { adminLogin, adminSignup } = await import("../services/adminService");
-      
+
       let response;
       if (isSignup) {
         response = await adminSignup({ username, email, password, secretKey });
@@ -45,7 +45,7 @@ export default function AdminLogin() {
         setError(response.message || "Authentication failed");
       }
     } catch (err: any) {
-        setError(err.response?.data?.message || "Authentication failed");
+      setError(err.response?.data?.message || "Authentication failed");
     }
   };
 
@@ -74,42 +74,42 @@ export default function AdminLogin() {
               required
             />
           </div>
-          
+
           {isSignup && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                className="space-y-6"
-              >
-                <div>
-                    <label htmlFor="email" className="block text-gray-300 mb-2">
-                    Email (@bmsce.ac.in)
-                    </label>
-                    <input
-                    type="email"
-                    id="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-4 py-3 bg-black/50 text-white rounded-lg border border-purple-900/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                    required={isSignup}
-                    />
-                </div>
-                <div>
-                     <label htmlFor="secretKey" className="block text-gray-300 mb-2 flex items-center gap-2">
-                      Secret Key <span className="text-xs text-purple-400">(Required for Signup)</span>
-                    </label>
-                    <input
-                    type="password"
-                    id="secretKey"
-                    value={secretKey}
-                    onChange={(e) => setSecretKey(e.target.value)}
-                    className="w-full px-4 py-3 bg-black/50 text-white rounded-lg border border-red-500/50 focus:outline-none focus:ring-2 focus:ring-red-500"
-                    placeholder="Enter admin secret key"
-                    required={isSignup}
-                    />
-                </div>
-              </motion.div>
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              className="space-y-6"
+            >
+              <div>
+                <label htmlFor="email" className="block text-gray-300 mb-2">
+                  Email (@bmsce.ac.in)
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full px-4 py-3 bg-black/50 text-white rounded-lg border border-purple-900/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  required={isSignup}
+                />
+              </div>
+              <div>
+                <label htmlFor="secretKey" className="block text-gray-300 mb-2 flex items-center gap-2">
+                  Secret Key <span className="text-xs text-purple-400">(Required for Signup)</span>
+                </label>
+                <input
+                  type="password"
+                  id="secretKey"
+                  value={secretKey}
+                  onChange={(e) => setSecretKey(e.target.value)}
+                  className="w-full px-4 py-3 bg-black/50 text-white rounded-lg border border-red-500/50 focus:outline-none focus:ring-2 focus:ring-red-500"
+                  placeholder="Enter admin secret key"
+                  required={isSignup}
+                />
+              </div>
+            </motion.div>
           )}
 
           <div>
@@ -127,25 +127,25 @@ export default function AdminLogin() {
           </div>
 
           {error && <p className="text-red-400 text-sm">{error}</p>}
-          
+
           <motion.button
             type="submit"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-3 rounded-full hover:from-purple-700 hover:to-pink-700 transition-colors flex items-center justify-center gap-2"
           >
-            {isSignup ? <UserPlus size={20} /> : <LogIn size={20} />} 
+            {isSignup ? <UserPlus size={20} /> : <LogIn size={20} />}
             {isSignup ? "Sign Up" : "Login"}
           </motion.button>
         </form>
 
         <div className="mt-4 text-center">
-            <button 
-                onClick={() => setIsSignup(!isSignup)}
-                className="text-purple-400 hover:text-purple-300 text-sm underline"
-            >
-                {isSignup ? "Already have an account? Login" : "Need an account? Sign Up"}
-            </button>
+          <button
+            onClick={() => setIsSignup(!isSignup)}
+            className="text-purple-400 hover:text-purple-300 text-sm underline"
+          >
+            {isSignup ? "Already have an account? Login" : "Need an account? Sign Up"}
+          </button>
         </div>
 
       </motion.div>

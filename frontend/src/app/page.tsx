@@ -14,9 +14,6 @@ export default function Home() {
       <Hero />
       <HostelLeadershipSection hostelLeadership={hostelLeadership} />
       <CommitteesSection committees={committees} />
-      <div className="my-10">
-        <CreditCardGrid />
-      </div>
     </div>
   );
 }

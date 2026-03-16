@@ -135,7 +135,7 @@ export function ResultForm() {
       <DialogFooter>
         <button
           type="submit"
-          className="inline-flex items-center justify-center py-2.5 px-5 rounded-md bg-purple-600 text-white hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
+          className="inline-flex items-center justify-center py-2.5 px-5 rounded-md bg-amber-600 text-white hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500"
         >
           Submit Result
         </button>

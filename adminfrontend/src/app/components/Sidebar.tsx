@@ -1,7 +1,7 @@
 "use client";
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { LayoutDashboard, CalendarPlus, Trophy, Image as ImageIcon, LogOut, X, Users, ActivitySquare } from 'lucide-react';
+import { LayoutDashboard, CalendarPlus, Trophy, Image as ImageIcon, LogOut, X, Users, ActivitySquare, ShoppingBag } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 interface SidebarProps {
@@ -29,6 +29,7 @@ export default function Sidebar({ isOpen = true, onClose, className = "" }: Side
         { name: 'Add Events', href: '/dashboard/events', icon: CalendarPlus, show: canWrite },
         { name: 'Add Results', href: '/dashboard/results', icon: Trophy, show: canWrite },
         { name: 'Gallery', href: '/dashboard/gallery', icon: ImageIcon, show: true },
+        { name: 'Merch Orders', href: '/dashboard/merch', icon: ShoppingBag, show: canWrite },
 
         { name: 'Admin Management', href: '/dashboard/admins', icon: Users, show: isSuperAdmin },
         { name: 'Activity Log', href: '/dashboard/activity', icon: ActivitySquare, show: isSuperAdmin },

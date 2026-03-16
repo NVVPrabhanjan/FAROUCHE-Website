@@ -7,115 +7,115 @@ import { Menu, X, Home, Calendar, Trophy, Info, ImageIcon } from 'lucide-react'
 import Image from 'next/image'
 
 export default function Navbar() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+    const [scrolled, setScrolled] = useState(false)
 
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50)
-    }
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+    useEffect(() => {
+        const handleScroll = () => {
+            setScrolled(window.scrollY > 50)
+        }
+        window.addEventListener('scroll', handleScroll)
+        return () => window.removeEventListener('scroll', handleScroll)
+    }, [])
 
-  const navItems = [
-    { name: 'Home', href: '/', icon: Home },
-    { name: 'About', href: '/about', icon: Info },
-    { name: 'Events', href: '/events', icon: Calendar },
-    { name: 'Results', href: '/results', icon: Trophy },
-    { name: 'Gallery', href: '/gallery', icon: ImageIcon }
-  ]
+    const navItems = [
+        { name: 'Home', href: '/', icon: Home },
+        { name: 'About', href: '/about', icon: Info },
+        { name: 'Events', href: '/events', icon: Calendar },
+        { name: 'Results', href: '/results', icon: Trophy },
+        { name: 'Gallery', href: '/gallery', icon: ImageIcon },
+        { name: 'Merch', href: '/merch', icon: ImageIcon }
+    ]
 
-  return (
-    <>
-        <header 
-            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 border-b ${
-                scrolled ? 'bg-black/80 backdrop-blur-xl border-white/10 py-4' : 'bg-transparent border-transparent py-6'
-            }`}
-        >
-          <div className="container mx-auto px-6 flex items-center justify-between">
-             
-             <Link href="/" className="flex items-center gap-4 group">
-                <div className="relative h-10 w-10 md:h-12 md:w-12 overflow-hidden rounded-full border border-white/20 group-hover:border-purple-500 transition-colors">
-                     <Image
-                        src="/logo1.png"
-                        alt="Farouche Logo"
-                        fill
-                        className="object-cover"
-                     />
-                </div>
-                <div className="flex flex-col">
-                    <span className="text-xl md:text-2xl font-bold tracking-[0.2em] font-cinzel leading-none text-white">FAROUCHE</span>
-                    <span className="text-[10px] uppercase tracking-[0.5em] text-neutral-400 group-hover:text-purple-400 transition-colors">EST. 1977</span>
-                </div>
-             </Link>
+    return (
+        <>
+            <header
+                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 border-b ${scrolled ? 'bg-black/80 backdrop-blur-xl border-white/10 py-4' : 'bg-transparent border-transparent py-6'
+                    }`}
+            >
+                <div className="container mx-auto px-6 flex items-center justify-between">
 
-             
-             <nav className="hidden md:flex items-center gap-1 bg-white/5 backdrop-blur-md rounded-full px-2 py-1.5 border border-white/10">
-                {navItems.map((item) => (
-                    <Link 
-                        key={item.name} 
-                        href={item.href}
-                        className="relative px-6 py-2.5 rounded-full text-xs font-mono uppercase tracking-widest text-neutral-400 hover:text-white hover:bg-white/10 transition-all duration-300 group"
-                    >
-                         <span className="relative z-10">{item.name}</span>
+                    <Link href="/" className="flex items-center gap-4 group">
+                        <div className="relative h-10 w-10 md:h-12 md:w-12 overflow-hidden rounded-full border border-white/20 group-hover:border-amber-500 transition-colors">
+                            <Image
+                                src="/image.png"
+                                alt="Farouche Logo"
+                                fill
+                                className="object-cover"
+                            />
+                        </div>
+                        <div className="flex flex-col">
+                            <span className="text-xl md:text-2xl font-bold tracking-[0.2em] font-cinzel leading-none text-white">FAROUCHE</span>
+                            <span className="text-[10px] uppercase tracking-[0.5em] text-neutral-400 group-hover:text-amber-400 transition-colors">EST. 1977</span>
+                        </div>
                     </Link>
-                ))}
-             </nav>
 
-             
-             <button
-               onClick={() => setMobileMenuOpen(true)}
-               className="md:hidden p-2 text-white hover:text-purple-400 transition-colors"
-             >
-                <Menu size={24} />
-             </button>
-          </div>
-        </header>
 
-        
-        <AnimatePresence>
-            {mobileMenuOpen && (
-                <motion.div 
-                    initial={{ opacity: 0, y: '-100%' }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: '-100%' }}
-                    transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                    className="fixed inset-0 z-[60] bg-black flex flex-col items-center justify-center space-y-8"
-                >
-                    <button 
-                        onClick={() => setMobileMenuOpen(false)}
-                        className="absolute top-8 right-8 p-2 text-neutral-500 hover:text-white transition-colors"
-                    >
-                        <X size={32} />
-                    </button>
-
-                    <div className="flex flex-col items-center space-y-6">
-                        {navItems.map((item, i) => (
-                             <motion.div
+                    <nav className="hidden md:flex items-center gap-1 bg-white/5 backdrop-blur-md rounded-full px-2 py-1.5 border border-white/10">
+                        {navItems.map((item) => (
+                            <Link
                                 key={item.name}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.2 + (i * 0.1) }}
-                             >
-                                <Link 
-                                    href={item.href}
-                                    onClick={() => setMobileMenuOpen(false)}
-                                    className="text-4xl md:text-6xl font-bold font-cinzel text-neutral-500 hover:text-white transition-colors uppercase tracking-widest"
-                                >
-                                    {item.name}
-                                </Link>
-                             </motion.div>
+                                href={item.href}
+                                className="relative px-6 py-2.5 rounded-full text-xs font-mono uppercase tracking-widest text-neutral-400 hover:text-white hover:bg-white/10 transition-all duration-300 group"
+                            >
+                                <span className="relative z-10">{item.name}</span>
+                            </Link>
                         ))}
-                    </div>
+                    </nav>
 
-                    <div className="absolute bottom-10 left-0 w-full text-center">
-                        <p className="text-xs font-mono text-neutral-600 uppercase tracking-[0.3em]">Farouche 2026</p>
-                    </div>
-                </motion.div>
-            )}
-        </AnimatePresence>
-    </>
-  )
+
+                    <button
+                        onClick={() => setMobileMenuOpen(true)}
+                        className="md:hidden p-2 text-white hover:text-amber-400 transition-colors"
+                    >
+                        <Menu size={24} />
+                    </button>
+                </div>
+            </header>
+
+
+            <AnimatePresence>
+                {mobileMenuOpen && (
+                    <motion.div
+                        initial={{ opacity: 0, y: '-100%' }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: '-100%' }}
+                        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                        className="fixed inset-0 z-[60] bg-black flex flex-col items-center justify-center space-y-8"
+                    >
+                        <button
+                            onClick={() => setMobileMenuOpen(false)}
+                            className="absolute top-8 right-8 p-2 text-neutral-500 hover:text-white transition-colors"
+                        >
+                            <X size={32} />
+                        </button>
+
+                        <div className="flex flex-col items-center space-y-6">
+                            {navItems.map((item, i) => (
+                                <motion.div
+                                    key={item.name}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.2 + (i * 0.1) }}
+                                >
+                                    <Link
+                                        href={item.href}
+                                        onClick={() => setMobileMenuOpen(false)}
+                                        className="text-4xl md:text-6xl font-bold font-cinzel text-neutral-500 hover:text-white transition-colors uppercase tracking-widest"
+                                    >
+                                        {item.name}
+                                    </Link>
+                                </motion.div>
+                            ))}
+                        </div>
+
+                        <div className="absolute bottom-10 left-0 w-full text-center">
+                            <p className="text-xs font-mono text-neutral-600 uppercase tracking-[0.3em]">Farouche 2026</p>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </>
+    )
 }

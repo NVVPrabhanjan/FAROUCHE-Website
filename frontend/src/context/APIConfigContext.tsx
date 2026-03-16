@@ -13,6 +13,7 @@ interface APIConfig {
   REGISTRATION_API_END_POINT: string;
   GALLERY_API_END_POINT: string;
   GALLERY_ADD_END_POINT: string;
+  MERCH_API_END_POINT: string;
 }
 
 function buildConfig(backendUrl: string, galleryUrl: string): APIConfig {
@@ -22,6 +23,7 @@ function buildConfig(backendUrl: string, galleryUrl: string): APIConfig {
     REGISTRATION_API_END_POINT: `${backendUrl}/api/v1/registration`,
     GALLERY_API_END_POINT: `${galleryUrl}/api/v1/gallery`,
     GALLERY_ADD_END_POINT: `${galleryUrl}/api/v1/gallery/add`,
+    MERCH_API_END_POINT: `${backendUrl}/api/v1/merch`,
   };
 }
 

@@ -9,6 +9,8 @@ import eventCreateRoute from "./routes/event.route.js";
 import registrationRouter from "./routes/registration.route.js";
 import resultsRouter from "./routes/results.route.js";
 import adminRouter from "./routes/admin.route.js";
+import merchRouter from "./routes/merch.route.js";
+import adminMerchRouter from "./routes/adminMerch.route.js";
 
 import os from "os";
 import cluster from "cluster";
@@ -73,6 +75,8 @@ if (cluster.isPrimary) {
   app.use("/api/v1/registration", registrationRouter);
   app.use("/api/v1/results", resultsRouter);
   app.use("/api/v1/admin", adminRouter);
+  app.use("/api/v1/merch", merchRouter);
+  app.use("/api/v1/admin/merch", adminMerchRouter);
 
   
   app.get("/", (req, res) => {

@@ -4,10 +4,12 @@ import Registration from "../models/registration.model.js";
 import AuditLog from "../models/auditLog.model.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import { publishEmailJob } from "../email-producer/kafka.producer.js";
+import { publishEmailJob } from "../email-producer/email.service.js";
 
-const SUPER_ADMIN_EMAIL = "namakal.is22@bmsce.ac.in";
-
+const SUPER_ADMIN_EMAILS = [
+    "namakal.is22@bmsce.ac.in",
+    "vansh.me22@bmsce.ac.in"
+];
 
 export const adminSignup = async (req, res) => {
     try {
@@ -29,17 +31,17 @@ export const adminSignup = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
 
-        const role = email === SUPER_ADMIN_EMAIL ? "super_admin" : "viewer";
+        const role = SUPER_ADMIN_EMAILS.includes(email) ? "super_admin" : "viewer";
 
         const newAdmin = await Admin.create({ username, email, password: hashedPassword, role });
 
 
         await AuditLog.create({
-            adminId:   newAdmin._id,
+            adminId: newAdmin._id,
             adminName: newAdmin.username,
             adminRole: newAdmin.role,
-            action:    "ADMIN_SIGNUP",
-            detail:    `New admin signed up: ${username} (${email}) — role: ${role}`,
+            action: "ADMIN_SIGNUP",
+            detail: `New admin signed up: ${username} (${email}) — role: ${role}`,
         });
 
         const token = jwt.sign(
@@ -103,7 +105,7 @@ export const adminLogin = async (req, res) => {
 export const getAllEventsAdmin = async (req, res) => {
     try {
         const events = await Event.find().sort({ createdAt: -1 });
-        
+
 
         const eventsWithCount = await Promise.all(events.map(async (event) => {
             const count = await Registration.countDocuments({ eventId: event._id });
@@ -157,11 +159,11 @@ export const markAttendance = async (req, res) => {
 
 
         await AuditLog.create({
-            adminId:   req.admin._id,
+            adminId: req.admin._id,
             adminName: req.admin.username,
             adminRole: req.admin.role,
-            action:    "MARK_ATTENDANCE",
-            detail:    `Marked ${registration.name} as ${status ? 'Present' : 'Absent'} (reg: ${registrationId})`,
+            action: "MARK_ATTENDANCE",
+            detail: `Marked ${registration.name} as ${status ? 'Present' : 'Absent'} (reg: ${registrationId})`,
         });
 
         return res.status(200).json({
@@ -208,11 +210,11 @@ export const sendCustomEmail = async (req, res) => {
 
 
         await AuditLog.create({
-            adminId:   req.admin._id,
+            adminId: req.admin._id,
             adminName: req.admin.username,
             adminRole: req.admin.role,
-            action:    "SEND_EMAIL",
-            detail:    `Sent email to ${registrations.length} recipient(s) — subject: "${subject}"`,
+            action: "SEND_EMAIL",
+            detail: `Sent email to ${registrations.length} recipient(s) — subject: "${subject}"`,
         });
 
         return res.status(200).json({
@@ -243,7 +245,7 @@ export const updateAdminRole = async (req, res) => {
         const { adminId } = req.params;
         const { role } = req.body;
 
-        if (![ "admin", "viewer"].includes(role)) {
+        if (!["admin", "viewer"].includes(role)) {
             return res.status(400).json({
                 message: "Invalid role. Only 'admin' or 'viewer' can be assigned.",
                 success: false,
@@ -264,11 +266,11 @@ export const updateAdminRole = async (req, res) => {
 
 
         await AuditLog.create({
-            adminId:   req.admin._id,
+            adminId: req.admin._id,
             adminName: req.admin.username,
             adminRole: req.admin.role,
-            action:    "ROLE_CHANGE",
-            detail:    `Changed ${target.username}'s role: ${prevRole} → ${role}`,
+            action: "ROLE_CHANGE",
+            detail: `Changed ${target.username}'s role: ${prevRole} → ${role}`,
         });
 
         return res.status(200).json({
@@ -285,9 +287,9 @@ export const updateAdminRole = async (req, res) => {
 
 export const getAuditLog = async (req, res) => {
     try {
-        const page  = parseInt(req.query.page)  || 1;
+        const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 50;
-        const skip  = (page - 1) * limit;
+        const skip = (page - 1) * limit;
 
         const [logs, total] = await Promise.all([
             AuditLog.find().sort({ createdAt: -1 }).skip(skip).limit(limit),

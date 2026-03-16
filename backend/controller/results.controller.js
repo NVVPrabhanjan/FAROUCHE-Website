@@ -5,59 +5,75 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 export const addResults = async (req, res) => {
   try {
     const { name, teams, matchType, manofthematch, winner, runner, category, hostelType, runnerType } = req.body;
+    console.log("1");
     let imageWinner, imageRunner, ManOftheMatchImage;
-
+    const existingResult = await resultsModel.findOne({ name, matchType });
+    console.log("2");
+    if (existingResult) {
+      return res.status(400).json({
+        message: `${matchType} result already exists for ${name}`,
+      });
+    }
+    console.log("3");
     if (matchType === "Finals") {
       if (!req.files || !req.files.winnerImg || !req.files.runnerImg) {
         return res.status(400).json({ message: "Winner and runner images are required for finals." });
       }
+      console.log("4");
       const winnerUpload = await uploadOnCloudinary(req.files.winnerImg[0].path);
       const runnerUpload = await uploadOnCloudinary(req.files.runnerImg[0].path);
-      if (!winnerUpload?.url || !runnerUpload?.url) {
-        return res.status(500).json({ message: "Image upload failed." });
-      }
+      console.log("5");
       imageWinner = winnerUpload.url;
       imageRunner = runnerUpload.url;
     } else {
       if (!req.files || !req.files.winnerImg) {
         return res.status(400).json({ message: "Winner image is required." });
       }
+      console.log("6");
       const winnerUpload = await uploadOnCloudinary(req.files.winnerImg[0].path);
-      if (!winnerUpload?.url) {
-        return res.status(500).json({ message: "Image upload failed." });
-      }
+      console.log("7");
       imageWinner = winnerUpload.url;
-      imageRunner = undefined;
     }
-
+    console.log("8");
     if (req.files?.manOfTheMatchImg?.[0]) {
+      console.log("9");
       const motmUpload = await uploadOnCloudinary(req.files.manOfTheMatchImg[0].path);
-      if (motmUpload?.url) {
-        ManOftheMatchImage = motmUpload.url;
-      }
+      ManOftheMatchImage = motmUpload.url;
     }
-
-    const newResult = new resultsModel({
-      name, teams, matchType, winner, runner,
+    console.log("10");
+    const newResult = await resultsModel.create({
+      name,
+      teams,
+      matchType,
+      winner,
+      runner,
       ManOftheMatch: manofthematch,
       ManOftheMatchImage,
-      category, hostelType, runnerType,
-      imageWinner, imageRunner,
+      category,
+      hostelType,
+      runnerType,
+      imageWinner,
+      imageRunner,
     });
-
-    const savedResult = await newResult.save();
-
+    console.log("11");
     await AuditLog.create({
-      adminId:   req.admin._id,
+      adminId: req.admin._id,
       adminName: req.admin.username,
       adminRole: req.admin.role,
-      action:    "ADD_RESULT",
-      detail:    `Added result for: "${name}" — ${matchType}`,
+      action: "ADD_RESULT",
+      detail: `Added result for "${name}" — ${matchType}`,
+    });
+    console.log("12");
+    res.status(201).json({
+      message: "Result added successfully.",
+      data: newResult,
     });
 
-    res.status(201).json({ message: "Result added successfully.", data: savedResult });
   } catch (error) {
-    res.status(500).json({ message: "Failed to add result.", error: error.message });
+    res.status(500).json({
+      message: "Failed to add result.",
+      error: error.message,
+    });
   }
 };
 

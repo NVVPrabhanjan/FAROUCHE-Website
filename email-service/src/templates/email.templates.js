@@ -98,3 +98,116 @@ export function adminCustomEmailTemplate({ name, message, whatsappLink }) {
       </div>
     </div>`;
 }
+
+export function merchPurchaseTemplate({ studentName, hostelName, size, paymentId }) {
+  return `
+    <div style="font-family:'Segoe UI',Arial,sans-serif;background:#f4f4f8;padding:30px;">
+      <div style="max-width:560px;margin:auto;background:#fff;border-radius:12px;
+                  overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+
+        <div style="background:linear-gradient(135deg,#1a1a2e 0%,#16213e 60%,#0f3460 100%);
+                    padding:32px 30px;text-align:center;">
+          <h1 style="color:#e2b96f;margin:0;font-size:26px;letter-spacing:1px;">FAROUCHE 2026</h1>
+          <p style="color:#c0c0d0;margin:6px 0 0;font-size:13px;letter-spacing:2px;">BMSET HOSTEL ANNUAL FEST</p>
+        </div>
+
+        <div style="padding:30px;">
+          <h2 style="color:#1a1a2e;margin:0 0 16px;font-size:20px;">🛍️ Merch Purchase Confirmed!</h2>
+          <p style="color:#444;font-size:15px;line-height:1.6;margin:0 0 20px;">
+            Hi <strong>${studentName}</strong>,<br/>
+            Your Farouche fest merch purchase is successful! You can collect it during the fest distribution.
+          </p>
+
+          <table cellpadding="0" cellspacing="0"
+                 style="width:100%;background:#f9f9fc;border-radius:8px;
+                        padding:16px 20px;border-left:4px solid #e2b96f;">
+            <tr>
+              <td style="padding:8px 0;color:#555;font-size:14px;"><strong>Name:</strong> ${studentName}</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 0;color:#555;font-size:14px;"><strong>Hostel:</strong> ${hostelName}</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 0;color:#555;font-size:14px;"><strong>Size:</strong> ${size}</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 0;color:#555;font-size:14px;"><strong>Payment ID:</strong> ${paymentId}</td>
+            </tr>
+          </table>
+
+          <p style="color:#666;font-size:13px;margin:24px 0 0;line-height:1.7;">
+            Keep this email as your receipt. We'll notify you when it's time to collect your merch.
+          </p>
+        </div>
+
+        <div style="background:#f4f4f8;padding:20px 30px;text-align:center;border-top:1px solid #e8e8f0;">
+          <p style="color:#888;font-size:12px;margin:0;">
+            Questions? <a href="mailto:${EMAIL_USER}" style="color:#0f3460;">${EMAIL_USER}</a>
+          </p>
+          <p style="color:#aaa;font-size:11px;margin:8px 0 0;">© 2026 Farouche — BMSCT HOSTEL Annual Fest</p>
+        </div>
+      </div>
+    </div>`;
+}
+
+export function merchCollectedTemplate({ studentName }) {
+  return `
+    <div style="font-family:'Segoe UI',Arial,sans-serif;background:#f4f4f8;padding:30px;">
+      <div style="max-width:560px;margin:auto;background:#fff;border-radius:12px;
+                  overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+
+        <div style="background:linear-gradient(135deg,#1a1a2e 0%,#16213e 60%,#0f3460 100%);
+                    padding:32px 30px;text-align:center;">
+          <h1 style="color:#e2b96f;margin:0;font-size:26px;letter-spacing:1px;">FAROUCHE 2026</h1>
+          <p style="color:#c0c0d0;margin:6px 0 0;font-size:13px;letter-spacing:2px;">BMSET HOSTEL ANNUAL FEST</p>
+        </div>
+
+        <div style="padding:30px;">
+          <h2 style="color:#1a1a2e;margin:0 0 16px;font-size:20px;">📦 Merch Collected!</h2>
+          <p style="color:#444;font-size:15px;line-height:1.6;margin:0 0 20px;">
+            Hi <strong>${studentName}</strong>,<br/>
+            Your Farouche fest merch has been successfully collected. Thank you!
+          </p>
+        </div>
+
+        <div style="background:#f4f4f8;padding:20px 30px;text-align:center;border-top:1px solid #e8e8f0;">
+          <p style="color:#888;font-size:12px;margin:0;">
+            Questions? <a href="mailto:${EMAIL_USER}" style="color:#0f3460;">${EMAIL_USER}</a>
+          </p>
+          <p style="color:#aaa;font-size:11px;margin:8px 0 0;">© 2026 Farouche — BMSCT HOSTEL Annual Fest</p>
+        </div>
+      </div>
+    </div>`;
+}
+
+export function merchVerifiedTemplate({ name }) {
+  return `
+    <div style="font-family:'Segoe UI',Arial,sans-serif;background:#f4f4f8;padding:30px;">
+      <div style="max-width:560px;margin:auto;background:#fff;border-radius:12px;
+                  overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+
+        <div style="background:linear-gradient(135deg,#1a1a2e 0%,#16213e 60%,#0f3460 100%);
+                    padding:32px 30px;text-align:center;">
+          <h1 style="color:#e2b96f;margin:0;font-size:26px;letter-spacing:1px;">FAROUCHE 2026</h1>
+          <p style="color:#c0c0d0;margin:6px 0 0;font-size:13px;letter-spacing:2px;">BMSET HOSTEL ANNUAL FEST</p>
+        </div>
+
+        <div style="padding:30px;">
+          <h2 style="color:#1a1a2e;margin:0 0 16px;font-size:20px;">🛍️ Merch Purchase Confirmation</h2>
+          <p style="color:#444;font-size:15px;line-height:1.6;margin:0 0 20px;">
+            Hello <strong>${name}</strong>,<br/><br/>
+            Your payment for the hostel fest merch has been successfully verified.<br/><br/>
+            Your order has been confirmed.<br/><br/>
+            Thank you for supporting the fest.
+          </p>
+        </div>
+
+        <div style="background:#f4f4f8;padding:20px 30px;text-align:center;border-top:1px solid #e8e8f0;">
+          <p style="color:#888;font-size:12px;margin:0;">
+            Regards — Farouche Team<br/>
+            <p style="color:#aaa;font-size:11px;margin:8px 0 0;">© 2026 Farouche — BMSCT HOSTEL Annual Fest</p>
+          </p>
+        </div>
+      </div>
+    </div>`;
+}

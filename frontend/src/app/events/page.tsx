@@ -58,7 +58,7 @@ export default function Events() {
     })
 
   return (
-    <div className="min-h-screen bg-black text-white selection:bg-purple-500/30">
+    <div className="min-h-screen bg-black text-white selection:bg-amber-500/30">
       <AnimatePresence>
         {loading && <LoadingAnimation />}
       </AnimatePresence>
@@ -74,7 +74,7 @@ export default function Events() {
                     <motion.p 
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="text-purple-500 font-mono text-xs uppercase tracking-widest mb-4"
+                        className="text-amber-500 font-mono text-xs uppercase tracking-widest mb-4"
                     >
 
                     </motion.p>
@@ -101,9 +101,9 @@ export default function Events() {
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                             placeholder="SEARCH PROTOCOL..."
-                            className="w-full bg-transparent border-b border-white/20 py-4 pl-0 pr-10 text-xl font-mono uppercase tracking-widest text-white placeholder-neutral-700 focus:outline-none focus:border-purple-500 transition-colors"
+                            className="w-full bg-transparent border-b border-white/20 py-4 pl-0 pr-10 text-xl font-mono uppercase tracking-widest text-white placeholder-neutral-700 focus:outline-none focus:border-amber-500 transition-colors"
                         />
-                        <Search className="absolute right-0 top-1/2 -translate-y-1/2 text-neutral-600 group-focus-within:text-purple-500 transition-colors" size={20} />
+                        <Search className="absolute right-0 top-1/2 -translate-y-1/2 text-neutral-600 group-focus-within:text-amber-500 transition-colors" size={20} />
                     </div>
                 </motion.div>
             </div>
@@ -119,22 +119,22 @@ export default function Events() {
                             transition={{ delay: index * 0.05 }}
                         >
                             <Link href={`/events/${event.eventid}/${event.teamSize}`} className="block group">
-                                <article className="relative border border-white/10 p-8 md:p-12 transition-all duration-500 hover:border-purple-500/50 hover:bg-white/[0.02] flex flex-col md:flex-row gap-8 justify-between items-start md:items-center overflow-hidden">
+                                <article className="relative border border-white/10 p-8 md:p-12 transition-all duration-500 hover:border-amber-500/50 hover:bg-white/[0.02] flex flex-col md:flex-row gap-8 justify-between items-start md:items-center overflow-hidden">
                                     
                                     
-                                    <div className="absolute top-0 left-0 w-1 h-full bg-purple-500 transform -translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+                                    <div className="absolute top-0 left-0 w-1 h-full bg-amber-500 transform -translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
 
                                     
                                     <div className="flex-1 z-10">
                                         <div className="flex items-center gap-4 mb-4 text-xs font-mono text-neutral-500 uppercase tracking-widest">
                                             <span className="flex items-center gap-2">
-                                                <Calendar size={12} className="text-purple-500" />
+                                                <Calendar size={12} className="text-amber-500" />
                                                 {new Date(event.date).toLocaleDateString()}
                                             </span>
                                             <span className="w-px h-3 bg-white/10" />
                                             <span>Team Size: {event.teamSize}</span>
                                         </div>
-                                        <h2 className="text-4xl md:text-5xl font-bold uppercase tracking-tight mb-2 group-hover:text-purple-400 transition-colors duration-300">
+                                        <h2 className="text-4xl md:text-5xl font-bold uppercase tracking-tight mb-2 group-hover:text-amber-400 transition-colors duration-300">
                                             {event.title}
                                         </h2>
                                         <p className="text-neutral-400 max-w-2xl line-clamp-2 md:line-clamp-1 group-hover:text-neutral-300 transition-colors">
@@ -143,7 +143,7 @@ export default function Events() {
                                     </div>
 
                                     
-                                    <div className="z-10 bg-white/5 p-4 rounded-full border border-white/10 group-hover:bg-purple-500 group-hover:text-black group-hover:border-purple-500 transition-all duration-300">
+                                    <div className="z-10 bg-white/5 p-4 rounded-full border border-white/10 group-hover:bg-amber-500 group-hover:text-black group-hover:border-amber-500 transition-all duration-300">
                                         <ArrowRight className="transform group-hover:-rotate-45 transition-transform duration-500" size={24} />
                                     </div>
 

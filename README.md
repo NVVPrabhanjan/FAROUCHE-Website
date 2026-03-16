@@ -7,7 +7,7 @@ Successfully deployed for **2,000+ participants** across **45+ events**, ensurin
 
 ## 🏗️ System Design & Architecture
 
-FAROUCHE is a **multi-service web application** with a public-facing frontend, a separate admin dashboard, and independent backend services communicating over HTTP and Kafka.
+FAROUCHE is a **multi-service web application** with a public-facing frontend, a separate admin dashboard, and independent backend services communicating over HTTP.
 
 ### High-Level Architecture
 
@@ -34,7 +34,7 @@ graph TD
 
     %% Infrastructure & DBs
     subgraph Infra ["Infrastructure"]
-        KF["Kafka (Docker)"]
+
         DB1[("MongoDB Atlas (Main)")]
         DB2[("MongoDB Atlas (Gallery)")]
     end
@@ -53,8 +53,7 @@ graph TD
     AF -->|"HTTP :4000"| BE
     AF -->|"HTTP :4001"| GB
 
-    BE -->|"Publish Job"| KF
-    KF -->|"Consume Job"| ES
+    BE -->|"HTTP :5001"| ES
 
     BE -->|"CRUD"| DB1
     GB -->|"CRUD"| DB2
@@ -72,23 +71,21 @@ graph TD
 | 2 | `adminfrontend` | 3001 | Next.js 14 | Admin dashboard — CRUD, attendance, emails, roles |
 | 3 | `backend` | 4000 | Express + Node | Main API — auth, events, registrations, results, admin management |
 | 4 | `gallerybackend` | 4001 | Express + Node | Gallery API — image upload, compress, store |
-| 5 | `email-service` | — | Node.js | Kafka consumer — sends emails asynchronously |
+| 5 | `email-service` | 5001 | Node.js + Express | HTTP email microservice — sends emails via Gmail SMTP |
 
-### Async Email Flow (Kafka)
+### Email Flow (HTTP)
 
 ```mermaid
 sequenceDiagram
     participant Admin
     participant Backend
-    participant Kafka
     participant EmailService
     participant Gmail
 
     Admin->>Backend: POST /admin/email { eventId, subject, message }
     Backend->>Backend: Fetch target registrations from MongoDB
-    Backend->>Kafka: publishEmailJob({ type: "admin_bulk", payload: { to, name, subject } })
-    Backend-->>Admin: 200 OK — "N jobs queued"
-    Kafka->>EmailService: Consume message
+    Backend->>EmailService: POST /api/send-email { type, payload }
+    Backend-->>Admin: 200 OK — "N jobs sent"
     EmailService->>Gmail: sendMail via Nodemailer
     Gmail-->>EmailService: Delivered
 ```
@@ -144,7 +141,7 @@ graph LR
   Used **Cloudinary** for fast, reliable, and optimized image & media management.  
 
 - **Asynchronous Email Delivery**  
-  Implemented a **Kafka-based Gmail microservice**, overcoming SMTP limitations to handle high email volume reliably (reduced email failures by 80%).  
+  Implemented an **HTTP-based email microservice** with Gmail SMTP, handling high email volume reliably (reduced email failures by 80%).  
 
 ---
 
@@ -153,7 +150,7 @@ graph LR
 - **Frontend:** Next.js 14, TailwindCSS, Framer Motion
 - **Backend:** Node.js, Express.js
 - **Database:** MongoDB Atlas, Mongoose
-- **Messaging:** Apache Kafka (Redpanda)
+- **Email:** Nodemailer, Gmail SMTP
 - **Media:** Cloudinary, Multer, Sharp
 - **Integration:** Google Sheets API, Nodemailer
 - **Deployment:** DigitalOcean, AWS, Docker
@@ -165,27 +162,23 @@ graph LR
 ### Startup Order
 
 ```bash
-# Terminal 1 — Kafka (Redpanda via Docker)
-cd email-service
-docker-compose up -d
-
-# Terminal 2 — Email microservice
+# Terminal 1 — Email Service (Port 5001)
 cd email-service
 npm run dev
 
-# Terminal 3 — Main Backend (Port 4000)
+# Terminal 2 — Main Backend (Port 4000)
 cd backend
 npm run dev
 
-# Terminal 4 — Gallery Backend (Port 4001)
+# Terminal 3 — Gallery Backend (Port 4001)
 cd gallerybackend
 npm run dev
 
-# Terminal 5 — Public Frontend (Port 3000)
+# Terminal 4 — Public Frontend (Port 3000)
 cd frontend
 npm run dev
 
-# Terminal 6 — Admin Frontend (Port 3001)
+# Terminal 5 — Admin Frontend (Port 3001)
 cd adminfrontend
 npm run dev
 ```
@@ -194,7 +187,7 @@ npm run dev
 - `MONGO_URI` (MongoDB Atlas)
 - `JWT_SECRET` & `ADMIN_SECRET_KEY` (Backend Auth)
 - `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`
-- `KAFKA_BROKER` (Default: `localhost:9092`)
+- `EMAIL_SERVICE_URL` (Default: `http://localhost:5001/api/send-email`)
 - `EMAIL_USER` & `EMAIL_PASS` (Gmail App Password)
 
 ---

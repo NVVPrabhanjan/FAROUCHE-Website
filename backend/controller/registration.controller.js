@@ -1,7 +1,7 @@
 import Registration from "../models/registration.model.js";
 import Event from "../models/event.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
-import { publishEmailJob } from "../email-producer/kafka.producer.js";
+import { publishEmailJob } from "../email-producer/email.service.js";
 
 export const createRegistration = async (req, res) => {
   try {
@@ -17,7 +17,10 @@ export const createRegistration = async (req, res) => {
       return res.status(404).json({ message: "Event not found." });
     }
 
-
+    const existingRegistration = await Registration.findOne({ eventId: event.id, email });
+    if (existingRegistration) {
+      return res.status(400).json({ message: "You have already registered for this event." });
+    }
 
     const eventTitle = event.title;
     const teamSize = event.teamSize;

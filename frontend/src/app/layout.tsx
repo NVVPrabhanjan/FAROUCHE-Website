@@ -4,6 +4,7 @@ import "./globals.css";
 import Footer from "./components/Footer";
 import Navbar from "./components/NavBar";
 import { APIConfigProvider } from "@/context/APIConfigContext";
+import { Toaster } from "sonner";
 
 
 
@@ -28,6 +29,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${poppins.variable} antialiased`}>
         <APIConfigProvider>
+          <Toaster position="top-center" richColors />
           <Navbar/>
           {children}
           <Footer/>

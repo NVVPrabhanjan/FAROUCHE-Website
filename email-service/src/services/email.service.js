@@ -1,40 +1,48 @@
-import nodemailer from "nodemailer";
+import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 
+const AWS_KEY = process.env.AWS_KEY?.trim();
+const AWS_SECRET = process.env.AWS_SECRET?.trim();
 const EMAIL_USER = process.env.EMAIL_USER?.trim();
-const EMAIL_PASS = process.env.EMAIL_PASS?.trim();
 
+let _client = null;
 
-let _transporter = null;
-
-function getTransporter() {
-  if (!EMAIL_USER || !EMAIL_PASS) {
-    throw new Error("❌ Mailer: EMAIL_USER or EMAIL_PASS missing in .env");
+function getClient() {
+  if (!AWS_KEY || !AWS_SECRET || !EMAIL_USER) {
+    throw new Error("❌ Mailer: AWS_KEY / AWS_SECRET / EMAIL_USER missing in .env");
   }
 
-  if (!_transporter) {
-    _transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: EMAIL_USER,
-        pass: EMAIL_PASS,
+  if (!_client) {
+    _client = new SESClient({
+      region: "ap-south-1",
+      credentials: {
+        accessKeyId: AWS_KEY,
+        secretAccessKey: AWS_SECRET,
       },
     });
-    console.log("📧 Nodemailer transporter initialised.");
+
+    console.log("📧 AWS SES client initialised.");
   }
 
-  return _transporter;
+  return _client;
 }
 
-
 export async function sendMail({ to, subject, html }) {
-  const transporter = getTransporter();
+  const client = getClient();
 
-  await transporter.sendMail({
-    from: `"Farouche 2026" <${EMAIL_USER}>`,
-    to,
-    subject,
-    html,
+  const command = new SendEmailCommand({
+    Source: `"Farouche 2026" <${EMAIL_USER}>`,
+    Destination: {
+      ToAddresses: [to],
+    },
+    Message: {
+      Subject: { Data: subject },
+      Body: {
+        Html: { Data: html },
+      },
+    },
   });
+
+  await client.send(command);
 
   console.log(`✅ Email delivered → ${to}`);
 }

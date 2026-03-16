@@ -32,11 +32,11 @@ const CommitteeCard = ({
       className="group relative w-full h-[300px] border-r border-b border-white/10 bg-black cursor-pointer overflow-hidden flex flex-col justify-between p-8 hover:bg-neutral-900/50 transition-colors duration-500"
     >
        
-       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-600 to-pink-600 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500" />
+       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-amber-600 to-amber-500 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500" />
 
        
        <div className="flex justify-between items-start">
-          <span className="text-xs font-mono text-neutral-500 group-hover:text-purple-400 transition-colors">
+          <span className="text-xs font-mono text-neutral-500 group-hover:text-amber-400 transition-colors">
             {String(committee.students).padStart(2, '0')} MEMBERS
           </span>
           <ArrowRight className="w-5 h-5 text-neutral-600 -rotate-45 group-hover:rotate-0 group-hover:text-white transition-all duration-500" />

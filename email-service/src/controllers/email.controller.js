@@ -2,6 +2,9 @@ import { sendMail } from "../services/email.service.js";
 import {
   registrationConfirmationTemplate,
   adminCustomEmailTemplate,
+  merchPurchaseTemplate,
+  merchCollectedTemplate,
+  merchVerifiedTemplate,
 } from "../templates/email.templates.js";
 
 export const sendEmailHandler = async (req, res) => {
@@ -31,6 +34,36 @@ export const sendEmailHandler = async (req, res) => {
           to,
           subject: subject || "Update from Farouche 2026",
           html: adminCustomEmailTemplate({ name, message, whatsappLink }),
+        });
+        break;
+      }
+
+      case "merch_purchase": {
+        const { to, studentName, hostelName, size, paymentId } = payload;
+        await sendMail({
+          to,
+          subject: "🛍️ Farouche Merch Purchase Confirmation",
+          html: merchPurchaseTemplate({ studentName, hostelName, size, paymentId }),
+        });
+        break;
+      }
+
+      case "merch_collected": {
+        const { to, studentName } = payload;
+        await sendMail({
+          to,
+          subject: "📦 Farouche Merch Collected",
+          html: merchCollectedTemplate({ studentName }),
+        });
+        break;
+      }
+
+      case "merch_verified": {
+        const { to, name } = payload;
+        await sendMail({
+          to,
+          subject: "🛍️ Merch Purchase Confirmation",
+          html: merchVerifiedTemplate({ name }),
         });
         break;
       }
