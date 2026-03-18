@@ -217,9 +217,9 @@ export default function About() {
             ))}
           </div>
         </div>
-        <div className="my-10">
+        {/* <div className="my-10">
           <CreditCardGrid />
-        </div>
+        </div> */}
       </section>
 
     </div>

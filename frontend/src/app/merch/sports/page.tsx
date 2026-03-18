@@ -3,109 +3,95 @@
 import React, { useState } from "react";
 import { useAPIConfig } from "@/context/APIConfigContext";
 import { toast } from "sonner";
-import { Loader2, ShoppingBag } from "lucide-react";
+import { Loader2, ShoppingBag, Copy, Check, ExternalLink } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const ACADEMIC_YEARS = ["1st Year", "2nd Year", "3rd Year", "4th Year"];
+const UPI_ID = "vanshnagpal@ptyes"; // Replace with actual UPI ID
 
-const MERCH_IMAGE_URL = '/Merch2.jpeg';
-const QR_CODE_URL =
-  "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=upi://pay?pa=farouche@upi&pn=Farouche%20Fest&am=499&cu=INR";
+const getMerchImage = (year: string) => {
+  switch (year) {
+    case "1st Year": return "/merch1.jpeg";
+    case "2nd Year": return "/Merch2.jpeg";
+    case "3rd Year": return "/Merch3.jpeg";
+    case "4th Year": return "/merch4.png";
+    default: return "/merch1.jpeg";
+  }
+};
+
+const QR_CODE_URL = "/QR.jpeg";
 
 export default function SportsMerchPage() {
   const { MERCH_API_END_POINT } = useAPIConfig();
 
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    hostelName: "",
-    academicYear: "",
-    transactionId: "",
-    merchName: "",
-    merchNumber: "",
-  });
-
+  const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [fieldErrors, setFieldErrors] = useState<{ [key: string]: string }>({});
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [globalError, setGlobalError] = useState<string | null>(null);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-    if (fieldErrors[e.target.name]) {
-      setFieldErrors((prev) => {
-        const next = { ...prev };
-        delete next[e.target.name];
-        return next;
-      });
-    }
+  const [form, setForm] = useState({
+    name: "", email: "", phone: "", hostelName: "",
+    academicYear: "1st Year", transactionId: "", merchName: "", merchNumber: "",
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    setForm((p) => ({ ...p, [e.target.name]: e.target.value }));
+    setFieldErrors((p) => { const n = { ...p }; delete n[e.target.name]; return n; });
+  };
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(UPI_ID);
+    setCopied(true);
+    toast.success("UPI ID copied!");
+    setTimeout(() => setCopied(false), 2500);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setFieldErrors({});
     setGlobalError(null);
-
     try {
-      const response = await fetch(`${MERCH_API_END_POINT}/sports`, {
+      const res = await fetch(`${MERCH_API_END_POINT}/sports`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
-      const data = await response.json();
+      const data = await res.json();
       if (data.success) {
         setSuccess(true);
-        toast.success("Order submitted successfully!");
+        toast.success("Order submitted!");
+      } else if (data.message?.toLowerCase().includes("number already taken")) {
+        setFieldErrors({ merchNumber: "This jersey number is already taken. Try another." });
+        toast.error("Jersey number taken.");
       } else {
-        if (data.message && data.message.toLowerCase().includes("number already taken")) {
-          setFieldErrors({ merchNumber: "This number is already taken for the selected year." });
-          setGlobalError("Jersey number already taken. Please choose a different one.");
-          toast.error("Jersey number already taken.");
-        } else {
-          setGlobalError(data.message || "Failed to submit order.");
-          toast.error(data.message || "Failed to submit order.");
-        }
+        setGlobalError(data.message || "Submission failed. Please try again.");
+        toast.error(data.message || "Something went wrong.");
       }
-    } catch (error) {
-      console.error("Submission Error:", error);
-      toast.error("Something went wrong. Please try again.");
+    } catch {
+      toast.error("Network error. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
+  // ── SUCCESS ──────────────────────────────────────────────────────────────
   if (success) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center p-6">
-        <div className="max-w-md w-full text-center space-y-8 yugdhara-fade-in">
-          <div className="relative mx-auto w-24 h-24">
-            <div className="absolute inset-0 rounded-full border-2 border-primary/30 yugdhara-glow" />
-            <div className="absolute inset-2 rounded-full border border-primary/20" />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <ShoppingBag className="h-9 w-9 text-primary" />
-            </div>
+      <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-6">
+        <div className="max-w-sm w-full text-center space-y-8">
+          <div className="mx-auto w-20 h-20 rounded-full bg-green-500/10 border border-green-500/30 flex items-center justify-center">
+            <ShoppingBag className="h-8 w-8 text-green-400" />
           </div>
           <div className="space-y-3">
-            <h1
-              className="text-3xl text-foreground"
-              style={{ fontFamily: "'Cinzel', serif" }}
-            >
-              Request Submitted
-            </h1>
-            <div className="w-12 h-px bg-primary mx-auto" />
-            <p className="text-muted-foreground leading-relaxed text-sm">
-              Your purchase request has been submitted. Your transaction will be
-              verified by the admin. Once verified, you will receive a
-              confirmation email.
+            <h1 className="text-2xl font-bold text-white" style={{ fontFamily: "'Cinzel', serif" }}>Order Placed!</h1>
+            <p className="text-gray-400 text-sm leading-relaxed">
+              Your request is submitted. Admin will verify your payment and send a confirmation to your email.
             </p>
           </div>
           <button
             onClick={() => (window.location.href = "/")}
-            className="w-full border border-primary/50 text-primary font-semibold py-3 rounded-sm hover:bg-primary hover:text-primary-foreground transition-all duration-300 text-sm tracking-widest uppercase yugdhara-glow"
-            style={{ fontFamily: "'Cinzel', serif" }}
+            className="w-full py-3 rounded-xl bg-white text-black font-semibold text-sm hover:bg-gray-100 transition"
           >
             Back to Home
           </button>
@@ -115,235 +101,275 @@ export default function SportsMerchPage() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-foreground">
-      <div className="h-px w-full bg-gradient-to-r from-transparent via-primary to-transparent" />
+    <div className="min-h-screen bg-[#0a0a0a] text-white">
+      <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-white/30 to-transparent" />
 
-      <div className="max-w-6xl mx-auto px-4 md:px-8 py-16 md:py-24">
-        {/* Header */}
-        <div className="text-center mb-16 yugdhara-fade-in space-y-4">
-          <p className="text-primary text-xs tracking-[0.3em] uppercase font-medium">
-            Farouche 2026 · Sports
-          </p>
-          <h1
-            className="text-4xl md:text-6xl text-white"
-            style={{ fontFamily: "'Cinzel', serif" }}
-          >
-            Sports Merchandise
-          </h1>
-          <div className="flex items-center justify-center gap-3">
-            <div className="h-px w-16 bg-primary/40" />
-            <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-            <div className="h-px w-16 bg-primary/40" />
+      {/* ── PAGE HEADER ── */}
+      <div className="text-center pt-12 pb-8 px-4 space-y-2">
+        <p className="text-xs tracking-[0.3em] uppercase text-gray-500 font-medium">Farouche 2026 · Sports</p>
+        <h1 className="text-4xl md:text-5xl font-bold text-white" style={{ fontFamily: "'Cinzel', serif" }}>
+          Sports Merchandise
+        </h1>
+        <p className="text-gray-400 text-sm max-w-xs mx-auto pt-1">
+          Custom jersey · Your name & number · <span className="text-white font-semibold">₹379</span> · Limited stock
+        </p>
+      </div>
+
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 space-y-10">
+
+        {/* ══════════════════════════════════════════════
+            SECTION 1 — JERSEY (full width hero)
+        ══════════════════════════════════════════════ */}
+        <section className="space-y-5">
+          <div className="flex items-center gap-3">
+            <span className="w-7 h-7 rounded-full bg-white text-black text-xs font-bold flex items-center justify-center shrink-0">1</span>
+            <h2 className="text-lg font-semibold text-white">Choose Your Year & Preview Jersey</h2>
           </div>
-          <p className="text-muted-foreground text-sm max-w-md mx-auto">
-            Get your custom Farouche sports jersey with your name and number. Limited stock.
-          </p>
-        </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
-          {/* Left: Product + QR */}
-          <div className="space-y-6 yugdhara-fade-in" style={{ animationDelay: "0.1s" }}>
-            <div className="relative rounded-sm overflow-hidden border border-border bg-card">
-              <div className="yugdhara-shimmer absolute inset-0 pointer-events-none z-10" />
-              <img
-                src={MERCH_IMAGE_URL}
-                alt="Sports Jersey"
-                className="w-full h-auto object-cover"
+          {/* Big preview */}
+          <div className="relative w-full rounded-2xl overflow-hidden border border-white/10 bg-white/[0.02]" style={{ aspectRatio: "16/9" }}>
+            <AnimatePresence mode="popLayout">
+              <motion.img
+                key={form.academicYear}
+                initial={{ opacity: 0, scale: 1.04, filter: "blur(10px)" }}
+                animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                exit={{ opacity: 0, scale: 0.97, filter: "blur(10px)" }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+                src={getMerchImage(form.academicYear)}
+                alt={`${form.academicYear} jersey`}
+                className="absolute inset-0 w-full h-full object-contain"
               />
-              <div className="absolute top-4 right-4 bg-background/90 border border-primary/40 px-3 py-1.5 rounded-sm yugdhara-glow">
-                <span
-                  className="text-primary text-sm font-bold"
-                  style={{ fontFamily: "'Cinzel', serif" }}
+            </AnimatePresence>
+            {/* Price badge */}
+            <div className="absolute top-4 right-4 bg-black/70 backdrop-blur-sm border border-white/15 px-4 py-2 rounded-full">
+              <span className="text-white font-bold text-base">₹379</span>
+            </div>
+            {/* Year label */}
+            <div className="absolute bottom-4 left-4 bg-black/70 backdrop-blur-sm border border-white/15 px-4 py-2 rounded-full">
+              <span className="text-white text-sm font-semibold">{form.academicYear} Jersey</span>
+            </div>
+          </div>
+
+          {/* Year selector — big tappable cards */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            {ACADEMIC_YEARS.map((year) => {
+              const sel = form.academicYear === year;
+              return (
+                <motion.button
+                  key={year}
+                  whileTap={{ scale: 0.96 }}
+                  type="button"
+                  onClick={() => setForm((p) => ({ ...p, academicYear: year }))}
+                  className={`relative rounded-xl overflow-hidden border transition-all ${sel
+                    ? "border-white ring-2 ring-white/30 opacity-100"
+                    : "border-white/10 opacity-50 hover:opacity-80 hover:border-white/25"
+                    }`}
+                  style={{ aspectRatio: "4/5" }}
                 >
-                  ₹499
-                </span>
+                  <img src={getMerchImage(year)} alt={year} className="absolute inset-0 w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  {sel && (
+                    <div className="absolute top-2 right-2 w-5 h-5 rounded-full bg-white flex items-center justify-center">
+                      <Check className="h-3 w-3 text-black" />
+                    </div>
+                  )}
+                  <span className="absolute bottom-2 left-0 right-0 text-xs text-white font-bold text-center tracking-wide px-2">
+                    {year}
+                  </span>
+                </motion.button>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* ══════════════════════════════════════════════
+            SECTION 2 — PAYMENT (QR + UPI)
+        ══════════════════════════════════════════════ */}
+        <section className="space-y-5">
+          <div className="flex items-center gap-3">
+            <span className="w-7 h-7 rounded-full bg-white text-black text-xs font-bold flex items-center justify-center shrink-0">2</span>
+            <h2 className="text-lg font-semibold text-white">Pay ₹379</h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+            {/* QR — big, white bg, full visibility */}
+            <div className="bg-white rounded-2xl p-5 flex flex-col items-center gap-4">
+              <p className="text-black font-bold text-base tracking-wide">Scan to Pay</p>
+              <img
+                src={QR_CODE_URL}
+                alt="UPI QR Code"
+                className="w-full max-w-xs mx-auto block rounded-xl"
+                style={{ imageRendering: "crisp-edges" }}
+              />
+              <div className="flex items-center gap-2 px-5 py-2 rounded-full bg-black text-white text-sm font-bold">
+                ₹379 · Farouche Sports Merch
               </div>
+              <p className="text-gray-500 text-xs text-center">PhonePe · GPay · Paytm · any UPI app</p>
             </div>
 
-            <div className="bg-card border border-border rounded-sm p-6 space-y-5">
-              <div className="flex items-center gap-2">
-                <div className="h-px flex-1 bg-border" />
-                <h3
-                  className="text-primary text-xs tracking-[0.2em] uppercase"
-                  style={{ fontFamily: "'Cinzel', serif" }}
-                >
-                  Payment Instructions
-                </h3>
-                <div className="h-px flex-1 bg-border" />
-              </div>
-              <ol className="space-y-2.5 text-sm text-muted-foreground">
-                {[
-                  <>Scan the QR code using any UPI app.</>,
-                  <>Complete the payment of <span className="text-primary font-semibold">₹499</span>.</>,
-                  <>Note down your <span className="text-foreground font-medium">Transaction ID</span>.</>,
-                  <>Fill the form and submit your request.</>,
-                ].map((step, i) => (
-                  <li key={i} className="flex items-start gap-3">
-                    <span
-                      className="text-primary text-xs mt-0.5 w-4 shrink-0"
-                      style={{ fontFamily: "'Cinzel', serif" }}
-                    >
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <span>{step}</span>
-                  </li>
-                ))}
-              </ol>
-              <div className="flex justify-center pt-2">
-                <div className="border border-primary/30 p-3 rounded-sm bg-white yugdhara-glow">
-                  <img src={QR_CODE_URL} alt="UPI QR Code" className="w-40 h-40" />
+            {/* UPI ID + steps */}
+            <div className="flex flex-col gap-4">
+              {/* UPI ID copy */}
+              <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-5 space-y-3">
+                <p className="text-xs text-gray-500 uppercase tracking-widest font-semibold">Or pay via UPI ID</p>
+                <div className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-xl px-4 py-3">
+                  <span className="font-mono text-white text-sm flex-1 select-all">{UPI_ID}</span>
+                  <button
+                    onClick={handleCopy}
+                    className="shrink-0 p-1.5 rounded-lg hover:bg-white/10 transition text-gray-400 hover:text-white"
+                    title="Copy UPI ID"
+                  >
+                    {copied ? <Check className="h-4 w-4 text-green-400" /> : <Copy className="h-4 w-4" />}
+                  </button>
                 </div>
               </div>
-              <p className="text-center text-xs text-muted-foreground">
-                Scan with PhonePe · GPay · Paytm · any UPI app
-              </p>
+
+              {/* How to pay */}
+              <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-5 space-y-4 flex-1">
+                <p className="text-xs text-gray-500 uppercase tracking-widest font-semibold">Steps</p>
+                <ol className="space-y-4">
+                  {[
+                    { t: "Scan QR or open UPI App", d: "Use PhonePe, GPay, Paytm or any app" },
+                    { t: "Pay exactly ₹379", d: "To Farouche — don't change the amount" },
+                    { t: "Save your Transaction ID", d: "You'll need it in the form below" },
+                    { t: "Fill & submit the form", d: "Complete Step 3 below" },
+                  ].map((s, i) => (
+                    <li key={i} className="flex gap-3 items-start">
+                      <span className="w-6 h-6 rounded-full bg-white/10 text-white text-[11px] font-bold flex items-center justify-center shrink-0 mt-0.5">
+                        {i + 1}
+                      </span>
+                      <div>
+                        <p className="text-sm text-white font-medium">{s.t}</p>
+                        <p className="text-xs text-gray-500 mt-0.5">{s.d}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+              </div>
             </div>
           </div>
+        </section>
 
-          {/* Right: Form */}
-          <div
-            className="bg-card border border-border rounded-sm p-6 md:p-8 yugdhara-fade-in"
-            style={{ animationDelay: "0.2s" }}
-          >
-            <div className="mb-8 space-y-1">
-              <h2
-                className="text-xl text-foreground"
-                style={{ fontFamily: "'Cinzel', serif" }}
-              >
-                Purchase Request
-              </h2>
-              <p className="text-muted-foreground text-xs tracking-wide">
-                Fill in your details to complete the order
-              </p>
-            </div>
+        {/* ══════════════════════════════════════════════
+            SECTION 3 — ORDER FORM
+        ══════════════════════════════════════════════ */}
+        <section className="space-y-5">
+          <div className="flex items-center gap-3">
+            <span className="w-7 h-7 rounded-full bg-white text-black text-xs font-bold flex items-center justify-center shrink-0">3</span>
+            <h2 className="text-lg font-semibold text-white">Fill Order Details</h2>
+          </div>
+
+          <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-6 md:p-8">
 
             {globalError && (
-              <div className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-sm flex items-center gap-3 text-red-500 animate-in fade-in duration-300">
-                <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
-                <p className="text-sm font-medium uppercase tracking-wider">{globalError}</p>
+              <div className="mb-6 flex items-center gap-3 p-4 rounded-xl bg-red-500/10 border border-red-500/25 text-red-400 text-sm">
+                <span className="w-2 h-2 rounded-full bg-red-400 animate-pulse shrink-0" />
+                {globalError}
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-5">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <div className="space-y-1.5">
-                  <label className="text-xs text-muted-foreground tracking-widest uppercase">Full Name</label>
-                  <input
-                    type="text" name="name" required value={form.name} onChange={handleChange}
-                    placeholder="John Doe"
-                    className="w-full bg-background border border-input rounded-sm px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/30 transition"
-                  />
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Personal */}
+              <div>
+                <p className="text-xs text-gray-500 uppercase tracking-widest font-semibold mb-4">Personal Info</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {[
+                    { label: "Full Name", name: "name", type: "text" },
+                    { label: "Email Address", name: "email", type: "email" },
+                    { label: "Phone Number", name: "phone", type: "tel" },
+                    { label: "Hostel Name", name: "hostelName", type: "text" },
+                  ].map((f) => (
+                    <div key={f.name} className="flex flex-col gap-1.5">
+                      <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest">{f.label}</label>
+                      <input
+                        type={f.type} name={f.name} required
+                        value={(form as any)[f.name]} onChange={handleChange}
+                        className="w-full rounded-xl border border-white/10 px-4 py-3 text-sm bg-white/5 text-white focus:outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10 transition"
+                      />
+                    </div>
+                  ))}
                 </div>
-                <div className="space-y-1.5">
-                  <label className="text-xs text-muted-foreground tracking-widest uppercase">Email Address</label>
-                  <input
-                    type="email" name="email" required value={form.email} onChange={handleChange}
-                    placeholder="john@example.com"
-                    className="w-full bg-background border border-input rounded-sm px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/30 transition"
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-xs text-muted-foreground tracking-widest uppercase">Phone Number</label>
-                  <input
-                    type="tel" name="phone" required value={form.phone} onChange={handleChange}
-                    placeholder="9876543210"
-                    className="w-full bg-background border border-input rounded-sm px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/30 transition"
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-xs text-muted-foreground tracking-widest uppercase">Hostel Name</label>
-                  <input
-                    type="text" name="hostelName" required value={form.hostelName} onChange={handleChange}
-                    placeholder="Aryabhata Hostel"
-                    className="w-full bg-background border border-input rounded-sm px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/30 transition"
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-xs text-muted-foreground tracking-widest uppercase">Academic Year</label>
-                  <select
-                    name="academicYear" required value={form.academicYear} onChange={handleChange}
-                    className="w-full bg-background border border-input rounded-sm px-4 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/30 transition appearance-none cursor-pointer"
-                  >
-                    <option value="" disabled>Select your year</option>
-                    {ACADEMIC_YEARS.map((year) => (
-                      <option key={year} value={year}>{year}</option>
-                    ))}
-                  </select>
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-xs text-muted-foreground tracking-widest uppercase">Transaction ID</label>
-                  <input
-                    type="text" name="transactionId" required value={form.transactionId} onChange={handleChange}
-                    placeholder="UPI12345678"
-                    className="w-full bg-background border border-input rounded-sm px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/30 transition font-mono"
-                  />
-                </div>
+              </div>
 
-                {/* Jersey Details section */}
-                <div className="md:col-span-2 pt-2">
-                  <div className="flex items-center gap-2 mb-4">
-                    <div className="h-px flex-1 bg-border" />
-                    <span
-                      className="text-primary text-xs tracking-[0.2em] uppercase"
-                      style={{ fontFamily: "'Cinzel', serif" }}
+              <div className="h-px bg-white/5" />
+
+              {/* Academic + Transaction */}
+              <div>
+                <p className="text-xs text-gray-500 uppercase tracking-widest font-semibold mb-4">Academic & Payment</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest">Academic Year</label>
+                    <select
+                      name="academicYear" required value={form.academicYear} onChange={handleChange}
+                      className="w-full rounded-xl border border-white/10 px-4 py-3 text-sm bg-white/5 text-white focus:outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10 transition appearance-none cursor-pointer"
                     >
-                      Jersey Details
-                    </span>
-                    <div className="h-px flex-1 bg-border" />
+                      {ACADEMIC_YEARS.map((y) => <option key={y} value={y} className="bg-[#0a0a0a]">{y}</option>)}
+                    </select>
                   </div>
-                  <div className="grid grid-cols-2 gap-5">
-                    <div className="space-y-1.5">
-                      <label className="text-xs text-muted-foreground tracking-widest uppercase">Name on Jersey</label>
-                      <input
-                        type="text" name="merchName" required value={form.merchName} onChange={handleChange}
-                        placeholder="CR7"
-                        className="w-full bg-background border border-input rounded-sm px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/30 transition"
-                      />
-                    </div>
-                    <div className="space-y-1.5">
-                      <label className="text-xs text-muted-foreground tracking-widest uppercase">Jersey Number</label>
-                      <input
-                        type="number" name="merchNumber" required value={form.merchNumber} onChange={handleChange}
-                        placeholder="07" min="0" max="99"
-                        className={`w-full bg-background border rounded-sm px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 transition font-mono ${fieldErrors.merchNumber
-                            ? "border-red-500 focus:border-red-500 focus:ring-red-500/30"
-                            : "border-input focus:border-primary focus:ring-primary/30"
-                          }`}
-                      />
-                      {fieldErrors.merchNumber && (
-                        <p className="text-[10px] text-red-500 uppercase tracking-wider font-medium">
-                          {fieldErrors.merchNumber}
-                        </p>
-                      )}
-                    </div>
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest">Transaction ID / UTR</label>
+                    <input
+                      type="text" name="transactionId" required value={form.transactionId} onChange={handleChange}
+                      placeholder="From your UPI app"
+                      className="w-full rounded-xl border border-white/10 px-4 py-3 text-sm bg-white/5 text-white font-mono focus:outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10 transition placeholder-gray-700"
+                    />
                   </div>
                 </div>
               </div>
 
-              <div className="h-px bg-border" />
+              <div className="h-px bg-white/5" />
 
+              {/* Jersey */}
+              <div>
+                <p className="text-xs text-gray-500 uppercase tracking-widest font-semibold mb-4">Jersey Customisation</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest">Name on Jersey</label>
+                    <input
+                      type="text" name="merchName" required value={form.merchName} onChange={handleChange}
+                      placeholder="E.g. RAHUL"
+                      className="w-full rounded-xl border border-white/10 px-4 py-3 text-sm bg-white/5 text-white focus:outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10 transition placeholder-gray-700 uppercase"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest">Jersey Number (0–99)</label>
+                    <input
+                      type="number" name="merchNumber" required value={form.merchNumber} onChange={handleChange}
+                      min="0" max="99" placeholder="E.g. 10"
+                      className={`w-full rounded-xl border px-4 py-3 text-sm bg-white/5 text-white font-mono focus:outline-none focus:ring-2 transition placeholder-gray-700 ${fieldErrors.merchNumber
+                        ? "border-red-500/60 focus:border-red-500 focus:ring-red-500/20"
+                        : "border-white/10 focus:border-white/30 focus:ring-white/10"
+                        }`}
+                    />
+                    {fieldErrors.merchNumber && (
+                      <p className="text-xs text-red-400 font-medium">{fieldErrors.merchNumber}</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* CTA */}
               <button
-                type="submit"
-                disabled={loading}
-                className="w-full bg-primary text-primary-foreground font-semibold py-3 rounded-sm hover:bg-accent hover:text-accent-foreground transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 tracking-widest uppercase text-sm yugdhara-glow"
-                style={{ fontFamily: "'Cinzel', serif" }}
+                type="submit" disabled={loading}
+                className="w-full flex items-center justify-center gap-2 py-4 rounded-xl bg-white text-black font-bold text-base hover:bg-gray-100 active:scale-[0.98] transition disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {loading ? (
-                  <><Loader2 className="animate-spin h-4 w-4" /> Processing...</>
-                ) : (
-                  <><ShoppingBag className="h-4 w-4" /> Submit Request</>
-                )}
+                {loading
+                  ? <><Loader2 className="animate-spin h-5 w-5" /> Submitting...</>
+                  : <><ShoppingBag className="h-5 w-5" /> Submit Order</>
+                }
               </button>
 
-              <p className="text-center text-xs text-muted-foreground/60">
-                Your order is subject to transaction verification by admin.
+              <p className="text-center text-xs text-gray-600">
+                Payment will be verified by admin before order confirmation.
               </p>
             </form>
           </div>
-        </div>
+        </section>
+
       </div>
 
-      <div className="h-px w-full bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+      <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-white/10 to-transparent" />
     </div>
   );
 }
