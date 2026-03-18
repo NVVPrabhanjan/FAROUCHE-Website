@@ -51,7 +51,7 @@ if (cluster.isPrimary) {
 
   const corsOptions = {
     origin: [
-      "https://admin.farouche.in",
+      "https://admin.farouche.in/",
       "https://farouche.in",
       "http://localhost:3000",
       "http://localhost:3001",
