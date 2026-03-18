@@ -5,7 +5,7 @@ const isLocal =
     (window.location.hostname === "localhost" ||
         window.location.hostname === "127.0.0.1");
 
-const BACKEND_URL = isLocal ? "http://localhost:4000" : "https://your-production-backend.com";
+const BACKEND_URL = isLocal ? "http://localhost:4000" : "https://farouche.in";
 const EVENT_API_URL = `${BACKEND_URL}/api/v1/event`;
 const RESULT_API_URL = `${BACKEND_URL}/api/v1/results`;
 

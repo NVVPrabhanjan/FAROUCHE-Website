@@ -14,7 +14,7 @@ interface LogEntry {
 }
 
 const isLocal = typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
-const API = isLocal ? "http://localhost:4000" : "https://your-production-backend.com";
+const API = isLocal ? "http://localhost:4000" : "https://farouche.in";
 
 async function fetchWithToken(url: string) {
   const token = localStorage.getItem("adminToken");

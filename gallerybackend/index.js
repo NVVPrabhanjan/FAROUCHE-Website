@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 const app = express();
 app.use(express.json());
 const corsOptions = {
-    origin: ['http://139.59.85.84:3000','https://farouche25.tech','https://farouche-website.vercel.app', 'http://localhost:3000', 'http://localhost:3001'],
+    origin: ['https://farouche.in', 'http://localhost:3000', 'http://localhost:3001'],
   credentials: true,
 };
 app.use(cors(corsOptions));

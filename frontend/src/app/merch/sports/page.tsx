@@ -7,8 +7,7 @@ import { Loader2, ShoppingBag } from "lucide-react";
 
 const ACADEMIC_YEARS = ["1st Year", "2nd Year", "3rd Year", "4th Year"];
 
-const MERCH_IMAGE_URL =
-  "https://img.freepik.com/free-vector/t-shirt-design-template_23-2148972580.jpg";
+const MERCH_IMAGE_URL = '/Merch2.jpeg';
 const QR_CODE_URL =
   "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=upi://pay?pa=farouche@upi&pn=Farouche%20Fest&am=499&cu=INR";
 
@@ -301,23 +300,22 @@ export default function SportsMerchPage() {
                         className="w-full bg-background border border-input rounded-sm px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/30 transition"
                       />
                     </div>
-                  <div className="space-y-1.5">
-                    <label className="text-xs text-muted-foreground tracking-widest uppercase">Jersey Number</label>
-                    <input
-                      type="number" name="merchNumber" required value={form.merchNumber} onChange={handleChange}
-                      placeholder="07" min="0" max="99"
-                      className={`w-full bg-background border rounded-sm px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 transition font-mono ${
-                        fieldErrors.merchNumber 
-                        ? "border-red-500 focus:border-red-500 focus:ring-red-500/30" 
-                        : "border-input focus:border-primary focus:ring-primary/30"
-                      }`}
-                    />
-                    {fieldErrors.merchNumber && (
-                      <p className="text-[10px] text-red-500 uppercase tracking-wider font-medium">
-                        {fieldErrors.merchNumber}
-                      </p>
-                    )}
-                  </div>
+                    <div className="space-y-1.5">
+                      <label className="text-xs text-muted-foreground tracking-widest uppercase">Jersey Number</label>
+                      <input
+                        type="number" name="merchNumber" required value={form.merchNumber} onChange={handleChange}
+                        placeholder="07" min="0" max="99"
+                        className={`w-full bg-background border rounded-sm px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 transition font-mono ${fieldErrors.merchNumber
+                            ? "border-red-500 focus:border-red-500 focus:ring-red-500/30"
+                            : "border-input focus:border-primary focus:ring-primary/30"
+                          }`}
+                      />
+                      {fieldErrors.merchNumber && (
+                        <p className="text-[10px] text-red-500 uppercase tracking-wider font-medium">
+                          {fieldErrors.merchNumber}
+                        </p>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const EMAIL_SERVICE_URL = process.env.EMAIL_SERVICE_URL || "http://localhost:5001/api/send-email";
+const EMAIL_SERVICE_URL = process.env.EMAIL_SERVICE_URL || "https://farouche.in/api/send-email";
 
 export async function publishEmailJob({ type, payload }) {
   try {
@@ -8,7 +8,7 @@ export async function publishEmailJob({ type, payload }) {
       type,
       payload
     });
-    
+
     console.log(`📤 Email job sent to HTTP service [${type}] → ${payload?.to}`);
     return response.data;
   } catch (err) {

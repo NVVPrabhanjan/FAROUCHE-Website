@@ -1,50 +1,47 @@
-import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
+import nodemailer from "nodemailer";
 
-const AWS_KEY = process.env.AWS_KEY?.trim();
-const AWS_SECRET = process.env.AWS_SECRET?.trim();
 const EMAIL_USER = process.env.EMAIL_USER?.trim();
+const EMAIL_PASS = process.env.EMAIL_PASS?.trim();
+const SMTP_HOST = process.env.SMTP_HOST?.trim() || "smtp.gmail.com";
+const SMTP_PORT = process.env.SMTP_PORT?.trim() || 465;
 
-let _client = null;
+let _transporter = null;
 
-function getClient() {
-  if (!AWS_KEY || !AWS_SECRET || !EMAIL_USER) {
-    throw new Error("❌ Mailer: AWS_KEY / AWS_SECRET / EMAIL_USER missing in .env");
+function getTransporter() {
+  if (!EMAIL_USER || !EMAIL_PASS) {
+    throw new Error("❌ Mailer: EMAIL_USER / EMAIL_PASS missing in .env");
   }
 
-  if (!_client) {
-    _client = new SESClient({
-      region: "ap-south-1",
-      credentials: {
-        accessKeyId: AWS_KEY,
-        secretAccessKey: AWS_SECRET,
+  if (!_transporter) {
+    _transporter = nodemailer.createTransport({
+      host: SMTP_HOST,
+      port: Number(SMTP_PORT),
+      secure: Number(SMTP_PORT) === 465, // true for 465, false for other ports
+      auth: {
+        user: EMAIL_USER,
+        pass: EMAIL_PASS,
       },
     });
 
-    console.log("📧 AWS SES client initialised.");
+    console.log("📧 Nodemailer transporter initialised.");
   }
 
-  return _client;
+  return _transporter;
 }
 
 export async function sendMail({ to, subject, html }) {
-  const client = getClient();
+  const transporter = getTransporter();
 
-  const command = new SendEmailCommand({
-    Source: `"Farouche 2026" <${EMAIL_USER}>`,
-    Destination: {
-      ToAddresses: [to],
-    },
-    Message: {
-      Subject: { Data: subject },
-      Body: {
-        Html: { Data: html },
-      },
-    },
-  });
+  const mailOptions = {
+    from: `"Farouche 2026" <${EMAIL_USER}>`,
+    to,
+    subject,
+    html,
+  };
 
-  await client.send(command);
+  const info = await transporter.sendMail(mailOptions);
 
-  console.log(`✅ Email delivered → ${to}`);
+  console.log(`✅ Email delivered → ${to} [${info.messageId}]`);
 }
 
 export { EMAIL_USER };

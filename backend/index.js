@@ -32,15 +32,15 @@ if (cluster.isPrimary) {
 } else {
   dotenv.config({});
   const app = express();
-  
+
 
   app.use(helmet());
-  
+
   const limiter = rateLimit({
     windowMs: 15 * 60 * 1000,
     limit: 100,
-    standardHeaders: 'draft-7', 
-    legacyHeaders: false, 
+    standardHeaders: 'draft-7',
+    legacyHeaders: false,
   });
   app.use(limiter);
 
@@ -51,9 +51,8 @@ if (cluster.isPrimary) {
 
   const corsOptions = {
     origin: [
-      "http://139.59.85.84:3000",
-      "https://farouche25.tech",
-      "https://farouche-website.vercel.app",
+      "https://admin.farouche.in",
+      "https://farouche.in",
       "http://localhost:3000",
       "http://localhost:3001",
       "http://localhost:3002",
@@ -61,11 +60,11 @@ if (cluster.isPrimary) {
     credentials: true,
   };
   app.use(cors(corsOptions));
-  
+
 
   app.use((req, res, next) => {
-      console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
-      next();
+    console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
+    next();
   });
 
   const PORT = process.env.PORT || 4000;
@@ -78,7 +77,7 @@ if (cluster.isPrimary) {
   app.use("/api/v1/merch", merchRouter);
   app.use("/api/v1/admin/merch", adminMerchRouter);
 
-  
+
   app.get("/", (req, res) => {
     return res.json({ "All Routes are running": "Welcome to farouche" });
   });

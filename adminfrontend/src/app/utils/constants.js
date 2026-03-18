@@ -3,12 +3,12 @@ const isLocal =
   (window.location.hostname === "localhost" ||
     window.location.hostname === "127.0.0.1");
 
-const BACKEND_URL = isLocal ? "http://localhost:4000" : "https://your-production-backend.com";
-const GALLERY_URL = isLocal ? "http://localhost:4001" : "https://your-production-gallery.com";
+const BACKEND_URL = isLocal ? "http://localhost:4000" : "https://farouche.in";
+const GALLERY_URL = isLocal ? "http://localhost:4001" : "https://farouche.in";
 
-export const RESULTS_END_POINT          = `${BACKEND_URL}/api/v1/results`;
-export const EVENT_API_END_POINT        = `${BACKEND_URL}/api/v1/event`;
+export const RESULTS_END_POINT = `${BACKEND_URL}/api/v1/results`;
+export const EVENT_API_END_POINT = `${BACKEND_URL}/api/v1/event`;
 export const REGISTRATION_API_END_POINT = `${BACKEND_URL}/api/v1/registration`;
-export const GALLERY_API_END_POINT      = `${GALLERY_URL}/api/v1/gallery`;
-export const GALLERY_ADD_END_POINT      = `${GALLERY_URL}/api/v1/gallery/add`;
-export const GALLERY_EVENTS_END_POINT   = `${GALLERY_URL}/api/v1/gallery/events`;
+export const GALLERY_API_END_POINT = `${GALLERY_URL}/api/v1/gallery`;
+export const GALLERY_ADD_END_POINT = `${GALLERY_URL}/api/v1/gallery/add`;
+export const GALLERY_EVENTS_END_POINT = `${GALLERY_URL}/api/v1/gallery/events`;
