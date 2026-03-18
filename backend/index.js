@@ -51,6 +51,7 @@ if (cluster.isPrimary) {
 
   const corsOptions = {
     origin: [
+      "https://farouche-website-tqd3.vercel.app/",
       "https://admin.farouche.in/",
       "https://farouche.in",
       "http://localhost:3000",
