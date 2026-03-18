@@ -8,7 +8,7 @@ import { publishEmailJob } from "../email-producer/email.service.js";
 
 const SUPER_ADMIN_EMAILS = [
     "namakal.is22@bmsce.ac.in",
-    "vansh.me22@bmsce.ac.in"
+    "vansh.ml22@bmsce.ac.in"
 ];
 
 export const adminSignup = async (req, res) => {
@@ -50,7 +50,7 @@ export const adminSignup = async (req, res) => {
             { expiresIn: "1d" }
         );
 
-        res.cookie("token", token, { httpOnly: true, maxAge: 86400000, sameSite: "lax" });
+        res.cookie("token", token, { httpOnly: true, maxAge: 86400000, sameSite: "none", secure: true });
         console.log(`Admin Signup: ${email} → role: ${role}`);
 
         return res.status(201).json({

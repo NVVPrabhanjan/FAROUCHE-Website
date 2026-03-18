@@ -5,7 +5,7 @@ const isLocal =
     (window.location.hostname === "localhost" ||
         window.location.hostname === "127.0.0.1");
 
-const BACKEND_URL = isLocal ? "http://localhost:4000" : "https://farouche-backend.onrender.com";
+const BACKEND_URL = isLocal ? "http://localhost:4000" : "https://farouche.in";
 
 const axiosInstance = axios.create({
     baseURL: `${BACKEND_URL}/api/v1/admin/merch`,
@@ -55,7 +55,7 @@ export const fetchSportsMerchOrders = async (filters: { verified?: string; acade
     if (filters.verified) params.append("verified", filters.verified);
     if (filters.academicYear) params.append("academicYear", filters.academicYear);
     if (filters.hostelName) params.append("hostelName", filters.hostelName);
-    
+
     const response = await axiosInstance.get(`/sports?${params.toString()}`);
     return response.data;
 };
@@ -65,7 +65,7 @@ export const fetchFestMerchOrders = async (filters: { verified?: string; academi
     if (filters.verified) params.append("verified", filters.verified);
     if (filters.academicYear) params.append("academicYear", filters.academicYear);
     if (filters.hostelName) params.append("hostelName", filters.hostelName);
-    
+
     const response = await axiosInstance.get(`/fest?${params.toString()}`);
     return response.data;
 };
