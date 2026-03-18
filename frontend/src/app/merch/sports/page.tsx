@@ -15,7 +15,7 @@ const getMerchImage = (year: string) => {
     case "2nd Year": return "/Merch2.jpeg";
     case "3rd Year": return "/Merch3.jpeg";
     case "4th Year": return "/merch4.png";
-    default: return "/merch1.jpeg";
+    default: return "/merch4.png";
   }
 };
 
