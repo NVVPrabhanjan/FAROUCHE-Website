@@ -50,14 +50,7 @@ if (cluster.isPrimary) {
   app.use(cookieParser());
 
   const corsOptions = {
-    origin: [
-      "https://farouche-website-tqd3.vercel.app/",
-      "https://admin.farouche.in/",
-      "https://farouche.in",
-      "http://localhost:3000",
-      "http://localhost:3001",
-      "http://localhost:3002",
-    ],
+    origin: ["*"],
     credentials: true,
   };
   app.use(cors(corsOptions));
