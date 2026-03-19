@@ -1,0 +1,61 @@
+services:
+  # ── Backend API ──
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: farouche-backend
+    restart: unless-stopped
+    ports:
+      - "4000:4000"
+    env_file:
+      - ./backend/.env
+    networks:
+      - farouche-network
+
+  # ── Frontend (Next.js) ──
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: farouche-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+      - gallery-backend
+    networks:
+      - farouche-network
+
+  # ── Email Service ──
+  email-service:
+    build:
+      context: ./email-service
+      dockerfile: Dockerfile
+    container_name: farouche-email-service
+    restart: unless-stopped
+    ports:
+      - "5001:5001"
+    env_file:
+      - ./email-service/.env
+    networks:
+      - farouche-network
+
+  # ── Gallery Backend ──
+  gallery-backend:
+    build:
+      context: ./gallerybackend
+      dockerfile: Dockerfile
+    container_name: farouche-gallery-backend
+    restart: unless-stopped
+    ports:
+      - "4001:4001"
+    env_file:
+      - ./gallerybackend/.env
+    networks:
+      - farouche-network
+
+networks:
+  farouche-network:
+    driver: bridge

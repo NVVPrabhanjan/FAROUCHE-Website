@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+    output: "standalone",
     images: {
       domains: ['res.cloudinary.com'],
     },
@@ -10,8 +11,6 @@ const nextConfig: NextConfig = {
     typescript: {
       ignoreBuildErrors: true,
     },
-    
-  
   };
 
 export default nextConfig;

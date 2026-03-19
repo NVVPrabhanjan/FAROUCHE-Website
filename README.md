@@ -147,13 +147,69 @@ graph LR
 
 ## 🛠️ Tech Stack
 
-- **Frontend:** Next.js 14, TailwindCSS, Framer Motion
+- **Frontend:** Next.js 15, TailwindCSS, Framer Motion
 - **Backend:** Node.js, Express.js
 - **Database:** MongoDB Atlas, Mongoose
 - **Email:** Nodemailer, Gmail SMTP
 - **Media:** Cloudinary, Multer, Sharp
 - **Integration:** Google Sheets API, Nodemailer
-- **Deployment:** DigitalOcean, AWS, Docker
+- **DevOps:** Docker, Docker Compose, Nginx, Let's Encrypt
+- **Deployment:** AWS EC2, Vercel (Admin Frontend)
+
+---
+
+## 🐳 Docker Deployment
+
+The project is fully Dockerized (excluding Admin Frontend, which runs on Vercel).
+
+### Services
+
+| Service | Container | Port |
+|---|---|---|
+| Frontend | `farouche-frontend` | 3000 |
+| Backend | `farouche-backend` | 4000 |
+| Gallery Backend | `farouche-gallery-backend` | 4001 |
+| Email Service | `farouche-email-service` | 5001 |
+
+### Quick Start
+
+```bash
+# 1. Set up .env files (see .env.example for reference)
+#    - backend/.env
+#    - email-service/.env
+#    - gallerybackend/.env
+
+# 2. Build all images
+docker compose build
+
+# 3. Start all services
+docker compose up -d
+
+# 4. Check status
+docker compose ps
+
+# 5. View logs
+docker compose logs -f
+```
+
+### Redeploy After Code Changes
+
+```bash
+git pull origin main
+docker compose build
+docker compose up -d
+```
+
+### Production (AWS EC2)
+
+1. Launch an EC2 instance (Ubuntu 24.04, `t3.medium`)
+2. Install Docker & Docker Compose
+3. Clone the repo and set up `.env` files
+4. Run `docker compose build && docker compose up -d`
+5. Set up **Nginx** as a reverse proxy for `farouche.in`
+6. Enable **SSL** with Let's Encrypt / Certbot
+
+> See `.env.example` at the project root for all required environment variables.
 
 ---
 
