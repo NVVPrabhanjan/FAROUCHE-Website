@@ -12,11 +12,12 @@ export const createSportsMerchOrder = async (req, res) => {
             academicYear,
             transactionId,
             merchName,
+            size,
             merchNumber,
         } = req.body;
 
         // Basic validation
-        if (!name || !email || !phone || !hostelName || !academicYear || !transactionId || !merchName || merchNumber === undefined) {
+        if (!name || !email || !phone || !hostelName || !academicYear || !transactionId || !merchName || !size || merchNumber === undefined) {
             return res.status(400).json({
                 message: "All fields are required.",
                 success: false,
@@ -35,10 +36,22 @@ export const createSportsMerchOrder = async (req, res) => {
             return res.status(400).json({ message: "Invalid phone number. Must be 10 digits.", success: false });
         }
 
+        // Transaction ID validation (must be exactly 12 digits)
+        const txnRegex = /^\d{12}$/;
+        if (!txnRegex.test(transactionId)) {
+            return res.status(400).json({ message: "Transaction ID must be exactly 12 digits.", success: false });
+        }
+
         // Academic Year validation
         const validYears = ["1st Year", "2nd Year", "3rd Year", "4th Year"];
         if (!validYears.includes(academicYear)) {
             return res.status(400).json({ message: "Invalid academic year.", success: false });
+        }
+
+        // Size validation
+        const validSizes = ["S", "M", "L", "XL", "XXL"];
+        if (!validSizes.includes(size)) {
+            return res.status(400).json({ message: "Invalid size. Must be one of S, M, L, XL, XXL.", success: false });
         }
 
         const newOrder = new SportsMerch({
@@ -49,6 +62,7 @@ export const createSportsMerchOrder = async (req, res) => {
             academicYear,
             transactionId,
             merchName,
+            size,
             merchNumber,
             verified: false,
         });
@@ -86,10 +100,11 @@ export const createFestMerchOrder = async (req, res) => {
             hostelName,
             academicYear,
             transactionId,
+            size,
         } = req.body;
 
         // Basic validation
-        if (!name || !email || !phone || !hostelName || !academicYear || !transactionId) {
+        if (!name || !email || !phone || !hostelName || !academicYear || !transactionId || !size) {
             return res.status(400).json({
                 message: "All fields are required.",
                 success: false,
@@ -108,10 +123,22 @@ export const createFestMerchOrder = async (req, res) => {
             return res.status(400).json({ message: "Invalid phone number. Must be 10 digits.", success: false });
         }
 
+        // Transaction ID validation (must be exactly 12 digits)
+        const txnRegex = /^\d{12}$/;
+        if (!txnRegex.test(transactionId)) {
+            return res.status(400).json({ message: "Transaction ID must be exactly 12 digits.", success: false });
+        }
+
         // Academic Year validation
         const validYears = ["1st Year", "2nd Year", "3rd Year", "4th Year"];
         if (!validYears.includes(academicYear)) {
             return res.status(400).json({ message: "Invalid academic year.", success: false });
+        }
+
+        // Size validation
+        const validSizes = ["S", "M", "L", "XL", "XXL"];
+        if (!validSizes.includes(size)) {
+            return res.status(400).json({ message: "Invalid size. Must be one of S, M, L, XL, XXL.", success: false });
         }
 
         const newOrder = new FestMerch({
@@ -121,6 +148,7 @@ export const createFestMerchOrder = async (req, res) => {
             hostelName,
             academicYear,
             transactionId,
+            size,
             verified: false,
         });
 

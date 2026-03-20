@@ -33,6 +33,11 @@ const festMerchSchema = new mongoose.Schema(
             required: true,
             trim: true,
         },
+        size: {
+            type: String,
+            required: true,
+            enum: ["S", "M", "L", "XL", "XXL"],
+        },
         verified: {
             type: Boolean,
             default: false,

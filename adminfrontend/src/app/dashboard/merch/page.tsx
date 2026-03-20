@@ -231,6 +231,7 @@ export default function MerchDashboard() {
                                     <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Student Info</th>
                                     <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Hostel/Year</th>
                                     <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Transaction</th>
+                                    <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Size</th>
                                     {activeTab === "sports" && (
                                         <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Merch Details</th>
                                     )}
@@ -265,6 +266,11 @@ export default function MerchDashboard() {
                                             <td className="px-6 py-4">
                                                 <div className="text-xs font-mono text-orange-400">{order.transactionId}</div>
                                                 <div className="text-[10px] text-gray-500">{new Date(order.createdAt).toLocaleString()}</div>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <span className="inline-flex items-center px-2.5 py-1 bg-blue-500/20 text-blue-400 rounded-lg text-xs font-bold">
+                                                    {order.size || 'N/A'}
+                                                </span>
                                             </td>
                                             <td className="px-6 py-4">
                                                 <div className="text-sm font-bold">{order.merchName}</div>
@@ -317,6 +323,11 @@ export default function MerchDashboard() {
                                             <td className="px-6 py-4">
                                                 <div className="text-xs font-mono text-purple-400">{order.transactionId}</div>
                                                 <div className="text-[10px] text-gray-500">{new Date(order.createdAt).toLocaleString()}</div>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <span className="inline-flex items-center px-2.5 py-1 bg-blue-500/20 text-blue-400 rounded-lg text-xs font-bold">
+                                                    {order.size || 'N/A'}
+                                                </span>
                                             </td>
                                             <td className="px-6 py-4 text-center">
                                                 <input 

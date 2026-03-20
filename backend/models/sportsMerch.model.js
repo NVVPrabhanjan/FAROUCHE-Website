@@ -38,6 +38,11 @@ const sportsMerchSchema = new mongoose.Schema(
             required: true,
             trim: true,
         },
+        size: {
+            type: String,
+            required: true,
+            enum: ["S", "M", "L", "XL", "XXL"],
+        },
         merchNumber: {
             type: Number,
             required: true,

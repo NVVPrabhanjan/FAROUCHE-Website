@@ -147,6 +147,7 @@ export const exportMerchExcel = async (req, res) => {
                 { header: "Academic Year", key: "academicYear", width: 15 },
                 { header: "Transaction ID", key: "transactionId", width: 25 },
                 { header: "Merch Name", key: "merchName", width: 20 },
+                { header: "Size", key: "size", width: 10 },
                 { header: "Merch Number", key: "merchNumber", width: 15 },
                 { header: "Verified Status", key: "verified", width: 15 },
                 { header: "Created Date", key: "createdAt", width: 20 },
@@ -159,6 +160,7 @@ export const exportMerchExcel = async (req, res) => {
                 { header: "Hostel Name", key: "hostelName", width: 20 },
                 { header: "Academic Year", key: "academicYear", width: 15 },
                 { header: "Transaction ID", key: "transactionId", width: 25 },
+                { header: "Size", key: "size", width: 10 },
                 { header: "Verified Status", key: "verified", width: 15 },
                 { header: "Created Date", key: "createdAt", width: 20 },
             ];
@@ -223,6 +225,7 @@ export const exportMerchPDF = async (req, res) => {
             doc.fontSize(10).text(`Email: ${order.email} | Phone: ${order.phone}`);
             doc.text(`Hostel: ${order.hostelName} | Year: ${order.academicYear}`);
             doc.text(`Transaction ID: ${order.transactionId}`);
+            doc.text(`Size: ${order.size || 'N/A'}`);
             if (type === "sports") {
                 doc.text(`Merch: ${order.merchName} | Number: ${order.merchNumber}`);
             }

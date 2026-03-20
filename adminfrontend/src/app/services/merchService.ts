@@ -29,6 +29,7 @@ export interface SportsMerchOrder {
     academicYear: string;
     transactionId: string;
     merchName: string;
+    size: string;
     merchNumber: number;
     verified: boolean;
     emailSent: boolean;
@@ -44,6 +45,7 @@ export interface FestMerchOrder {
     hostelName: string;
     academicYear: string;
     transactionId: string;
+    size: string;
     verified: boolean;
     emailSent: boolean;
     createdAt: string;

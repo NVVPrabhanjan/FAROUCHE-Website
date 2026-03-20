@@ -7,13 +7,22 @@ import { Loader2, ShoppingBag, Copy, Check, ExternalLink } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const ACADEMIC_YEARS = ["1st Year", "2nd Year", "3rd Year", "4th Year"];
+const PREVIEW_OPTIONS = ["Size Chart", ...ACADEMIC_YEARS];
+const HOSTELS = [
+  "Himalaya Block", "Godavari Block", "Vindhya Block", "Nilgiri Block",
+  "Nandi Block", "Tungabhadra Block", "Sapthagiri Block", "Aravali Block",
+  "Lal Bagh Block", "Banashankari Block", "Ganga Block", "Sarayu Block",
+  "Kaveri Block", "Sindhu Block", "Narmada Block", "Yamuna Block",
+];
+const SIZES = ["S", "M", "L", "XL", "XXL"];
 const UPI_ID = "vanshnagpal@ptyes"; // Replace with actual UPI ID
 
 const getMerchImage = (year: string) => {
   switch (year) {
+    case "Size Chart": return "/size.jpeg";
     case "1st Year": return "/merch1.jpeg";
     case "2nd Year": return "/Merch2.jpeg";
-    case "3rd Year": return "/Merch3.jpeg";
+    case "3rd Year": return "/2nd.jpeg";
     case "4th Year": return "/merch4.jpeg";
     default: return "/merch4.png";
   }
@@ -29,10 +38,11 @@ export default function SportsMerchPage() {
   const [success, setSuccess] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [globalError, setGlobalError] = useState<string | null>(null);
+  const [previewKey, setPreviewKey] = useState("Size Chart");
 
   const [form, setForm] = useState({
     name: "", email: "", phone: "", hostelName: "",
-    academicYear: "1st Year", transactionId: "", merchName: "", merchNumber: "",
+    academicYear: "1st Year", transactionId: "", merchName: "", size: "", merchNumber: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -51,6 +61,24 @@ export default function SportsMerchPage() {
     e.preventDefault();
     setLoading(true);
     setGlobalError(null);
+    setFieldErrors({});
+
+    // Client-side transaction ID validation
+    if (!/^\d{12}$/.test(form.transactionId)) {
+      setFieldErrors({ transactionId: "Transaction ID must be exactly 12 digits." });
+      toast.error("Transaction ID must be exactly 12 digits.");
+      setLoading(false);
+      return;
+    }
+
+    // Client-side size validation
+    if (!form.size) {
+      setFieldErrors({ size: "Please select a size." });
+      toast.error("Please select a size.");
+      setLoading(false);
+      return;
+    }
+
     try {
       const res = await fetch(`${MERCH_API_END_POINT}/sports`, {
         method: "POST",
@@ -130,13 +158,13 @@ export default function SportsMerchPage() {
           <div className="relative w-full rounded-2xl overflow-hidden border border-white/10 bg-white/[0.02]" style={{ aspectRatio: "16/9" }}>
             <AnimatePresence mode="popLayout">
               <motion.img
-                key={form.academicYear}
+                key={previewKey}
                 initial={{ opacity: 0, scale: 1.04, filter: "blur(10px)" }}
                 animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
                 exit={{ opacity: 0, scale: 0.97, filter: "blur(10px)" }}
                 transition={{ duration: 0.4, ease: "easeOut" }}
-                src={getMerchImage(form.academicYear)}
-                alt={`${form.academicYear} jersey`}
+                src={getMerchImage(previewKey)}
+                alt={previewKey}
                 className="absolute inset-0 w-full h-full object-contain"
               />
             </AnimatePresence>
@@ -144,29 +172,33 @@ export default function SportsMerchPage() {
             <div className="absolute top-4 right-4 bg-black/70 backdrop-blur-sm border border-white/15 px-4 py-2 rounded-full">
               <span className="text-white font-bold text-base">₹379</span>
             </div>
-            {/* Year label */}
+            {/* Label */}
             <div className="absolute bottom-4 left-4 bg-black/70 backdrop-blur-sm border border-white/15 px-4 py-2 rounded-full">
-              <span className="text-white text-sm font-semibold">{form.academicYear} Jersey</span>
+              <span className="text-white text-sm font-semibold">{previewKey === "Size Chart" ? "Size Chart" : `${previewKey} Jersey`}</span>
             </div>
           </div>
 
           {/* Year selector — big tappable cards */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            {ACADEMIC_YEARS.map((year) => {
-              const sel = form.academicYear === year;
+          <div className="grid grid-cols-3 sm:grid-cols-5 gap-3">
+            {PREVIEW_OPTIONS.map((opt) => {
+              const sel = previewKey === opt;
+              const isYear = ACADEMIC_YEARS.includes(opt);
               return (
                 <motion.button
-                  key={year}
+                  key={opt}
                   whileTap={{ scale: 0.96 }}
                   type="button"
-                  onClick={() => setForm((p) => ({ ...p, academicYear: year }))}
+                  onClick={() => {
+                    setPreviewKey(opt);
+                    if (isYear) setForm((p) => ({ ...p, academicYear: opt }));
+                  }}
                   className={`relative rounded-xl overflow-hidden border transition-all ${sel
                     ? "border-white ring-2 ring-white/30 opacity-100"
                     : "border-white/10 opacity-50 hover:opacity-80 hover:border-white/25"
                     }`}
                   style={{ aspectRatio: "4/5" }}
                 >
-                  <img src={getMerchImage(year)} alt={year} className="absolute inset-0 w-full h-full object-cover" />
+                  <img src={getMerchImage(opt)} alt={opt} className="absolute inset-0 w-full h-full object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                   {sel && (
                     <div className="absolute top-2 right-2 w-5 h-5 rounded-full bg-white flex items-center justify-center">
@@ -174,7 +206,7 @@ export default function SportsMerchPage() {
                     </div>
                   )}
                   <span className="absolute bottom-2 left-0 right-0 text-xs text-white font-bold text-center tracking-wide px-2">
-                    {year}
+                    {opt}
                   </span>
                 </motion.button>
               );
@@ -278,7 +310,6 @@ export default function SportsMerchPage() {
                     { label: "Full Name", name: "name", type: "text" },
                     { label: "Email Address", name: "email", type: "email" },
                     { label: "Phone Number", name: "phone", type: "tel" },
-                    { label: "Hostel Name", name: "hostelName", type: "text" },
                   ].map((f) => (
                     <div key={f.name} className="flex flex-col gap-1.5">
                       <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest">{f.label}</label>
@@ -289,6 +320,16 @@ export default function SportsMerchPage() {
                       />
                     </div>
                   ))}
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest">Hostel Name</label>
+                    <select
+                      name="hostelName" required value={form.hostelName} onChange={handleChange}
+                      className="w-full rounded-xl border border-white/10 px-4 py-3 text-sm bg-white/5 text-white focus:outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10 transition appearance-none cursor-pointer"
+                    >
+                      <option value="" disabled className="bg-[#0a0a0a]">Select your hostel</option>
+                      {HOSTELS.map((h) => <option key={h} value={h} className="bg-[#0a0a0a]">{h}</option>)}
+                    </select>
+                  </div>
                 </div>
               </div>
 
@@ -311,9 +352,16 @@ export default function SportsMerchPage() {
                     <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest">Transaction ID / UTR</label>
                     <input
                       type="text" name="transactionId" required value={form.transactionId} onChange={handleChange}
-                      placeholder="From your UPI app"
-                      className="w-full rounded-xl border border-white/10 px-4 py-3 text-sm bg-white/5 text-white font-mono focus:outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10 transition placeholder-gray-700"
+                      placeholder="12-digit number from your UPI app"
+                      maxLength={12}
+                      className={`w-full rounded-xl border px-4 py-3 text-sm bg-white/5 text-white font-mono focus:outline-none focus:ring-2 transition placeholder-gray-700 ${fieldErrors.transactionId
+                        ? "border-red-500/60 focus:border-red-500 focus:ring-red-500/20"
+                        : "border-white/10 focus:border-white/30 focus:ring-white/10"
+                        }`}
                     />
+                    {fieldErrors.transactionId && (
+                      <p className="text-xs text-red-400 font-medium">{fieldErrors.transactionId}</p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -346,6 +394,35 @@ export default function SportsMerchPage() {
                       <p className="text-xs text-red-400 font-medium">{fieldErrors.merchNumber}</p>
                     )}
                   </div>
+                </div>
+
+                {/* Size Selector */}
+                <div className="mt-4">
+                  <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest">Select Size</label>
+                  <div className="flex flex-wrap gap-3 mt-2">
+                    {SIZES.map((s) => {
+                      const sel = form.size === s;
+                      return (
+                        <button
+                          key={s}
+                          type="button"
+                          onClick={() => {
+                            setForm((p) => ({ ...p, size: s }));
+                            setFieldErrors((p) => { const n = { ...p }; delete n.size; return n; });
+                          }}
+                          className={`px-5 py-2.5 rounded-xl border text-sm font-bold transition-all ${sel
+                            ? "bg-white text-black border-white ring-2 ring-white/30"
+                            : "bg-white/5 text-gray-400 border-white/10 hover:border-white/30 hover:text-white"
+                            }`}
+                        >
+                          {s}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  {fieldErrors.size && (
+                    <p className="text-xs text-red-400 font-medium mt-1.5">{fieldErrors.size}</p>
+                  )}
                 </div>
               </div>
 
