@@ -12,7 +12,7 @@ const HOSTELS = [
   "Himalaya Block", "Godavari Block", "Vindhya Block", "Nilgiri Block",
   "Nandi Block", "Tungabhadra Block", "Sapthagiri Block", "Aravali Block",
   "Lal Bagh Block", "Banashankari Block", "Ganga Block", "Sarayu Block",
-  "Kaveri Block", "Sindhu Block", "Narmada Block", "Yamuna Block",
+  "Kaveri Block", "Sindhu Block", "Narmada Block", "Yamuna Block", "Vidhyapeetha Hostel", "Others",
 ];
 const SIZES = ["S", "M", "L", "XL", "XXL"];
 const UPI_ID = "vanshnagpal@ptyes"; // Replace with actual UPI ID
