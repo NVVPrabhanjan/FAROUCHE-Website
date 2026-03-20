@@ -34,15 +34,15 @@ if (cluster.isPrimary) {
   const app = express();
 
 
-  app.use(helmet());
+  // app.use(helmet());
 
-  const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    limit: 100,
-    standardHeaders: 'draft-7',
-    legacyHeaders: false,
-  });
-  app.use(limiter);
+  // const limiter = rateLimit({
+  //   windowMs: 15 * 60 * 1000,
+  //   limit: 100,
+  //   standardHeaders: 'draft-7',
+  //   legacyHeaders: false,
+  // });
+  // app.use(limiter);
 
 
   app.use(express.urlencoded({ extended: true }));
