@@ -11,7 +11,7 @@ app.use(cors());
 app.use(express.json());
 
 console.log("🚀 Farouche Email Service starting...");
-console.log(`   Email user   : ${process.env.EMAIL_USER   || "(not set — check .env)"}`);
+console.log(`   Resend from  : ${process.env.EMAIL_FROM || "(not set — check .env)"}`);
 
 // Health check endpoint
 app.get("/health", (req, res) => {

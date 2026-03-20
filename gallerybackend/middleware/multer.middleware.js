@@ -46,15 +46,17 @@ export const compressImages = async (req, res, next) => {
     await Promise.all(
       req.files.map(async (file) => {
         const originalPath = file.path;
-        const tempPath = originalPath + "-compressed.jpg";
 
-        await sharp(originalPath)
+        // Read file into buffer first so sharp doesn't hold a lock on the file
+        const inputBuffer = await fsPromises.readFile(originalPath);
+
+        const compressedBuffer = await sharp(inputBuffer)
           .resize({ width: 1920, withoutEnlargement: true })
           .jpeg({ quality: 60 })
-          .toFile(tempPath);
+          .toBuffer();
 
-        await fsPromises.unlink(originalPath);
-        await fsPromises.rename(tempPath, originalPath);
+        // Overwrite the original file with the compressed version
+        await fsPromises.writeFile(originalPath, compressedBuffer);
       })
     );
     next();

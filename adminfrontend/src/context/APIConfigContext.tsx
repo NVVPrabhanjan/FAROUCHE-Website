@@ -2,8 +2,8 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
-const PROD_BACKEND_URL = "https://farouche-backend.onrender.com";
-const PROD_GALLERY_URL = "https://farouche-gallery.onrender.com";
+const PROD_BACKEND_URL = "https://farouche.in";
+const PROD_GALLERY_URL = "https://farouche.in";
 const LOCAL_BACKEND_URL = "http://localhost:4000";
 const LOCAL_GALLERY_URL = "http://localhost:4001";
 
