@@ -1,4 +1,4 @@
-import { sendMail } from "../services/email.service.js";
+import { addToQueue } from "../services/email.queue.js";
 import {
   registrationConfirmationTemplate,
   adminCustomEmailTemplate,
@@ -20,7 +20,7 @@ export const sendEmailHandler = async (req, res) => {
     switch (type) {
       case "registration_confirmation": {
         const { to, name, eventTitle, venue, teamMembers = [] } = payload;
-        await sendMail({
+        addToQueue({
           to,
           subject: `🎉 Registration Confirmed – ${eventTitle} | Farouche 2026`,
           html: registrationConfirmationTemplate({ name, eventTitle, venue, teamMembers }),
@@ -30,7 +30,7 @@ export const sendEmailHandler = async (req, res) => {
 
       case "admin_bulk": {
         const { to, name, subject, message, whatsappLink } = payload;
-        await sendMail({
+        addToQueue({
           to,
           subject: subject || "Update from Farouche 2026",
           html: adminCustomEmailTemplate({ name, message, whatsappLink }),
@@ -40,7 +40,7 @@ export const sendEmailHandler = async (req, res) => {
 
       case "merch_purchase": {
         const { to, studentName, hostelName, size, paymentId } = payload;
-        await sendMail({
+        addToQueue({
           to,
           subject: "🛍️ Farouche Merch Purchase Confirmation",
           html: merchPurchaseTemplate({ studentName, hostelName, size, paymentId }),
@@ -50,7 +50,7 @@ export const sendEmailHandler = async (req, res) => {
 
       case "merch_collected": {
         const { to, studentName } = payload;
-        await sendMail({
+        addToQueue({
           to,
           subject: "📦 Farouche Merch Collected",
           html: merchCollectedTemplate({ studentName }),
@@ -60,7 +60,7 @@ export const sendEmailHandler = async (req, res) => {
 
       case "merch_verified": {
         const { to, name } = payload;
-        await sendMail({
+        addToQueue({
           to,
           subject: "🛍️ Merch Purchase Confirmation",
           html: merchVerifiedTemplate({ name }),

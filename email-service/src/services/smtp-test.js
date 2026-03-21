@@ -1,34 +1,50 @@
-import nodemailer from "nodemailer";
+import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 
-const transporter = nodemailer.createTransport({
-    host: "smtp.titan.email",
-    port: 587,
-    secure: false,   // important
-    auth: {
-        user: "support@farouche.in",
-        pass: "Farouche@2026"
-    },
-    tls: {
-        rejectUnauthorized: false
-    }
-});
+const AWS_KEY = process.env.AWS_KEY?.trim();
+const AWS_SECRET = process.env.AWS_SECRET?.trim();
+const EMAIL_USER = process.env.EMAIL_USER?.trim();
 
-async function test() {
-    try {
-        await transporter.verify();
-        console.log("SMTP connection successful");
+let _client = null;
 
-        await transporter.sendMail({
-            from: '"Farouche" <support@farouche.in>',
-            to: "nvvenkatprabhanjan@gmail.com",
-            subject: "SMTP Test",
-            text: "Mail working"
-        });
+function getClient() {
+  if (!AWS_KEY || !AWS_SECRET || !EMAIL_USER) {
+    throw new Error("❌ Mailer: AWS_KEY / AWS_SECRET / EMAIL_USER missing in .env");
+  }
 
-        console.log("Email sent");
-    } catch (err) {
-        console.error("SMTP error:", err);
-    }
+  if (!_client) {
+    _client = new SESClient({
+      region: "ap-south-1",
+      credentials: {
+        accessKeyId: AWS_KEY,
+        secretAccessKey: AWS_SECRET,
+      },
+    });
+
+    console.log("📧 AWS SES client initialised.");
+  }
+
+  return _client;
 }
 
-test();
+export async function sendMail({ to, subject, html }) {
+  const client = getClient();
+
+  const command = new SendEmailCommand({
+    Source: `"Farouche 2026" <${EMAIL_USER}>`,
+    Destination: {
+      ToAddresses: [to],
+    },
+    Message: {
+      Subject: { Data: subject },
+      Body: {
+        Html: { Data: html },
+      },
+    },
+  });
+
+  await client.send(command);
+
+  console.log(`✅ Email delivered → ${to}`);
+}
+
+export { EMAIL_USER };
