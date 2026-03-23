@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { DialogFooter } from "../ui/dialog";
 import { toast } from "sonner";
-import { REGISTRATION_API_END_POINT } from "@/app/utils/constants"
+import { RESULTS_END_POINT } from "@/app/utils/constants"
 export function RegisterationForm() {
   const [names, setNames] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -26,7 +26,7 @@ export function RegisterationForm() {
 
     try {
       const response = await fetch(
-        "http://127.0.0.1:4000/api/v1/results/addResults",
+        `${RESULTS_END_POINT}/addResults`,
         {
           method: "POST",
           body: formData,

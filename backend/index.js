@@ -1,7 +1,7 @@
+import "dotenv/config";
 import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import dotenv from "dotenv";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import connectDB from "./utils/db.js";
@@ -30,7 +30,6 @@ if (cluster.isPrimary) {
     cluster.fork();
   });
 } else {
-  dotenv.config({});
   const app = express();
 
 

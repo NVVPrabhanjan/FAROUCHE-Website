@@ -1,29 +1,37 @@
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
 
-const RESEND_API_KEY = process.env.RESEND_API_KEY?.trim();
-const EMAIL_FROM = process.env.EMAIL_FROM?.trim() || "Farouche 2026 <support@farouche.in>";
+const GMAIL_USER = process.env.GMAIL_USER?.trim();
+const GMAIL_CLIENT_ID = process.env.GMAIL_CLIENT_ID?.trim();
+const GMAIL_CLIENT_SECRET = process.env.GMAIL_CLIENT_SECRET?.trim();
+const GMAIL_REFRESH_TOKEN = process.env.GMAIL_REFRESH_TOKEN?.trim();
+const EMAIL_FROM = process.env.EMAIL_FROM?.trim() || `Farouche 2026 <${GMAIL_USER}>`;
 
-if (!RESEND_API_KEY) {
-  console.error("❌ Mailer: RESEND_API_KEY missing in .env");
+if (!GMAIL_USER || !GMAIL_CLIENT_ID || !GMAIL_CLIENT_SECRET || !GMAIL_REFRESH_TOKEN) {
+  console.error("❌ Mailer: Gmail OAuth2 credentials missing in .env");
 }
 
-const resend = new Resend(RESEND_API_KEY);
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    type: "OAuth2",
+    user: GMAIL_USER,
+    clientId: GMAIL_CLIENT_ID,
+    clientSecret: GMAIL_CLIENT_SECRET,
+    refreshToken: GMAIL_REFRESH_TOKEN,
+  },
+});
 
-console.log("📧 Resend client initialised.");
+console.log("📧 Gmail OAuth2 transporter initialised.");
 
 export async function sendMail({ to, subject, html }) {
-  const { data, error } = await resend.emails.send({
+  const info = await transporter.sendMail({
     from: EMAIL_FROM,
     to,
     subject,
     html,
   });
 
-  if (error) {
-    throw new Error(`Resend error: ${error.message}`);
-  }
-
-  console.log(`✅ Email delivered → ${to} [${data.id}]`);
+  console.log(`✅ Email delivered → ${to} [${info.messageId}]`);
 }
 
 // Alias for backward compatibility with email templates

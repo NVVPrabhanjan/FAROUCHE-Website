@@ -21,8 +21,8 @@ const processQueue = async () => {
             console.error(`Queue send error to ${mailOptions.to}:`, error.message);
         }
         
-        // Strict 250ms delay between each email to respect Resend's 5 req/sec rate limit
-        await new Promise(res => setTimeout(res, 250));
+        // 100ms delay between emails to avoid Gmail throttling
+        await new Promise(res => setTimeout(res, 100));
     }
     isProcessing = false;
 };
