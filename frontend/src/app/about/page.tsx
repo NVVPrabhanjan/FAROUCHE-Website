@@ -14,6 +14,8 @@ import {
   Sparkles,
   Music2,
   Camera,
+  ShoppingBag,
+  Map,
   ArrowRight
 } from "lucide-react";
 import CreditCardGrid from "../components/CreditCard";
@@ -31,24 +33,24 @@ const staggerContainer = {
 
 const events = [
   {
-    title: "Rafaga",
-    description: "The yearly orientation event for freshmen, a lively schedule of dancing, music, and guidance.",
-    icon: Users,
-  },
-  {
     title: "Holi",
     description: "Celebrating the joyous festival of colors away from home with friends and companions.",
     icon: Paintbrush,
   },
   {
-    title: "Farouche",
-    description: "A month-long hostel festival with sports, cultural events, and culinary extravaganzas.",
-    icon: PartyPopper,
+    title: "Ayudha Pooja",
+    description: "Honoring the tools of our craft with reverence and celebration.",
+    icon: Sparkles,
   },
   {
-    title: "Flash Mob",
-    description: "An electrifying performance marking the inauguration and logo reveal of Farouche.",
-    icon: Music,
+    title: "Diwali",
+    description: "A night of lights, laughter, and unforgettable memories as we celebrate Diwali together.",
+    icon: Sparkles,
+  },
+  {
+    title: "Rafaga",
+    description: "The yearly orientation event for freshmen, a lively schedule of dancing, music, and guidance.",
+    icon: Users,
   },
   {
     title: "Chiguru",
@@ -56,9 +58,9 @@ const events = [
     icon: Music2,
   },
   {
-    title: "Movie Night",
-    description: "A curated cinema experience to strengthen bonds through captivating storytelling.",
-    icon: Film,
+    title: "Farouche",
+    description: "A month-long hostel festival with sports, cultural events, and culinary extravaganzas.",
+    icon: PartyPopper,
   },
 ];
 
@@ -73,6 +75,16 @@ const activities = [
     description: "Students take the lead in cooking and serving creative meals for the entire fraternity.",
     icon: Utensils,
   },
+  {
+    title: "Flash Mob",
+    description: "An electrifying performance marking the inauguration and logo reveal of Farouche.",
+    icon: Music,
+  },
+  {
+    title: "Movie Night",
+    description: "A curated cinema experience to strengthen bonds through captivating storytelling.",
+    icon: Film,
+  },
 ];
 
 const sports = [
@@ -86,10 +98,9 @@ const culturalEvents = [
   { name: "Solo Dance", subtitle: "Jackson ka baap", icon: Users },
   { name: "Duet Dance", subtitle: "Shake it up", icon: PartyPopper },
   { name: "Solo Singing", subtitle: "Pitch Perfect", icon: Mic },
-  { name: "Wall Painting", subtitle: "Art beat", icon: Palette },
   { name: "Adult Quiz", subtitle: "Buzzer Kings", icon: Gamepad },
-  { name: "Stand up", subtitle: "One Mic Stand", icon: Mic },
-  { name: "Mobile Phone Photography", subtitle: "Click it up", icon: Camera },
+  { name: "Beg Borrow Steal", subtitle: "Quick-fire Scavenge", icon: ShoppingBag },
+  { name: "Treasure Hunt", subtitle: "Decode the Mystery", icon: Map },
 ];
 
 export default function About() {

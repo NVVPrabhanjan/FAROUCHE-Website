@@ -41,7 +41,7 @@ const LeadershipCard = ({ leader, onClick, index }: LeadershipCardProps) => {
             className="object-cover object-top group-hover:scale-105 transition-transform duration-300"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-5xl text-[#333] font-bold">
+          <div className="w-full h-full flex items-center justify-center text-5xl text-[#333] font-bold text-center">
             {leader.name.charAt(0)}
           </div>
         )}
@@ -49,10 +49,10 @@ const LeadershipCard = ({ leader, onClick, index }: LeadershipCardProps) => {
 
       {/* Info */}
       <div className="p-3 pb-4">
-        <p className="text-[#f0f0f0] text-sm font-medium leading-snug mb-1">
+        <p className="text-[#f0f0f0] text-sm font-medium leading-snug mb-1 text-center">
           {leader.name}
         </p>
-        <p className="text-[#555] text-[11px] uppercase tracking-wider">
+        <p className="text-[#555] text-[11px] uppercase tracking-wider text-center">
           {leader.role}
         </p>
       </div>

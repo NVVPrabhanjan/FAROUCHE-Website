@@ -180,7 +180,7 @@ export const committees: Committee[] = [
             { src: "/c-4.jpeg", caption: "Shivaputra Arya" },
             { src: "/c-5.jpeg", caption: "Siri Nandihalli" },
             { src: "/c-6.jpg", caption: "Vansh Nagpal" },
-            { src: "/u1.png", caption: "Aditya" },
+            { src: "/c-11.jpeg", caption: "Aditya" },
             { src: "/c-7.jpeg", caption: "Firas K M" },
             { src: "/c-8.jpeg", caption: "Ritual Singh" },
             { src: "/c-9.jpg", caption: "SumitKr Chaudhary" },
