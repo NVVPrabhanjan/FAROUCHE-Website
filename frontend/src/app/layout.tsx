@@ -5,7 +5,7 @@ import Footer from "./components/Footer";
 import Navbar from "./components/NavBar";
 import { APIConfigProvider } from "@/context/APIConfigContext";
 import { Toaster } from "sonner";
-
+import Script from "next/script";
 
 
 const poppins = Poppins({
@@ -16,7 +16,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-title: "FAROUCHE",
+  title: "FAROUCHE",
   description: "BMSCE FAROUCHE",
 };
 
@@ -28,11 +28,22 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppins.variable} antialiased`}>
+        {/* <!-- Google tag (gtag.js) --> */}
+        <Script async src="https://www.googletagmanager.com/gtag/js?id=G-4G065WMGFH"></Script>
+        <Script>
+          {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-4G065WMGFH');
+          `}
+        </Script>
         <APIConfigProvider>
           <Toaster position="top-center" richColors />
-          <Navbar/>
+          <Navbar />
           {children}
-          <Footer/>
+          <Footer />
         </APIConfigProvider>
       </body>
     </html>
