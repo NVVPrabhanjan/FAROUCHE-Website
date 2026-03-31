@@ -25,6 +25,8 @@ services:
     depends_on:
       - backend
       - gallery-backend
+    extra_hosts:
+      - "farouche.in:host-gateway"
     networks:
       - farouche-network
 
