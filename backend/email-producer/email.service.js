@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const isLocal = process.env.NODE_ENV !== "production";
-const defaultUrl = isLocal ? "http://localhost:5001/api/send-email" : "https://farouche.in/api/send-email";
+const defaultUrl = isLocal ? "http://localhost:5001/api/send-email" : "http://email-service:5001/api/send-email";
 const EMAIL_SERVICE_URL = process.env.EMAIL_SERVICE_URL || defaultUrl;
 
 export async function publishEmailJob({ type, payload }) {
