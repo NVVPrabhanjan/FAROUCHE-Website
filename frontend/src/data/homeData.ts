@@ -188,11 +188,12 @@ export const committees: Committee[] = [
     },
     {
         name: "Web Development ",
-        students: 2,
+        students: 3,
         description: "Leading the technical aspects of Farouche",
         images: [
             { src: "/d-1.png", caption: "Prabhanjan" },
             { src: "/d-2.jpg", caption: "Hitesh R" },
+            { src: "/dev1.png", caption: "Chirag V P" },
         ],
     },
     {
