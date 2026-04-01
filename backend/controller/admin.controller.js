@@ -308,3 +308,23 @@ export const getAuditLog = async (req, res) => {
         return res.status(500).json({ message: "Server error", success: false });
     }
 };
+
+export const updateEventRegistration = async (req, res) => {
+    try {
+        const { eventId } = req.params;
+        const { registration } = req.body;
+        
+        const event = await Event.findById(eventId);
+        if (!event) return res.status(404).json({ message: "Event not found", success: false });
+        
+        // Update registration status (true = open, false = closed)
+        // This ensures no registration data is lost when closing
+        event.registration = registration;
+        await event.save();
+        
+        return res.status(200).json({ success: true, message: `Event registration ${registration ? 'opened' : 'closed'} successfully` });
+    } catch (error) {
+        console.error("Update Event Registration Error:", error);
+        return res.status(500).json({ message: "Server error", success: false });
+    }
+};

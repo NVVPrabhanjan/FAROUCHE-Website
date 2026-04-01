@@ -2,8 +2,8 @@ import mongoose from "mongoose";
 
 const eventSchema = new mongoose.Schema(
   {
-    teamSize:{
-      type:Number
+    teamSize: {
+      type: Number
     },
     title: {
       type: String,
@@ -26,6 +26,10 @@ const eventSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    registration: {
+      type: Boolean,
+      default: true,
+    },
     eventid: {
       type: String,
       unique: true,
@@ -38,7 +42,7 @@ const eventSchema = new mongoose.Schema(
       required: true,
     },
     createdBy: {
-      adminId:   { type: mongoose.Schema.Types.ObjectId, ref: "Admin" },
+      adminId: { type: mongoose.Schema.Types.ObjectId, ref: "Admin" },
       adminName: { type: String, default: "Unknown" },
     },
   },

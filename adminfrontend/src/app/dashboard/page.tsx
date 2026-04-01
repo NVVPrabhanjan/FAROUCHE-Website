@@ -1,12 +1,13 @@
 "use client";
 import React, { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { 
-    fetchEventsAdmin, 
-    fetchEventRegistrations, 
+import {
+    fetchEventsAdmin,
+    fetchEventRegistrations,
     markAttendance,
     sendCustomEmail,
-    deleteEvent
+    deleteEvent,
+    updateEventRegistration
 } from "../services/adminService";
 import AddEventModal from "../components/AddEventModal";
 import EmailModal from "../components/EmailModal";
@@ -36,6 +37,7 @@ interface Event {
     description?: string;
     image?: string;
     group?: boolean;
+    registration: boolean;
 }
 
 export default function AdminDashboard() {
@@ -44,13 +46,13 @@ export default function AdminDashboard() {
     const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
     const [registrations, setRegistrations] = useState<Registration[]>([]);
     const [loading, setLoading] = useState(false);
-    
+
 
     const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
-    
+
 
     const [searchTerm, setSearchTerm] = useState("");
-    const [filterStatus, setFilterStatus] = useState("all"); 
+    const [filterStatus, setFilterStatus] = useState("all");
 
 
     const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
@@ -98,7 +100,7 @@ export default function AdminDashboard() {
     };
 
     const handleDeleteEvent = async (e: React.MouseEvent, eventId: string) => {
-        e.stopPropagation(); 
+        e.stopPropagation();
         if (confirm("Are you sure you want to delete this event? This cannot be undone.")) {
             try {
                 await deleteEvent(eventId);
@@ -118,7 +120,7 @@ export default function AdminDashboard() {
     };
 
     const handleAttendance = async (regId: string, currentStatus: boolean) => {
-        const updatedRegistrations = registrations.map(r => 
+        const updatedRegistrations = registrations.map(r =>
             r._id === regId ? { ...r, attendance: !currentStatus } : r
         );
         setRegistrations(updatedRegistrations);
@@ -127,12 +129,12 @@ export default function AdminDashboard() {
             toast.success("Attendance updated");
         } catch (error) {
             toast.error("Failed to update attendance");
-            setRegistrations(registrations); 
+            setRegistrations(registrations);
         }
     };
 
     const toggleSelectUser = (id: string) => {
-        setSelectedUsers(prev => 
+        setSelectedUsers(prev =>
             prev.includes(id) ? prev.filter(uid => uid !== id) : [...prev, id]
         );
     };
@@ -195,6 +197,20 @@ export default function AdminDashboard() {
         document.body.removeChild(link);
     };
 
+    const toggleRegistration = async (eventId: string, currentStatus: boolean) => {
+        try {
+            await updateEventRegistration(eventId, !currentStatus);
+            toast.success(`Event registration ${!currentStatus ? 'enabled' : 'disabled'} successfully`);
+            
+            // Update local state
+            if (selectedEvent) {
+                setSelectedEvent({ ...selectedEvent, registration: !currentStatus });
+            }
+            loadEvents();
+        } catch (error) {
+            toast.error("Failed to update event registration");
+        }
+    };
 
     const filteredRegistrations = useMemo(() => {
         if (!registrations) return [];
@@ -203,16 +219,16 @@ export default function AdminDashboard() {
             const name = (reg.name || "").toLowerCase();
             const email = (reg.email || "").toLowerCase();
             const regId = (reg.registrationId || "").toLowerCase();
-            
-            const matchesSearch = 
-                name.includes(searchLower) || 
+
+            const matchesSearch =
+                name.includes(searchLower) ||
                 email.includes(searchLower) ||
                 regId.includes(searchLower);
-            
-            const matchesFilter = 
+
+            const matchesFilter =
                 filterStatus === 'all' ? true :
-                filterStatus === 'present' ? reg.attendance === true :
-                reg.attendance === false;
+                    filterStatus === 'present' ? reg.attendance === true :
+                        reg.attendance === false;
 
             return matchesSearch && matchesFilter;
         });
@@ -240,7 +256,7 @@ export default function AdminDashboard() {
     return (
         <div className="min-h-screen bg-background p-6 text-foreground">
             <ToastContainer theme="dark" />
-            <div className="max-w-7xl mx-auto hide-print"> 
+            <div className="max-w-7xl mx-auto hide-print">
                 <div className="flex justify-between items-center mb-6">
                     <h1 className="text-3xl font-bold text-primary">Admin Dashboard</h1>
                     <div className="flex gap-4">
@@ -253,7 +269,7 @@ export default function AdminDashboard() {
                             </button>
                         )}
                         {selectedEvent && (
-                            <button 
+                            <button
                                 onClick={() => setSelectedEvent(null)}
                                 className="bg-secondary hover:bg-secondary/80 text-secondary-foreground px-4 py-2 rounded font-medium transition"
                             >
@@ -263,7 +279,7 @@ export default function AdminDashboard() {
                     </div>
                 </div>
 
-                
+
                 {!selectedEvent && (
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                         <div className="bg-gradient-to-br from-blue-500/20 to-blue-600/10 border border-blue-500/30 p-6 rounded-xl shadow-sm">
@@ -274,7 +290,7 @@ export default function AdminDashboard() {
                             <h3 className="text-muted-foreground font-medium uppercase tracking-wider text-sm">Total Registrations</h3>
                             <p className="text-4xl font-bold text-purple-500 mt-2">{totalGlobalRegistrations}</p>
                         </div>
-                         <div className="bg-gradient-to-br from-emerald-500/20 to-emerald-600/10 border border-emerald-500/30 p-6 rounded-xl shadow-sm">
+                        <div className="bg-gradient-to-br from-emerald-500/20 to-emerald-600/10 border border-emerald-500/30 p-6 rounded-xl shadow-sm">
                             <h3 className="text-muted-foreground font-medium uppercase tracking-wider text-sm">System Status</h3>
                             <p className="text-4xl font-bold text-emerald-500 mt-2">Active</p>
                         </div>
@@ -282,26 +298,26 @@ export default function AdminDashboard() {
                 )}
             </div>
 
-            
+
             {!selectedEvent ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
                     {events.map(event => (
-                        <div 
-                            key={event._id} 
+                        <div
+                            key={event._id}
                             onClick={() => handleEventSelect(event)}
                             className="bg-card text-card-foreground p-6 rounded-lg shadow-md cursor-pointer hover:shadow-xl transition-all duration-300 border border-border hover:border-primary group relative overflow-hidden"
                         >
                             <div className="flex justify-between items-start mb-2">
                                 <h2 className="text-xl font-bold group-hover:text-primary transition-colors flex-1">{event.title}</h2>
                                 <div className="flex gap-2">
-                                    <button 
+                                    <button
                                         onClick={(e) => handleEditEvent(e, event)}
                                         className="p-1.5 text-blue-400 hover:bg-blue-500/10 rounded-full transition-colors"
                                         title="Edit Event"
                                     >
                                         <Pencil size={16} />
                                     </button>
-                                     <button 
+                                    <button
                                         onClick={(e) => handleDeleteEvent(e, event._id)}
                                         className="p-1.5 text-red-400 hover:bg-red-500/10 rounded-full transition-colors"
                                         title="Delete Event"
@@ -310,10 +326,10 @@ export default function AdminDashboard() {
                                     </button>
                                 </div>
                             </div>
-                            
+
                             <p className="text-muted-foreground mb-1 flex items-center gap-2">📅 <span>{new Date(event.date).toLocaleDateString()}</span></p>
                             <p className="text-muted-foreground mb-4 flex items-center gap-2">📍 <span>{event.venue || "TBD"}</span></p>
-                            
+
                             <div className="flex justify-between items-center pt-4 border-t border-border">
                                 <div className="flex flex-col">
                                     <span className="text-xs text-muted-foreground uppercase font-semibold">Registrations</span>
@@ -327,9 +343,9 @@ export default function AdminDashboard() {
                     ))}
                 </div>
             ) : (
-                
+
                 <div className="bg-card text-card-foreground rounded-lg shadow-lg p-6 border border-border max-w-7xl mx-auto">
-                    
+
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8 print:hidden">
                         <div className="bg-background p-4 rounded-lg border border-border text-center">
                             <p className="text-muted-foreground text-xs uppercase font-bold">Total</p>
@@ -353,7 +369,7 @@ export default function AdminDashboard() {
                         <div>
                             <div className="flex items-center gap-3">
                                 <h2 className="text-2xl font-bold">{selectedEvent.title}</h2>
-                                <button 
+                                <button
                                     onClick={(e) => handleEditEvent(e, selectedEvent)}
                                     className="p-2 text-blue-400 hover:bg-blue-500/10 rounded-full transition-colors"
                                     title="Edit Event"
@@ -364,34 +380,40 @@ export default function AdminDashboard() {
                             <p className="text-muted-foreground text-sm mt-1">{new Date(selectedEvent.date).toDateString()} • {selectedEvent.venue}</p>
                         </div>
                         <div className="flex flex-wrap gap-3">
-                             <button 
+                            <button
                                 onClick={handleExportCSV}
                                 className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 font-medium transition"
                             >
                                 📥 Export CSV
                             </button>
-                            <button 
+                            <button
                                 onClick={handlePrint}
                                 className="bg-secondary hover:bg-secondary/80 text-secondary-foreground px-4 py-2 rounded-lg flex items-center gap-2 font-medium transition"
                             >
                                 🖨️ Print List
                             </button>
-                            <button 
+                            <button
                                 onClick={() => setIsEmailModalOpen(true)}
                                 className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-lg flex items-center gap-2 font-medium transition shadow-lg shadow-primary/20"
                             >
                                 ✉️ Broadcast Email
                             </button>
+                            <button
+                                onClick={() => toggleRegistration(selectedEvent._id, selectedEvent.registration)}
+                                className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-lg flex items-center gap-2 font-medium transition shadow-lg shadow-primary/20"
+                            >
+                                {selectedEvent.registration ? "Disable Registration" : "Enable Registration"}
+                            </button>
                         </div>
                     </div>
 
-                    
+
                     <div className="flex flex-col md:flex-row gap-4 mb-6 hide-print">
                         <div className="relative flex-grow">
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <span className="text-gray-500">🔍</span>
                             </div>
-                            <input 
+                            <input
                                 type="text"
                                 placeholder="Search by name, email, or Reg ID..."
                                 className="w-full bg-input border border-border pl-10 pr-4 py-2 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
@@ -400,7 +422,7 @@ export default function AdminDashboard() {
                             />
                         </div>
                         <div className="flex-shrink-0 w-full md:w-48">
-                            <select 
+                            <select
                                 className="w-full bg-input border border-border px-4 py-2 rounded-lg focus:ring-2 focus:ring-primary outline-none cursor-pointer"
                                 value={filterStatus}
                                 onChange={(e) => setFilterStatus(e.target.value)}
@@ -412,7 +434,7 @@ export default function AdminDashboard() {
                         </div>
                     </div>
 
-                    
+
                     <div className="hidden show-print mb-8 border-b border-black pb-4">
                         <h1 className="text-3xl font-bold mb-2">{selectedEvent.title}</h1>
                         <div className="flex gap-8 text-sm font-mono uppercase tracking-wider">
@@ -427,8 +449,8 @@ export default function AdminDashboard() {
                             <thead className="bg-muted/50">
                                 <tr>
                                     <th className="px-6 py-4 text-left text-xs font-bold text-muted-foreground uppercase tracking-wider hide-print w-10">
-                                        <input 
-                                            type="checkbox" 
+                                        <input
+                                            type="checkbox"
                                             onChange={toggleSelectAll}
                                             checked={filteredRegistrations.length > 0 && selectedUsers.length === filteredRegistrations.length}
                                             className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary"
@@ -447,8 +469,8 @@ export default function AdminDashboard() {
                                 ) : filteredRegistrations.map((reg) => (
                                     <tr key={reg._id} className={`transition-colors ${reg.attendance ? "bg-green-500/5 hover:bg-green-500/10" : "hover:bg-muted/50"}`}>
                                         <td className="px-6 py-4 whitespace-nowrap hide-print">
-                                            <input 
-                                                type="checkbox" 
+                                            <input
+                                                type="checkbox"
                                                 checked={selectedUsers.includes(reg._id)}
                                                 onChange={() => toggleSelectUser(reg._id)}
                                                 className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary"
@@ -481,16 +503,15 @@ export default function AdminDashboard() {
                                         <td className="px-6 py-4 whitespace-nowrap text-center hide-print">
                                             <button
                                                 onClick={() => handleAttendance(reg._id, reg.attendance)}
-                                                className={`px-4 py-1.5 rounded-full text-xs font-bold border transition-all transform active:scale-95 ${
-                                                    reg.attendance 
-                                                    ? 'bg-green-500/20 text-green-500 border-green-500/30 hover:bg-green-500/30' 
+                                                className={`px-4 py-1.5 rounded-full text-xs font-bold border transition-all transform active:scale-95 ${reg.attendance
+                                                    ? 'bg-green-500/20 text-green-500 border-green-500/30 hover:bg-green-500/30'
                                                     : 'bg-red-500/10 text-red-500 border-red-500/20 hover:bg-red-500/20'
-                                                }`}
+                                                    }`}
                                             >
                                                 {reg.attendance ? "Present" : "Mark Present"}
                                             </button>
                                         </td>
-                                        
+
                                         <td className="hidden show-print px-6 py-4 whitespace-nowrap text-center">
                                             {reg.attendance ? "✅" : "❌"}
                                         </td>
@@ -499,23 +520,23 @@ export default function AdminDashboard() {
                             </tbody>
                         </table>
                     </div>
-                    
-                    
+
+
                     <div className="mt-4 text-xs text-muted-foreground text-right hide-print">
                         Showing {filteredRegistrations.length} of {registrations.length} registrations
                     </div>
                 </div>
             )}
 
-            <EmailModal 
-                isOpen={isEmailModalOpen} 
+            <EmailModal
+                isOpen={isEmailModalOpen}
                 onClose={() => setIsEmailModalOpen(false)}
                 onSubmit={handleSendEmail}
                 selectedCount={selectedUsers.length}
                 totalCount={registrations.length}
             />
 
-            <AddEventModal 
+            <AddEventModal
                 isOpen={isAddEventModalOpen}
                 onClose={() => {
                     setIsAddEventModalOpen(false);

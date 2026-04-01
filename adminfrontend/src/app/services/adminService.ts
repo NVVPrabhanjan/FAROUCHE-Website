@@ -89,3 +89,8 @@ export const addResult = async (formData: FormData) => {
     });
     return response.data;
 };
+
+export const updateEventRegistration = async (eventId: string, registration: boolean) => {
+    const response = await axiosInstance.put(`/event/${eventId}/registration`, { registration });
+    return response.data;
+};

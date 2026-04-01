@@ -17,6 +17,10 @@ export const createRegistration = async (req, res) => {
       return res.status(404).json({ message: "Event not found." });
     }
 
+    if (event.registration === false) {
+      return res.status(400).json({ message: "Registration is closed for this event." });
+    }
+
     const existingRegistration = await Registration.findOne({ eventId: event.id, email });
     if (existingRegistration) {
       return res.status(400).json({ message: "You have already registered for this event." });
