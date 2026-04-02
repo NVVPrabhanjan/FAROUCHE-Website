@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { LayoutDashboard, CalendarPlus, Trophy, Image as ImageIcon, LogOut, X, Users, ActivitySquare, ShoppingBag } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 
 interface SidebarProps {
     isOpen?: boolean;
@@ -71,12 +72,22 @@ export default function Sidebar({ isOpen = true, onClose, className = "" }: Side
                 ${className}
                 ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
             `}>
-                <div className="flex justify-between items-center mb-2">
-                    <h1 className="text-2xl font-bold text-center w-full bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">
-                        Admin Panel
-                    </h1>
+                <div className="flex justify-between items-center mb-6 mt-2 relative">
+                    <div className="flex items-center gap-3 w-full justify-center">
+                        <div className="relative h-10 w-10 flex-shrink-0 overflow-hidden rounded-full border border-white/20 bg-white">
+                            <Image
+                                src="/farouche-logo.png"
+                                alt="Farouche Logo"
+                                fill
+                                className="object-contain p-1"
+                            />
+                        </div>
+                        <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">
+                            Admin Panel
+                        </h1>
+                    </div>
                     {onClose && (
-                        <button onClick={onClose} className="md:hidden text-muted-foreground hover:text-foreground">
+                        <button onClick={onClose} className="md:hidden absolute right-0 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
                             <X size={24} />
                         </button>
                     )}

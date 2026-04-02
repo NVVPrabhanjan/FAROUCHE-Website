@@ -1,0 +1,11 @@
+src/app/components/CreateEvent.tsx(20,32): error TS7006: Parameter 'event' implicitly has an 'any' type.
+src/app/components/CreateEvent.tsx(28,32): error TS7006: Parameter 'event' implicitly has an 'any' type.
+src/app/components/CreateEvent.tsx(34,35): error TS7006: Parameter 'event' implicitly has an 'any' type.
+src/app/components/CreateEvent.tsx(41,33): error TS7006: Parameter 'e' implicitly has an 'any' type.
+src/app/components/CreateEvent.tsx(229,56): error TS2339: Property 'name' does not exist on type 'never'.
+src/app/components/CreateResult.tsx(41,25): error TS7006: Parameter 'e' implicitly has an 'any' type.
+src/app/components/CreateResult.tsx(48,36): error TS7006: Parameter 'e' implicitly has an 'any' type.
+src/app/components/CreateResult.tsx(54,36): error TS7006: Parameter 'e' implicitly has an 'any' type.
+src/app/components/CreateResult.tsx(60,31): error TS7006: Parameter 'e' implicitly has an 'any' type.
+src/app/hooks/use-toast.ts(9,8): error TS2307: Cannot find module '../components/ui/toaster' or its corresponding type declarations.
+src/app/hooks/use-toast.ts(160,22): error TS7006: Parameter 'open' implicitly has an 'any' type.
