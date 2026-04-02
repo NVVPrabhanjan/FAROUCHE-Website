@@ -58,7 +58,7 @@ export default function Gallery() {
 
               
               <div>
-                <p className="font-mono text-[10px] text-amber-400/70 uppercase tracking-[0.4em] mb-3">
+                <p className="font-mono text-[10px] text-zinc-400/70 uppercase tracking-[0.4em] mb-3">
                   ✦ Farouche 2026 &nbsp;·&nbsp; Visual Archive
                 </p>
                 <h1
@@ -84,7 +84,7 @@ export default function Gallery() {
                     className={`px-4 py-1.5 text-[11px] font-mono uppercase tracking-wider border transition-all duration-200 ${
                       selectedEvent === ev
                         ? "bg-white text-black border-white"
-                        : "bg-transparent text-white/35 border-white/10 hover:border-amber-400/50 hover:text-amber-300"
+                        : "bg-transparent text-white/35 border-white/10 hover:border-zinc-400/50 hover:text-zinc-300"
                     }`}
                   >
                     {ev}
@@ -196,7 +196,7 @@ export default function Gallery() {
                   ESC
                 </button>
                 <button onClick={e => { e.stopPropagation(); prev(); }}
-                  className="absolute left-6 text-white/20 hover:text-amber-400 transition-colors">
+                  className="absolute left-6 text-white/20 hover:text-zinc-400 transition-colors">
                   <ChevronLeft size={28} />
                 </button>
 
@@ -213,7 +213,7 @@ export default function Gallery() {
                 />
 
                 <button onClick={e => { e.stopPropagation(); next(); }}
-                  className="absolute right-6 text-white/20 hover:text-amber-400 transition-colors">
+                  className="absolute right-6 text-white/20 hover:text-zinc-400 transition-colors">
                   <ChevronRight size={28} />
                 </button>
               </motion.div>

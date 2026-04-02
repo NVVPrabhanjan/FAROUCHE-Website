@@ -37,17 +37,17 @@ export default function Navbar() {
                 <div className="container mx-auto px-6 flex items-center justify-between">
 
                     <Link href="/" className="flex items-center gap-4 group">
-                        <div className="relative h-10 w-10 md:h-12 md:w-12 overflow-hidden rounded-full border border-white/20 group-hover:border-amber-500 transition-colors">
+                        <div className="relative h-10 w-10 md:h-12 md:w-12 overflow-hidden rounded-full border border-white/20 group-hover:border-zinc-500 transition-colors bg-white">
                             <Image
-                                src="/image.png"
+                                src="/farouche-logo.png"
                                 alt="Farouche Logo"
                                 fill
-                                className="object-cover"
+                                className="object-contain"
                             />
                         </div>
                         <div className="flex flex-col">
                             <span className="text-xl md:text-2xl font-bold tracking-[0.2em] font-cinzel leading-none text-white">FAROUCHE</span>
-                            <span className="text-[10px] uppercase tracking-[0.5em] text-neutral-400 group-hover:text-amber-400 transition-colors">EST. 1977</span>
+                            <span className="text-[10px] uppercase tracking-[0.5em] text-neutral-400 group-hover:text-zinc-400 transition-colors">EST. 1977</span>
                         </div>
                     </Link>
 
@@ -67,7 +67,7 @@ export default function Navbar() {
 
                     <button
                         onClick={() => setMobileMenuOpen(true)}
-                        className="md:hidden p-2 text-white hover:text-amber-400 transition-colors"
+                        className="md:hidden p-2 text-white hover:text-zinc-400 transition-colors"
                     >
                         <Menu size={24} />
                     </button>

@@ -16,7 +16,7 @@ const LoadingAnimation = () => {
         >
             
             <motion.div
-                className="w-24 h-24 border border-amber-500/30 bg-amber-900/10 backdrop-blur-sm relative"
+                className="w-24 h-24 border border-zinc-500/30 bg-zinc-900/10 backdrop-blur-sm relative"
                 animate={{
                     boxShadow: ["0 0 20px rgba(212,168,67,0.1)", "0 0 40px rgba(212,168,67,0.3)", "0 0 20px rgba(212,168,67,0.1)"]
                 }}
@@ -24,7 +24,7 @@ const LoadingAnimation = () => {
             >
                 
                 <motion.div
-                    className="absolute inset-0 bg-gradient-to-b from-transparent via-amber-500/20 to-transparent h-1/2 w-full"
+                    className="absolute inset-0 bg-gradient-to-b from-transparent via-zinc-500/20 to-transparent h-1/2 w-full"
                     animate={{ top: ["-50%", "100%"] }}
                     transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
                 />
@@ -43,7 +43,7 @@ const LoadingAnimation = () => {
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.2 }}
-                className="font-mono text-amber-500 text-xs tracking-[0.3em] uppercase"
+                className="font-mono text-zinc-500 text-xs tracking-[0.3em] uppercase"
             >
                 Initializing Protocol
             </motion.div>

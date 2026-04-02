@@ -70,7 +70,7 @@ export default function MatchDetails() {
   );
 
   return (
-    <div className="min-h-screen bg-black text-white selection:bg-amber-500/30 font-sans">
+    <div className="min-h-screen bg-black text-white selection:bg-zinc-500/30 font-sans">
       <AnimatePresence>
          {isLoading && <LoadingAnimation />}
       </AnimatePresence>
@@ -84,7 +84,7 @@ export default function MatchDetails() {
                     <motion.p 
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="text-amber-500 font-mono text-xs uppercase tracking-widest mb-4"
+                        className="text-zinc-500 font-mono text-xs uppercase tracking-widest mb-4"
                     >
 
                     </motion.p>
@@ -110,14 +110,14 @@ export default function MatchDetails() {
                         <div className="text-4xl md:text-6xl font-bold font-cinzel text-white">
                             {medalCounts.National.gold + medalCounts.National.silver}
                         </div>
-                        <span className="block text-[10px] font-mono uppercase tracking-widest text-amber-500 mt-2">Total Medals</span>
+                        <span className="block text-[10px] font-mono uppercase tracking-widest text-zinc-500 mt-2">Total Medals</span>
                     </div>
                      <div className="bg-white/5 border border-white/10 p-6 w-32 md:w-48 text-center backdrop-blur-sm">
                         <span className="block text-xs font-mono uppercase tracking-widest text-neutral-500 mb-2">International</span>
                         <div className="text-4xl md:text-6xl font-bold font-cinzel text-white">
                              {medalCounts.International.gold + medalCounts.International.silver}
                         </div>
-                        <span className="block text-[10px] font-mono uppercase tracking-widest text-amber-500 mt-2">Total Medals</span>
+                        <span className="block text-[10px] font-mono uppercase tracking-widest text-zinc-500 mt-2">Total Medals</span>
                     </div>
                 </motion.div>
             </div>
@@ -130,9 +130,9 @@ export default function MatchDetails() {
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         placeholder="SEARCH CATEGORY PROTOCOL..."
-                        className="w-full bg-transparent border-b border-white/20 py-4 pl-0 pr-10 text-xl font-mono uppercase tracking-widest text-white placeholder-neutral-700 focus:outline-none focus:border-amber-500 transition-colors"
+                        className="w-full bg-transparent border-b border-white/20 py-4 pl-0 pr-10 text-xl font-mono uppercase tracking-widest text-white placeholder-neutral-700 focus:outline-none focus:border-zinc-500 transition-colors"
                     />
-                    <Search className="absolute right-0 top-1/2 -translate-y-1/2 text-neutral-600 group-focus-within:text-amber-500 transition-colors" size={20} />
+                    <Search className="absolute right-0 top-1/2 -translate-y-1/2 text-neutral-600 group-focus-within:text-zinc-500 transition-colors" size={20} />
                 </div>
             </div>
 
@@ -145,10 +145,10 @@ export default function MatchDetails() {
                             href={`/results/${encodeURIComponent(category)}`}
                             className="group block bg-black border border-white/10 p-8 md:p-12 hover:bg-neutral-900/50 transition-all duration-500 relative overflow-hidden"
                         >
-                             <div className="absolute top-0 left-0 w-1 h-full bg-amber-500 transform -translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+                             <div className="absolute top-0 left-0 w-1 h-full bg-zinc-500 transform -translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
                              
                              <div className="flex justify-between items-start mb-12">
-                                 <span className="font-mono text-xs text-neutral-600 group-hover:text-amber-400 transition-colors">TYPE 0{index + 1}</span>
+                                 <span className="font-mono text-xs text-neutral-600 group-hover:text-zinc-400 transition-colors">TYPE 0{index + 1}</span>
                                  <ArrowRight className="text-neutral-600 group-hover:text-white transform group-hover:-rotate-45 transition-all duration-500" size={20} />
                              </div>
 

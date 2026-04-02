@@ -34,10 +34,10 @@ const CreditCard = ({ person }: { person: Person }) => {
   };
 
   return (
-    <div className="group relative bg-black border border-white/10 hover:border-amber-500/50 transition-colors duration-500 overflow-hidden flex flex-col">
+    <div className="group relative bg-black border border-white/10 hover:border-zinc-500/50 transition-colors duration-500 overflow-hidden flex flex-col">
       
       <div className="absolute top-0 right-0 p-2 md:p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
-        <div className="w-2 h-2 bg-amber-500 rounded-full" />
+        <div className="w-2 h-2 bg-zinc-500 rounded-full" />
       </div>
 
       
@@ -57,10 +57,10 @@ const CreditCard = ({ person }: { person: Person }) => {
 
       
       <div className="p-6 relative z-20 -mt-20">
-        <h3 className="text-xl font-bold font-cinzel text-white uppercase tracking-tight mb-1 group-hover:text-amber-400 transition-colors">
+        <h3 className="text-xl font-bold font-cinzel text-white uppercase tracking-tight mb-1 group-hover:text-zinc-400 transition-colors">
           {person.name}
         </h3>
-        <p className="text-[10px] font-mono uppercase tracking-widest text-neutral-500 mb-6 border-l-2 border-amber-500 pl-3">
+        <p className="text-[10px] font-mono uppercase tracking-widest text-neutral-500 mb-6 border-l-2 border-zinc-500 pl-3">
           {person.role}
         </p>
 
@@ -135,7 +135,7 @@ const CreditCardGrid = () => {
     <section className="container mx-auto px-6 py-20 relative">
        
        <div className="flex flex-col items-center mb-16 text-center">
-          <p className="text-amber-500 font-mono text-xs uppercase tracking-widest mb-4">
+          <p className="text-zinc-500 font-mono text-xs uppercase tracking-widest mb-4">
 
           </p>
           <h2 className="text-4xl md:text-5xl font-bold font-cinzel uppercase tracking-tighter text-white">

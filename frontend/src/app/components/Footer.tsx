@@ -35,7 +35,7 @@ export default function Footer() {
 
                     <div className="md:col-span-5 space-y-8">
                         <div>
-                            <h2 className="text-3xl font-bold font-cinzel text-white tracking-wider mb-2">FAROUCHE<span className="text-amber-500">.</span></h2>
+                            <h2 className="text-3xl font-bold font-cinzel text-white tracking-wider mb-2">FAROUCHE<span className="text-zinc-500">.</span></h2>
                             <p className="text-neutral-500 max-w-sm leading-relaxed">
                                 The ultimate hostel festival celebrating creativity, competition, and camaraderie.
                                 Join the legacy of excellence.
@@ -73,7 +73,7 @@ export default function Footer() {
                         <ul className="space-y-6">
                             {contactInfo.map((item, idx) => (
                                 <li key={idx} className="flex items-start gap-4">
-                                    <div className="mt-1 text-amber-500"><item.icon size={18} /></div>
+                                    <div className="mt-1 text-zinc-500"><item.icon size={18} /></div>
                                     <span className="text-neutral-300 text-sm leading-relaxed">{item.text}</span>
                                 </li>
                             ))}

@@ -80,7 +80,7 @@ export default function EventRegistration() {
     };
 
     return (
-        <div className="min-h-screen bg-black text-white font-sans selection:bg-amber-500/30 flex flex-col">
+        <div className="min-h-screen bg-black text-white font-sans selection:bg-zinc-500/30 flex flex-col">
 
 
             <header className="px-6 py-8 border-b border-white/10 flex justify-between items-center">
@@ -95,7 +95,7 @@ export default function EventRegistration() {
             <main className="flex-1 flex flex-col items-center justify-center p-6 md:p-12 relative overflow-hidden">
 
 
-                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-amber-900/10 rounded-full blur-[100px] pointer-events-none" />
+                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-zinc-900/10 rounded-full blur-[100px] pointer-events-none" />
 
                 <div className="w-full max-w-2xl relative z-10">
 
@@ -112,19 +112,19 @@ export default function EventRegistration() {
                         <div className="space-y-8">
                             <div className="grid md:grid-cols-2 gap-8 md:gap-12">
                                 <div className="group">
-                                    <label className="block text-[10px] font-mono uppercase tracking-widest text-neutral-500 mb-2 group-focus-within:text-amber-500 transition-colors">Full Name</label>
+                                    <label className="block text-[10px] font-mono uppercase tracking-widest text-neutral-500 mb-2 group-focus-within:text-zinc-500 transition-colors">Full Name</label>
                                     <input
                                         name="name"
                                         value={formData.name}
                                         onChange={handleChange}
                                         type="text"
                                         required
-                                        className="w-full bg-transparent border-b border-white/20 py-3 text-xl focus:border-amber-500 focus:outline-none transition-colors rounded-none"
+                                        className="w-full bg-transparent border-b border-white/20 py-3 text-xl focus:border-zinc-500 focus:outline-none transition-colors rounded-none"
                                         placeholder="ENTER NAME"
                                     />
                                 </div>
                                 <div className="group">
-                                    {/* <h2 className="block text-[10px] font-mono uppercase tracking-widest text-neutral-500 mb-2 group-focus-within:text-amber-500 transition-colors">Email -<h2 className="text-xs font-color-red-500 font-mono uppercase tracking-widest text-neutral-500 mb-2"> Use Only College Mail Id</h2></h2> */}
+                                    {/* <h2 className="block text-[10px] font-mono uppercase tracking-widest text-neutral-500 mb-2 group-focus-within:text-zinc-500 transition-colors">Email -<h2 className="text-xs font-color-red-500 font-mono uppercase tracking-widest text-neutral-500 mb-2"> Use Only College Mail Id</h2></h2> */}
                                     <h2 className="font-mono uppercase tracking-widest mb-2 whitespace-nowrap">
                                         <span className="text-lg text-neutral-700">Email</span>
                                         <span className="text-[10px] text-red-500 ml-2">
@@ -137,7 +137,7 @@ export default function EventRegistration() {
                                         onChange={handleChange}
                                         type="email"
                                         required
-                                        className="w-full bg-transparent border-b border-white/20 py-3 text-xl focus:border-amber-500 focus:outline-none transition-colors rounded-none"
+                                        className="w-full bg-transparent border-b border-white/20 py-3 text-xl focus:border-zinc-500 focus:outline-none transition-colors rounded-none"
                                         placeholder="ENTER EMAIL"
                                     />
                                 </div>
@@ -145,37 +145,37 @@ export default function EventRegistration() {
 
                             <div className="grid md:grid-cols-3 gap-8 md:gap-12">
                                 <div className="group">
-                                    <label className="block text-[10px] font-mono uppercase tracking-widest text-neutral-500 mb-2 group-focus-within:text-amber-500 transition-colors">Phone (10 Digits)</label>
+                                    <label className="block text-[10px] font-mono uppercase tracking-widest text-neutral-500 mb-2 group-focus-within:text-zinc-500 transition-colors">Phone (10 Digits)</label>
                                     <input
                                         name="phone"
                                         value={formData.phone}
                                         onChange={handleChange}
                                         type="tel"
                                         required
-                                        className="w-full bg-transparent border-b border-white/20 py-3 text-xl focus:border-amber-500 focus:outline-none transition-colors rounded-none"
+                                        className="w-full bg-transparent border-b border-white/20 py-3 text-xl focus:border-zinc-500 focus:outline-none transition-colors rounded-none"
                                         placeholder="0000000000"
                                     />
                                 </div>
                                 <div className="group">
-                                    <label className="block text-[10px] font-mono uppercase tracking-widest text-neutral-500 mb-2 group-focus-within:text-amber-500 transition-colors">Hostel Block</label>
+                                    <label className="block text-[10px] font-mono uppercase tracking-widest text-neutral-500 mb-2 group-focus-within:text-zinc-500 transition-colors">Hostel Block</label>
                                     <input
                                         name="hostelName"
                                         value={formData.hostelName}
                                         onChange={handleChange}
                                         type="text"
                                         required
-                                        className="w-full bg-transparent border-b border-white/20 py-3 text-xl focus:border-amber-500 focus:outline-none transition-colors rounded-none"
+                                        className="w-full bg-transparent border-b border-white/20 py-3 text-xl focus:border-zinc-500 focus:outline-none transition-colors rounded-none"
                                         placeholder="ENTER HOSTEL"
                                     />
                                 </div>
                                 <div className="group">
-                                    <label className="block text-[10px] font-mono uppercase tracking-widest text-neutral-500 mb-2 group-focus-within:text-amber-500 transition-colors">Year</label>
+                                    <label className="block text-[10px] font-mono uppercase tracking-widest text-neutral-500 mb-2 group-focus-within:text-zinc-500 transition-colors">Year</label>
                                     <select
                                         name="year"
                                         value={formData.year}
                                         onChange={handleChange}
                                         required
-                                        className="w-full bg-transparent border-b border-white/20 py-3 text-xl focus:border-amber-500 focus:outline-none transition-colors rounded-none text-white [&>option]:bg-black"
+                                        className="w-full bg-transparent border-b border-white/20 py-3 text-xl focus:border-zinc-500 focus:outline-none transition-colors rounded-none text-white [&>option]:bg-black"
                                     >
                                         <option value="">SELECT</option>
                                         <option value="1">1st Year</option>
@@ -195,7 +195,7 @@ export default function EventRegistration() {
                                 <div className="space-y-6">
                                     {teamMembers.map((member, idx) => (
                                         <div key={idx} className="group">
-                                            <label className="block text-[10px] font-mono uppercase tracking-widest text-neutral-500 mb-2 group-focus-within:text-amber-500 transition-colors">
+                                            <label className="block text-[10px] font-mono uppercase tracking-widest text-neutral-500 mb-2 group-focus-within:text-zinc-500 transition-colors">
                                                 Member 0{idx + 2} Name
                                             </label>
                                             <input
@@ -203,7 +203,7 @@ export default function EventRegistration() {
                                                 value={member}
                                                 onChange={(e) => handleTeamMemberChange(idx, e.target.value)}
                                                 required
-                                                className="w-full bg-transparent border-b border-white/20 py-2 text-lg focus:border-amber-500 focus:outline-none transition-colors rounded-none"
+                                                className="w-full bg-transparent border-b border-white/20 py-2 text-lg focus:border-zinc-500 focus:outline-none transition-colors rounded-none"
                                                 placeholder="ENTER NAME"
                                             />
                                         </div>
@@ -232,7 +232,7 @@ export default function EventRegistration() {
                             <button
                                 type="submit"
                                 disabled={isLoading || isSuccess}
-                                className="w-full bg-white text-black font-bold uppercase tracking-widest py-5 hover:bg-amber-500 hover:text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="w-full bg-white text-black font-bold uppercase tracking-widest py-5 hover:bg-zinc-500 hover:text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 {isLoading ? "Processing Protocol..." : "Confirm Registration"}
                             </button>
@@ -255,13 +255,13 @@ export default function EventRegistration() {
                                 initial={{ scale: 0 }}
                                 animate={{ scale: 1 }}
                                 transition={{ type: "spring", duration: 0.8 }}
-                                className="w-24 h-24 bg-amber-500 rounded-full flex items-center justify-center mx-auto mb-8 text-black"
+                                className="w-24 h-24 bg-zinc-500 rounded-full flex items-center justify-center mx-auto mb-8 text-black"
                             >
                                 <Check size={48} strokeWidth={3} />
                             </motion.div>
                             <h2 className="text-5xl md:text-7xl font-cinzel font-bold mb-6 text-white uppercase tracking-tight">Access Granted</h2>
                             <p className="font-mono text-neutral-500 uppercase tracking-widest mb-12">Registration Complete. Welcome to Farouche.</p>
-                            <div className="w-1 h-24 bg-gradient-to-b from-amber-500 to-transparent mx-auto" />
+                            <div className="w-1 h-24 bg-gradient-to-b from-zinc-500 to-transparent mx-auto" />
                         </div>
                     </motion.div>
                 )}

@@ -13,7 +13,7 @@ const Particle = ({ delay, size, left, duration }: { delay: number; size: number
       height: size,
       left,
       bottom: "-10%",
-      background: `radial-gradient(circle, rgba(212,168,67,${0.25 + Math.random() * 0.35}) 0%, transparent 70%)`,
+      background: `radial-gradient(circle, rgba(161,161,170,${0.25 + Math.random() * 0.35}) 0%, transparent 70%)`,
     }}
     animate={{
       y: [0, -window.innerHeight * 1.2],
@@ -78,7 +78,7 @@ export default function Hero() {
           className="object-cover w-full h-full opacity-40 scale-110"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/80" />
-        <div className="absolute inset-0 bg-amber-950/10 mix-blend-multiply" />
+        <div className="absolute inset-0 bg-zinc-950/10 mix-blend-multiply" />
       </motion.div>
 
       {/* ── floating particles ── */}
@@ -99,28 +99,28 @@ export default function Hero() {
             initial={{ scale: 0.7, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 1.4, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="w-[55vw] h-[55vw] max-w-[600px] max-h-[600px] rounded-full border border-amber-500/10"
+            className="w-[55vw] h-[55vw] max-w-[600px] max-h-[600px] rounded-full border border-zinc-500/10"
           />
           {/* inner ring */}
           <motion.div
             initial={{ scale: 0.5, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 1.6, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute inset-4 md:inset-8 rounded-full border border-amber-500/[0.07]"
+            className="absolute inset-4 md:inset-8 rounded-full border border-zinc-500/[0.07]"
           />
           {/* dashed detail ring */}
           <motion.div
             initial={{ scale: 0.3, opacity: 0, rotate: -30 }}
             animate={{ scale: 1, opacity: 1, rotate: 0 }}
             transition={{ duration: 1.8, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute inset-10 md:inset-16 rounded-full border border-dashed border-amber-500/[0.05]"
+            className="absolute inset-10 md:inset-16 rounded-full border border-dashed border-zinc-500/[0.05]"
           />
           {/* center golden dot */}
           <motion.div
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.6, delay: 1.2 }}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-amber-500/40"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-zinc-500/40"
           />
           {/* cardinal markers */}
           {[0, 90, 180, 270].map((deg) => (
@@ -129,7 +129,7 @@ export default function Hero() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1 + deg * 0.002 }}
-              className="absolute top-1/2 left-1/2 w-3 h-[1px] bg-amber-500/20"
+              className="absolute top-1/2 left-1/2 w-3 h-[1px] bg-zinc-500/20"
               style={{
                 transform: `translate(-50%, -50%) rotate(${deg}deg) translateX(min(27.5vw, 300px))`,
               }}
@@ -168,7 +168,7 @@ export default function Hero() {
                 className="text-[12vw] leading-none font-bold tracking-tighter inline-block"
                 style={{
                   backgroundImage:
-                    "linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(212,168,67,0.7) 100%)",
+                    "linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(161,161,170,0.7) 100%)",
                   WebkitBackgroundClip: "text",
                   backgroundClip: "text",
                   color: "transparent",
@@ -184,7 +184,7 @@ export default function Hero() {
             initial={{ scaleX: 0 }}
             animate={{ scaleX: 1 }}
             transition={{ duration: 0.8, delay: 1.3, ease: [0.22, 1, 0.36, 1] }}
-            className="mx-auto mt-4 h-[1px] w-28 bg-gradient-to-r from-transparent via-amber-500 to-transparent"
+            className="mx-auto mt-4 h-[1px] w-28 bg-gradient-to-r from-transparent via-zinc-500 to-transparent"
           />
 
           {/* subtitle */}
@@ -194,7 +194,7 @@ export default function Hero() {
             transition={{ duration: 0.8, delay: 1.5 }}
             className="mt-5 text-xs md:text-sm uppercase tracking-[0.3em] text-neutral-400"
           >
-            <span className="text-amber-400/90 font-medium">Yugdhara</span> — The Flow of Generations
+            <span className="text-zinc-400/90 font-medium">Yugdhara</span> — The Flow of Generations
           </motion.div> */}
 
           {/* tagline */}
@@ -218,18 +218,18 @@ export default function Hero() {
         >
           {/* dates */}
           <div className="flex flex-col gap-2 font-mono text-xs md:text-sm text-neutral-400">
-            <div className="w-20 h-[1px] bg-amber-500/30 mb-2" />
-            <p><span className="text-amber-400">March 27</span> — Kickoff</p>
-            <p><span className="text-amber-400">May 02</span> — Finale</p>
+            <div className="w-20 h-[1px] bg-zinc-500/30 mb-2" />
+            <p><span className="text-zinc-400">March 27</span> — Kickoff</p>
+            <p><span className="text-zinc-400">May 02</span> — Finale</p>
           </div>
 
           {/* CTA */}
           <Link href="/events" className="group flex items-center gap-4 cursor-pointer">
-            <span className="text-sm font-medium uppercase tracking-widest group-hover:text-amber-400 transition-colors duration-300">
+            <span className="text-sm font-medium uppercase tracking-widest group-hover:text-zinc-400 transition-colors duration-300">
               Enter Experience
             </span>
-            <div className="relative w-16 h-16 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-amber-500 group-hover:text-black group-hover:border-amber-500 transition-all duration-500 overflow-hidden">
-              <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 shadow-[0_0_25px_rgba(212,168,67,0.4)]" />
+            <div className="relative w-16 h-16 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-zinc-500 group-hover:text-black group-hover:border-zinc-500 transition-all duration-500 overflow-hidden">
+              <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 shadow-[0_0_25px_rgba(161,161,170,0.4)]" />
               <ArrowUpRight className="w-5 h-5 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-45 relative z-10" />
             </div>
           </Link>
@@ -248,7 +248,7 @@ export default function Hero() {
             animate={{ y: [0, 6, 0] }}
             transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
           >
-            <ChevronDown className="w-4 h-4 text-amber-500/50" />
+            <ChevronDown className="w-4 h-4 text-zinc-500/50" />
           </motion.div>
         </motion.div>
       </div>

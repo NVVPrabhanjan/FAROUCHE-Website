@@ -121,7 +121,7 @@ const MemberModal = ({
             <h1 className="text-5xl md:text-7xl font-bold tracking-tighter uppercase mb-2">
               {leader.name}
             </h1>
-            <p className="text-amber-400 text-xl font-mono uppercase tracking-widest">
+            <p className="text-zinc-400 text-xl font-mono uppercase tracking-widest">
               {leader.role}
             </p>
           </div>
@@ -142,7 +142,7 @@ const MemberModal = ({
               <ul className="space-y-2">
                 {leader.achievements.map((achievement, idx) => (
                   <li key={idx} className="flex items-start gap-3 text-neutral-300">
-                    <ArrowRight className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
+                    <ArrowRight className="w-5 h-5 text-zinc-500 shrink-0 mt-0.5" />
                     <span>{achievement}</span>
                   </li>
                 ))}

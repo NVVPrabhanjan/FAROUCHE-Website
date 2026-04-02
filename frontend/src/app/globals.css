@@ -15,20 +15,20 @@ body {
     --card-foreground: 0 0% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 3.9%;
-    --primary: 43 72% 52%;
+    --primary: 240 5% 65%;
     --primary-foreground: 0 0% 98%;
     --secondary: 0 0% 96.1%;
     --secondary-foreground: 0 0% 9%;
     --muted: 0 0% 96.1%;
     --muted-foreground: 0 0% 45.1%;
-    --accent: 43 60% 65%;
+    --accent: 240 5% 75%;
     --accent-foreground: 0 0% 9%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 89.8%;
     --input: 0 0% 89.8%;
-    --ring: 43 72% 52%;
-    --chart-1: 43 72% 52%;
+    --ring: 240 5% 65%;
+    --chart-1: 240 5% 65%;
     --chart-2: 30 55% 45%;
     --chart-3: 35 65% 40%;
     --chart-4: 40 50% 55%;
@@ -42,20 +42,20 @@ body {
     --card-foreground: 0 0% 98%;
     --popover: 0 0% 6%;
     --popover-foreground: 0 0% 98%;
-    --primary: 43 72% 52%;
+    --primary: 240 5% 65%;
     --primary-foreground: 0 0% 9%;
     --secondary: 0 0% 9%;
     --secondary-foreground: 0 0% 98%;
     --muted: 0 0% 9%;
     --muted-foreground: 0 0% 63.9%;
-    --accent: 43 60% 65%;
+    --accent: 240 5% 75%;
     --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 14%;
     --input: 0 0% 14%;
-    --ring: 43 72% 52%;
-    --chart-1: 43 72% 52%;
+    --ring: 240 5% 65%;
+    --chart-1: 240 5% 65%;
     --chart-2: 30 55% 45%;
     --chart-3: 35 65% 40%;
     --chart-4: 40 50% 55%;
@@ -79,8 +79,8 @@ body {
 }
 
 @keyframes yugdhara-glow {
-  0%, 100% { box-shadow: 0 0 8px rgba(212, 168, 67, 0.15); }
-  50% { box-shadow: 0 0 20px rgba(212, 168, 67, 0.3); }
+  0%, 100% { box-shadow: 0 0 8px rgba(161, 161, 170, 0.15); }
+  50% { box-shadow: 0 0 20px rgba(161, 161, 170, 0.3); }
 }
 
 @keyframes yugdhara-shimmer {
@@ -96,7 +96,7 @@ body {
     animation: yugdhara-glow 3s ease-in-out infinite;
   }
   .yugdhara-shimmer {
-    background: linear-gradient(90deg, transparent, rgba(212, 168, 67, 0.08), transparent);
+    background: linear-gradient(90deg, transparent, rgba(161, 161, 170, 0.08), transparent);
     background-size: 200% 100%;
     animation: yugdhara-shimmer 3s ease-in-out infinite;
   }

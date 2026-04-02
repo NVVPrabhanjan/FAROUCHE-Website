@@ -51,7 +51,7 @@ export default function EventDetails() {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 border-2 border-white/20 border-t-amber-500 rounded-full animate-spin" />
+          <div className="w-12 h-12 border-2 border-white/20 border-t-zinc-500 rounded-full animate-spin" />
           <span className="font-mono text-xs uppercase tracking-widest text-neutral-500">Accessing Data...</span>
         </div>
       </div>
@@ -74,7 +74,7 @@ export default function EventDetails() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white selection:bg-amber-500/30 font-sans">
+    <div className="min-h-screen bg-black text-white selection:bg-zinc-500/30 font-sans">
 
 
       <div className="fixed inset-0 z-0">
@@ -97,7 +97,7 @@ export default function EventDetails() {
             <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
             <span>Return</span>
           </Link>
-          <span className="text-xs font-mono text-amber-500 uppercase tracking-widest">
+          <span className="text-xs font-mono text-zinc-500 uppercase tracking-widest">
             Event ID: {event.eventid}
           </span>
         </header>
@@ -111,7 +111,7 @@ export default function EventDetails() {
             className="max-w-5xl"
           >
 
-            <div className="flex flex-wrap gap-6 mb-8 font-mono text-xs uppercase tracking-widest text-amber-400">
+            <div className="flex flex-wrap gap-6 mb-8 font-mono text-xs uppercase tracking-widest text-zinc-400">
               <span className="flex items-center gap-2">
                 <Calendar size={14} />
                 {new Date(event.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
@@ -141,7 +141,7 @@ export default function EventDetails() {
                 {event.registration !== false ? (
                   <Link
                     href={`/events/${id}/${teamSize}/register`}
-                    className="group relative inline-flex items-center justify-center gap-4 px-12 py-6 bg-white text-black text-lg font-bold uppercase tracking-widest hover:bg-amber-500 hover:text-white transition-colors duration-300 w-full md:w-auto"
+                    className="group relative inline-flex items-center justify-center gap-4 px-12 py-6 bg-white text-black text-lg font-bold uppercase tracking-widest hover:bg-zinc-500 hover:text-white transition-colors duration-300 w-full md:w-auto"
                   >
                     <span>Register Team</span>
                     <ArrowRight className="group-hover:translate-x-1 transition-transform" />
