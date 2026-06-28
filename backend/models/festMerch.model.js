@@ -30,7 +30,19 @@ const festMerchSchema = new mongoose.Schema(
         },
         transactionId: {
             type: String,
-            required: true,
+            required: false,
+            trim: true,
+        },
+        razorpay_order_id: {
+            type: String,
+            trim: true,
+        },
+        razorpay_payment_id: {
+            type: String,
+            trim: true,
+        },
+        razorpay_signature: {
+            type: String,
             trim: true,
         },
         size: {

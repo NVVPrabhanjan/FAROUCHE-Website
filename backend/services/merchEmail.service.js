@@ -10,16 +10,13 @@ export async function sendMerchVerificationEmail({ email, name }) {
     });
 }
 
-// Keeping these for potential use if needed later
-export async function sendMerchPurchaseEmail({ email, studentName, hostelName, size, paymentId }) {
+export async function sendCustomEmail({ email, subject, message }) {
     return publishEmailJob({
-        type: "merch_purchase",
+        type: "custom_email",
         payload: {
             to: email,
-            studentName,
-            hostelName,
-            size,
-            paymentId,
+            subject,
+            message,
         },
     });
 }

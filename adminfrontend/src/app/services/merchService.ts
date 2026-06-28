@@ -52,21 +52,33 @@ export interface FestMerchOrder {
     updatedAt: string;
 }
 
-export const fetchSportsMerchOrders = async (filters: { verified?: string; academicYear?: string; hostelName?: string } = {}) => {
+export const fetchSportsMerchOrders = async (filters: { 
+    verified?: string; 
+    academicYear?: string; 
+    hostelName?: string;
+    name?: string;
+} = {}) => {
     const params = new URLSearchParams();
     if (filters.verified) params.append("verified", filters.verified);
     if (filters.academicYear) params.append("academicYear", filters.academicYear);
     if (filters.hostelName) params.append("hostelName", filters.hostelName);
+    if (filters.name) params.append("name", filters.name);
 
     const response = await axiosInstance.get(`/sports?${params.toString()}`);
     return response.data;
 };
 
-export const fetchFestMerchOrders = async (filters: { verified?: string; academicYear?: string; hostelName?: string } = {}) => {
+export const fetchFestMerchOrders = async (filters: { 
+    verified?: string; 
+    academicYear?: string; 
+    hostelName?: string;
+    name?: string;
+} = {}) => {
     const params = new URLSearchParams();
     if (filters.verified) params.append("verified", filters.verified);
     if (filters.academicYear) params.append("academicYear", filters.academicYear);
     if (filters.hostelName) params.append("hostelName", filters.hostelName);
+    if (filters.name) params.append("name", filters.name);
 
     const response = await axiosInstance.get(`/fest?${params.toString()}`);
     return response.data;
@@ -79,6 +91,17 @@ export const verifyMerchOrder = async (type: "sports" | "fest", id: string, veri
 
 export const sendConfirmationMails = async () => {
     const response = await axiosInstance.post(`/send-confirmation-mails`);
+    return response.data;
+};
+
+export const sendCustomEmailAPI = async (data: { 
+    userIds?: string[]; 
+    merchType?: string; 
+    subject: string; 
+    message: string; 
+    filters?: { academicYear?: string; hostelName?: string } 
+}) => {
+    const response = await axiosInstance.post(`/custom-email`, data);
     return response.data;
 };
 

@@ -1,19 +1,74 @@
 import SportsMerch from "../models/sportsMerch.model.js";
 import FestMerch from "../models/festMerch.model.js";
-import { sendMerchVerificationEmail } from "../services/merchEmail.service.js";
-import ExcelJS from "exceljs";
-import PDFDocument from "pdfkit";
+import { sendMerchVerificationEmail, sendCustomEmail } from "../services/merchEmail.service.js";
+import { generateMerchExcel, generateMerchPDF } from "../services/export.service.js";
+
+// ... existing code ...
+
+// POST /api/admin/merch/custom-email
+export const sendCustomMerchEmail = async (req, res) => {
+    try {
+        const { userIds, merchType, subject, message, filters } = req.body;
+
+        if (!subject || !message) {
+            return res.status(400).json({ message: "Subject and message are required.", success: false });
+        }
+
+        let targets = [];
+
+        if (userIds && userIds.length > 0) {
+            // Send to specifically selected users
+            const sports = await SportsMerch.find({ _id: { $in: userIds } });
+            const fest = await FestMerch.find({ _id: { $in: userIds } });
+            targets = [...sports, ...fest];
+        } else if (merchType) {
+            // Send to all verified users matching filters
+            let query = { verified: true };
+            if (filters?.academicYear && filters.academicYear !== 'all') query.academicYear = filters.academicYear;
+            if (filters?.hostelName) query.hostelName = { $regex: filters.hostelName, $options: "i" };
+
+            if (merchType === "sports") {
+                targets = await SportsMerch.find(query);
+            } else {
+                targets = await FestMerch.find(query);
+            }
+        } else {
+            return res.status(400).json({ message: "No targets specified.", success: false });
+        }
+
+        if (targets.length === 0) {
+            return res.status(200).json({ success: true, message: "No target users found matching the criteria." });
+        }
+
+        const results = await Promise.allSettled(targets.map(user => 
+            sendCustomEmail({ email: user.email, subject, message })
+        ));
+
+        const successCount = results.filter(r => r.status === 'fulfilled').length;
+        const failCount = results.length - successCount;
+
+        return res.status(200).json({
+            success: true,
+            message: `Custom emails processed. Success: ${successCount}, Failed: ${failCount}`,
+        });
+
+    } catch (error) {
+        console.error("Send Custom Merch Email Error:", error);
+        return res.status(500).json({ message: "Server error", success: false });
+    }
+};
 
 // GET /api/admin/merch/sports
 export const getSportsMerchOrders = async (req, res) => {
     try {
-        const { verified, academicYear, hostelName } = req.query;
+        const { verified, academicYear, hostelName, name } = req.query;
         let query = {};
         if (verified === "true") query.verified = true;
         else if (verified === "false") query.verified = false;
         
-        if (academicYear) query.academicYear = academicYear;
+        if (academicYear && academicYear !== 'all') query.academicYear = academicYear;
         if (hostelName) query.hostelName = { $regex: hostelName, $options: "i" };
+        if (name) query.name = { $regex: name, $options: "i" };
 
         const orders = await SportsMerch.find(query).sort({ createdAt: -1 });
         return res.status(200).json({ success: true, orders });
@@ -26,13 +81,14 @@ export const getSportsMerchOrders = async (req, res) => {
 // GET /api/admin/merch/fest
 export const getFestMerchOrders = async (req, res) => {
     try {
-        const { verified, academicYear, hostelName } = req.query;
+        const { verified, academicYear, hostelName, name } = req.query;
         let query = {};
         if (verified === "true") query.verified = true;
         else if (verified === "false") query.verified = false;
         
-        if (academicYear) query.academicYear = academicYear;
+        if (academicYear && academicYear !== 'all') query.academicYear = academicYear;
         if (hostelName) query.hostelName = { $regex: hostelName, $options: "i" };
+        if (name) query.name = { $regex: name, $options: "i" };
 
         const orders = await FestMerch.find(query).sort({ createdAt: -1 });
         return res.status(200).json({ success: true, orders });
@@ -116,69 +172,20 @@ export const sendConfirmationMails = async (req, res) => {
 export const exportMerchExcel = async (req, res) => {
     try {
         const { type } = req.params;
-        const { verified, academicYear, hostelName } = req.query;
+        const { verified, academicYear, hostelName, name } = req.query;
         let query = {};
         
         if (verified === "true") query.verified = true;
         else if (verified === "false") query.verified = false;
-        if (academicYear) query.academicYear = academicYear;
+        if (academicYear && academicYear !== 'all') query.academicYear = academicYear;
         if (hostelName) query.hostelName = { $regex: hostelName, $options: "i" };
+        if (name) query.name = { $regex: name, $options: "i" };
 
-        let orders;
-        let filename;
+        const orders = type === "sports" 
+            ? await SportsMerch.find(query).sort({ createdAt: -1 })
+            : await FestMerch.find(query).sort({ createdAt: -1 });
 
-        if (type === "sports") {
-            orders = await SportsMerch.find(query).sort({ createdAt: -1 });
-            filename = "Sports_Merch_Orders.xlsx";
-        } else {
-            orders = await FestMerch.find(query).sort({ createdAt: -1 });
-            filename = "Fest_Merch_Orders.xlsx";
-        }
-
-        const workbook = new ExcelJS.Workbook();
-        const worksheet = workbook.addWorksheet("Orders");
-
-        if (type === "sports") {
-            worksheet.columns = [
-                { header: "Name", key: "name", width: 25 },
-                { header: "Email", key: "email", width: 30 },
-                { header: "Phone", key: "phone", width: 15 },
-                { header: "Hostel Name", key: "hostelName", width: 20 },
-                { header: "Academic Year", key: "academicYear", width: 15 },
-                { header: "Transaction ID", key: "transactionId", width: 25 },
-                { header: "Merch Name", key: "merchName", width: 20 },
-                { header: "Size", key: "size", width: 10 },
-                { header: "Merch Number", key: "merchNumber", width: 15 },
-                { header: "Verified Status", key: "verified", width: 15 },
-                { header: "Created Date", key: "createdAt", width: 20 },
-            ];
-        } else {
-            worksheet.columns = [
-                { header: "Name", key: "name", width: 25 },
-                { header: "Email", key: "email", width: 30 },
-                { header: "Phone", key: "phone", width: 15 },
-                { header: "Hostel Name", key: "hostelName", width: 20 },
-                { header: "Academic Year", key: "academicYear", width: 15 },
-                { header: "Transaction ID", key: "transactionId", width: 25 },
-                { header: "Size", key: "size", width: 10 },
-                { header: "Verified Status", key: "verified", width: 15 },
-                { header: "Created Date", key: "createdAt", width: 20 },
-            ];
-        }
-
-        orders.forEach((order) => {
-            const rowData = {
-                ...order._doc,
-                verified: order.verified ? "Verified" : "Pending",
-                createdAt: order.createdAt.toLocaleString(),
-            };
-            worksheet.addRow(rowData);
-        });
-
-        res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        res.setHeader("Content-Disposition", `attachment; filename=${filename}`);
-
-        await workbook.xlsx.write(res);
+        await generateMerchExcel({ type, orders, res });
         res.status(200).end();
 
     } catch (error) {
@@ -191,52 +198,20 @@ export const exportMerchExcel = async (req, res) => {
 export const exportMerchPDF = async (req, res) => {
     try {
         const { type } = req.params;
-        const { verified, academicYear, hostelName } = req.query;
+        const { verified, academicYear, hostelName, name } = req.query;
         let query = {};
         
         if (verified === "true") query.verified = true;
         else if (verified === "false") query.verified = false;
-        if (academicYear) query.academicYear = academicYear;
+        if (academicYear && academicYear !== 'all') query.academicYear = academicYear;
         if (hostelName) query.hostelName = { $regex: hostelName, $options: "i" };
+        if (name) query.name = { $regex: name, $options: "i" };
 
-        let orders;
-        let title;
+        const orders = type === "sports" 
+            ? await SportsMerch.find(query).sort({ createdAt: -1 })
+            : await FestMerch.find(query).sort({ createdAt: -1 });
 
-        if (type === "sports") {
-            orders = await SportsMerch.find(query).sort({ createdAt: -1 });
-            title = "Sports Merch Orders";
-        } else {
-            orders = await FestMerch.find(query).sort({ createdAt: -1 });
-            title = "Fest Merch Orders";
-        }
-
-        const doc = new PDFDocument({ margin: 30, size: 'A4' });
-
-        res.setHeader("Content-Type", "application/pdf");
-        res.setHeader("Content-Disposition", `attachment; filename=${type}_merch_orders.pdf`);
-
-        doc.pipe(res);
-
-        doc.fontSize(20).text(title, { align: 'center' });
-        doc.moveDown();
-
-        orders.forEach((order, index) => {
-            doc.fontSize(12).text(`${index + 1}. Name: ${order.name}`);
-            doc.fontSize(10).text(`Email: ${order.email} | Phone: ${order.phone}`);
-            doc.text(`Hostel: ${order.hostelName} | Year: ${order.academicYear}`);
-            doc.text(`Transaction ID: ${order.transactionId}`);
-            doc.text(`Size: ${order.size || 'N/A'}`);
-            if (type === "sports") {
-                doc.text(`Merch: ${order.merchName} | Number: ${order.merchNumber}`);
-            }
-            doc.text(`Status: ${order.verified ? "Verified" : "Pending"}`);
-            doc.text(`Date: ${order.createdAt.toLocaleString()}`);
-            doc.moveDown(0.5);
-            doc.rect(doc.x, doc.y, 500, 1).fill("#eee");
-            doc.moveDown(0.5);
-        });
-
-        doc.end();
+        await generateMerchPDF({ type, orders, res });
 
     } catch (error) {
         console.error("Export PDF Error:", error);
